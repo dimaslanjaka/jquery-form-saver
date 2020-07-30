@@ -41,7 +41,8 @@
   "scripts": {
     "postinstall": "npm i -g typescript",
     "test": "snyk test",
-    "preinstall": "npx npm-force-resolutions"
+    "preinstall": "npx npm-force-resolutions",
+    "dev": "gulp watch"
   },
   "dependencies": {
     "@types/datatables.net": "*",

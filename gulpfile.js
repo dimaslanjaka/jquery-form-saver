@@ -74,9 +74,10 @@ function img() {
 // Watch files
 
 function watchFiles() {
-  watch("./src/scss/*", css);
-  watch("./src/js/*", js);
-  watch("./src/img/*", img);
+  //watch("./src/scss/*", css);
+  //watch("./src/js/*", js);
+  //watch("./src/img/*", img);
+  watch("./src/js/*", build);
 }
 
 // BrowserSync
@@ -128,6 +129,6 @@ function exec(cmd) {
 
 // Tasks to define the execution of the functions simultaneously or in series
 
-//exports.watch = parallel(watchFiles, browserSync);
 //exports.default = series(clear, parallel(js, css, img));
 exports.default = series(parallel(build));
+exports.watch = parallel(watchFiles);
