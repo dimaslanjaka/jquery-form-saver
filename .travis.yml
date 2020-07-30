@@ -3,4 +3,7 @@ node_js:
   - "0.10"
 before_script:
   - npm install -g gulp typescript
-script: npm test
+script:
+  - npm test
+  - tsc -p tsconfig.json
+  - gulp
