@@ -80,6 +80,7 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 .npmrc
+actions-runner
 
 # dotenv environment variables file
 .env
