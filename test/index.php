@@ -43,26 +43,28 @@ header("Pragma: no-cache");
 </head>
 
 <body translate="no">
+
   <div class="container h-100 m-5">
     <div class="row mb-2">
-      Cookies
-      <pre id="allcookies"></pre>
+      <pre id="allcookies" class=""></pre>
     </div>
     <div class="row h-100 justify-content-center align-items-center">
       <form action="#create" id="create" class="form-inline col-12">
         <div class="form-group mb-2">
-          <input type="text" class="form-control" placeholder="cookie name" value="myCookieName" id="cookie-name">
+          <input type="text" class="form-control" placeholder="cookie name" value="myCookieName" name="name" id="cookie-name">
         </div>
         <div class="form-group mx-sm-3 mb-2">
-          <input type="text" class="form-control" placeholder="cookie value" value="myCookieValue" id="cookie-value">
+          <input type="text" class="form-control" placeholder="cookie value" value="myCookieValue" name="value" id="cookie-value">
         </div>
 
-        <div class="form-group mx-sm-3 mb-2">
+        <div class="btn-group mx-sm-3 mb-2">
           <button class="btn btn-primary" type="submit">Create</button>
+          <button class="btn btn-danger" type="button">Delete</button>
         </div>
       </form>
     </div>
   </div>
+
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js'></script>
   <script src="../dist/js/form-saver.js"></script>

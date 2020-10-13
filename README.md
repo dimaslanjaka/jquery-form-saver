@@ -12,3 +12,5 @@ Allow browser save user input automatically and restore after page loaded.
 	});
 </script>
 ```
+
+### [Codepen Example](https://codepen.io/dimaslanjaka/pen/qBNOoOe?editors=1010)
