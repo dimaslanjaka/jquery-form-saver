@@ -6,6 +6,7 @@ declare const $: JQuery;
 interface jQuery extends JQuery { }
 
 interface JQuery extends jQuery {
+  attr(arg0: string);
   /**
    * Material bootstrap select. (only works on MDB template)
    */
