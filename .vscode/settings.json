@@ -1,0 +1,6 @@
+{
+  "files.autoSave": "afterDelay",
+  "editor.wordWrap": "on",
+  "npm.packageManager": "yarn",
+  "prettier.packageManager": "yarn"
+}
