@@ -378,21 +378,19 @@ Object.has = function (str) {
  * @todo save form user input
  */
 // declare unique id generator
-if (typeof uniqid == 'undefined') {
-    function uniqid(a, b) {
-        if (a === void 0) { a = ""; }
-        if (b === void 0) { b = false; }
-        var c = Date.now() / 1000;
-        var d = c.toString(16).split(".").join("");
-        while (d.length < 14)
-            d += "0";
-        var e = "";
-        if (b) {
-            e = ".";
-            e += Math.round(Math.random() * 100000000);
-        }
-        return a + d + e;
+function uniqueIDGen(a, b) {
+    if (a === void 0) { a = ""; }
+    if (b === void 0) { b = false; }
+    var c = Date.now() / 1000;
+    var d = c.toString(16).split(".").join("");
+    while (d.length < 14)
+        d += "0";
+    var e = "";
+    if (b) {
+        e = ".";
+        e += Math.round(Math.random() * 100000000);
     }
+    return a + d + e;
 }
 //check if running in browser and jquery is loaded
 if (!(typeof module !== 'undefined' && module.exports) && typeof jQuery != 'undefined') {
@@ -415,7 +413,7 @@ if (!(typeof module !== 'undefined' && module.exports) && typeof jQuery != 'unde
     else {
         formField = JSON.parse(formSaved);
     }
-    var uniqueid = uniqid('formsaver');
+    var uniqueid = uniqueIDGen('formsaver');
     (function ($) {
         $.fn.getIDName = function () {
             //var native: HTMLElement = this;

@@ -1,6 +1,6 @@
 {
   "name": "@dimaslanjaka/smartform",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Save user field and reuse for next page",
   "main": "./dist",
   "directories": {
