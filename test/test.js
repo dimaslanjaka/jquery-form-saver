@@ -15,7 +15,10 @@ $("#create").on("submit", function (e) {
 	setCookie(`cookie_${obj.name}`, obj.value, 60);
 	//console.log(obj);
 });
-
+$("#deleteAllCookie").on("click", function (e) {
+	e.preventDefault();
+	deleteAllCookies();
+});
 setInterval(() => {
 	var tobeprinted = getCookies();
 	tobeprinted.localStorageAvailable = localStorageAvailable();
