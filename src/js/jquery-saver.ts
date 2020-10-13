@@ -5,7 +5,20 @@
  * SMARTFORM
  * @todo save form user input
  */
-
+// declare unique id generator
+if (typeof uniqid == 'undefined') {
+  function uniqid(a = "", b = false) {
+    const c = Date.now() / 1000;
+    let d = c.toString(16).split(".").join("");
+    while (d.length < 14) d += "0";
+    let e = "";
+    if (b) {
+      e = ".";
+      e += Math.round(Math.random() * 100000000);
+    }
+    return a + d + e;
+  }
+}
 //check if running in browser and jquery is loaded
 if (!(typeof module !== 'undefined' && module.exports) && typeof jQuery != 'undefined') {
   /**
@@ -245,19 +258,5 @@ if (typeof copyToClipboard == 'undefined') {
       // Fallback if browser doesn't support .execCommand('copy')
       window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
     }
-  }
-}
-
-if (typeof uniqid == 'undefined') {
-  function uniqid(a = "", b = false) {
-    const c = Date.now() / 1000;
-    let d = c.toString(16).split(".").join("");
-    while (d.length < 14) d += "0";
-    let e = "";
-    if (b) {
-      e = ".";
-      e += Math.round(Math.random() * 100000000);
-    }
-    return a + d + e;
   }
 }
