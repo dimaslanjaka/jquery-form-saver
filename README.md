@@ -1,6 +1,7 @@
 # Smartform JS
 
-Allow browser save user input automatically and restore after page loaded.
+- Automatically save all input field whole document web to reuse later
+- Allow browser save user input automatically and restore after page loaded.
 
 ```html
 <!--include jquery before this, if your project has jquery-->
