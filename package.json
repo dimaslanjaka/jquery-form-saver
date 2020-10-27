@@ -1,6 +1,6 @@
 {
   "name": "@dimaslanjaka/smartform",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Save user field and reuse for next page",
   "main": "./dist",
   "directories": {
@@ -41,7 +41,7 @@
   "scripts": {
     "postinstall": "gulp",
     "test": "snyk test",
-    "preinstall": "npx npm-force-resolutions && yarn global add typescript",
+    "add-typescript": "npx npm-force-resolutions && yarn global add typescript",
     "dev": "gulp watch"
   },
   "dependencies": {
