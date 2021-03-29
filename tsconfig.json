@@ -6,7 +6,7 @@
 		"outDir": "tmp/js",
 		"moduleResolution": "Node",
 		"allowJs": true,
-		"typeRoots": ["./node_modules/@types", "./libs/typings", "./src/js"],
+		"typeRoots": ["./node_modules/@types", "./src/js"],
 		"types": ["jquery", "node"],
 		"target": "ES5",
 		"lib": [
