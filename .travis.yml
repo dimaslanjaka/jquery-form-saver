@@ -5,5 +5,5 @@ before_script:
   - npm install -g gulp typescript
 script:
   - npm test
-  - tsc -p tsconfig.json
+  - tsc -p tsconfig.build.json
   - gulp

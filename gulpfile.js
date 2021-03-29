@@ -18,96 +18,96 @@ const root = process.cwd();
 // Clean dist
 
 function clear() {
-  return src("./dist/*", {
-    read: false,
-  }).pipe(clean());
+	return src("./dist/*", {
+		read: false,
+	}).pipe(clean());
 }
 
 // JS function
 
 function js() {
-  const source = "./src/js/*.{js,ts}";
+	const source = "./src/js/*.{js,ts}";
 
-  return src(source)
-    .pipe(changed(source))
-    .pipe(concat("bundle.js"))
-    .pipe(uglify())
-    .pipe(
-      rename({
-        extname: ".min.js",
-      })
-    )
-    .pipe(dest("./dist/js/"))
-    .pipe(browsersync.stream());
+	return src(source)
+		.pipe(changed(source))
+		.pipe(concat("bundle.js"))
+		.pipe(uglify())
+		.pipe(
+			rename({
+				extname: ".min.js",
+			})
+		)
+		.pipe(dest("./dist/js/"))
+		.pipe(browsersync.stream());
 }
 
 // CSS function
 
 function css() {
-  const source = "./src/scss/main.scss";
+	const source = "./src/scss/main.scss";
 
-  return src(source)
-    .pipe(changed(source))
-    .pipe(sass())
-    .pipe(
-      autoprefixer({
-        overrideBrowserslist: ["last 2 versions"],
-        cascade: false,
-      })
-    )
-    .pipe(
-      rename({
-        extname: ".min.css",
-      })
-    )
-    .pipe(cssnano())
-    .pipe(dest("./dist/css/"))
-    .pipe(browsersync.stream());
+	return src(source)
+		.pipe(changed(source))
+		.pipe(sass())
+		.pipe(
+			autoprefixer({
+				overrideBrowserslist: ["last 2 versions"],
+				cascade: false,
+			})
+		)
+		.pipe(
+			rename({
+				extname: ".min.css",
+			})
+		)
+		.pipe(cssnano())
+		.pipe(dest("./dist/css/"))
+		.pipe(browsersync.stream());
 }
 
 // Optimize images
 
 function img() {
-  return src("./src/img/*").pipe(imagemin()).pipe(dest("./dist/img"));
+	return src("./src/img/*").pipe(imagemin()).pipe(dest("./dist/img"));
 }
 
 // Watch files
 
 function watchFiles() {
-  //watch("./src/scss/*", css);
-  //watch("./src/js/*", js);
-  //watch("./src/img/*", img);
-  watch("./src/js/*", build);
+	//watch("./src/scss/*", css);
+	//watch("./src/js/*", js);
+	//watch("./src/img/*", img);
+	watch("./src/js/*", build);
 }
 
 // BrowserSync
 
 function browserSync() {
-  browsersync.init({
-    server: {
-      baseDir: "./",
-    },
-    port: 3000,
-  });
+	browsersync.init({
+		server: {
+			baseDir: "./",
+		},
+		port: 3000,
+	});
 }
 
 async function build() {
-  const compile = await exec("tsc -p tsconfig.json");
-  const source = "./dist/js/form-saver.js";
-  return (
-    src(source)
-      .pipe(changed(source))
-      //.pipe(concat('form-saver.js'))
-      //.pipe(uglify())
-      .pipe(terser())
-      .pipe(
-        rename({
-          extname: ".min.js",
-        })
-      )
-      .pipe(dest("./dist/js/"))
-      .pipe(browsersync.stream())
-  );
+	const compile = await exec("tsc -p tsconfig.build.json");
+	const source = "./dist/js/form-saver.js";
+	return (
+		src(source)
+			.pipe(changed(source))
+			//.pipe(concat('form-saver.js'))
+			//.pipe(uglify())
+			.pipe(terser())
+			.pipe(
+				rename({
+					extname: ".min.js",
+				})
+			)
+			.pipe(dest("./dist/js/"))
+			.pipe(browsersync.stream())
+	);
 }
 
 /**
@@ -116,15 +116,15 @@ async function build() {
  * @return {Promise<string>}
  */
 function exec(cmd) {
-  const exec = require("child_process").exec;
-  return new Promise((resolve, reject) => {
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.warn(error);
-      }
-      resolve(stdout ? stdout : stderr);
-    });
-  });
+	const exec = require("child_process").exec;
+	return new Promise((resolve, reject) => {
+		exec(cmd, (error, stdout, stderr) => {
+			if (error) {
+				console.warn(error);
+			}
+			resolve(stdout ? stdout : stderr);
+		});
+	});
 }
 
 // Tasks to define the execution of the functions simultaneously or in series
