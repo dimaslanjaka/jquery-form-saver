@@ -61,35 +61,38 @@ function copyToClipboard(text, el) {
     }
 }
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
+    if (typeof define === "function" && define.amd) {
         define([], factory(root));
     }
-    else if (typeof exports === 'object') {
+    else if (typeof exports === "object") {
         module.exports = factory(root);
     }
     else {
         root.formSaver = factory(root);
     }
-})(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
-    'use strict';
+})(typeof global !== "undefined" ? global : this.window || this.global, function (root) {
+    "use strict";
     //
     // Variables
     //
     var formSaver = {}; // Object for public APIs
-    var supports = 'querySelector' in document && 'addEventListener' in root && 'localStorage' in root && 'classList' in document.createElement('_'); // Feature test
+    var supports = "querySelector" in document &&
+        "addEventListener" in root &&
+        "localStorage" in root &&
+        "classList" in document.createElement("_"); // Feature test
     var settings, forms;
     // Default settings
     var defaults = {
-        selectorStatus: '[data-form-status]',
-        selectorSave: '[data-form-save]',
-        selectorDelete: '[data-form-delete]',
-        selectorIgnore: '[data-form-no-save]',
+        selectorStatus: "[data-form-status]",
+        selectorSave: "[data-form-save]",
+        selectorDelete: "[data-form-delete]",
+        selectorIgnore: "[data-form-no-save]",
         deleteClear: true,
-        saveMessage: 'Saved!',
-        deleteMessage: 'Deleted!',
-        saveClass: '',
-        deleteClass: '',
-        initClass: 'js-form-saver',
+        saveMessage: "Saved!",
+        deleteMessage: "Deleted!",
+        saveClass: "",
+        deleteClass: "",
+        initClass: "js-form-saver",
         callbackSave: function () { },
         callbackDelete: function () { },
         callbackLoad: function () { }
@@ -107,7 +110,7 @@ function copyToClipboard(text, el) {
      * @param {Array|Object|NodeList} scope      Object/NodeList/Array that forEach is iterating over (aka `this`)
      */
     var forEach = function (collection, callback, scope) {
-        if (Object.prototype.toString.call(collection) === '[object Object]') {
+        if (Object.prototype.toString.call(collection) === "[object Object]") {
             for (var prop in collection) {
                 if (Object.prototype.hasOwnProperty.call(collection, prop)) {
                     callback.call(scope, collection[prop], prop, collection);
@@ -134,7 +137,7 @@ function copyToClipboard(text, el) {
         var i = 0;
         var length = arguments.length;
         // Check if a deep merge
-        if (Object.prototype.toString.call(arguments[0]) === '[object Boolean]') {
+        if (Object.prototype.toString.call(arguments[0]) === "[object Boolean]") {
             deep = arguments[0];
             i++;
         }
@@ -143,7 +146,8 @@ function copyToClipboard(text, el) {
             for (var prop in obj) {
                 if (Object.prototype.hasOwnProperty.call(obj, prop)) {
                     // If deep merge and property is an object, merge properties
-                    if (deep && Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+                    if (deep &&
+                        Object.prototype.toString.call(obj[prop]) === "[object Object]") {
                         extended[prop] = extend(true, extended[prop], obj[prop]);
                     }
                     else {
@@ -195,7 +199,10 @@ function copyToClipboard(text, el) {
      * @returns {Object}
      */
     var getDataOptions = function (options) {
-        return !options || !(typeof JSON === 'object' && typeof JSON.parse === 'function') ? {} : JSON.parse(options);
+        return !options ||
+            !(typeof JSON === "object" && typeof JSON.parse === "function")
+            ? {}
+            : JSON.parse(options);
     };
     /**
      * Save form data to localStorage
@@ -207,11 +214,11 @@ function copyToClipboard(text, el) {
      */
     formSaver.saveForm = function (btn, formID, options, event) {
         // Defaults and settings
-        var overrides = getDataOptions(btn ? btn.getAttribute('data-options') : null);
+        var overrides = getDataOptions(btn ? btn.getAttribute("data-options") : null);
         var settings = extend(settings || defaults, options || {}, overrides); // Merge user options with defaults
         // Selectors and variables
         var form = document.querySelector(formID);
-        var formSaverID = 'formSaver-' + form.id;
+        var formSaverID = "formSaver-" + form.id;
         var formSaverData = {};
         var formFields = form.elements;
         var formStatus = form.querySelectorAll(settings.selectorStatus);
@@ -222,13 +229,15 @@ function copyToClipboard(text, el) {
          */
         var prepareField = function (field) {
             if (!getClosest(field, settings.selectorIgnore)) {
-                if (field.type.toLowerCase() === 'radio' || field.type.toLowerCase() === 'checkbox') {
+                if (field.type.toLowerCase() === "radio" ||
+                    field.type.toLowerCase() === "checkbox") {
                     if (field.checked === true) {
-                        formSaverData[field.name + field.value] = 'on';
+                        formSaverData[field.name + field.value] = "on";
                     }
                 }
-                else if (field.type.toLowerCase() !== 'hidden' && field.type.toLowerCase() !== 'submit') {
-                    if (field.value && field.value !== '') {
+                else if (field.type.toLowerCase() !== "hidden" &&
+                    field.type.toLowerCase() !== "submit") {
+                    if (field.value && field.value !== "") {
                         formSaverData[field.name] = field.value;
                     }
                 }
@@ -242,7 +251,10 @@ function copyToClipboard(text, el) {
          * @param  {String} saveClass The class to apply to the save message wrappers
          */
         var displayStatus = function (status, saveMessage, saveClass) {
-            status.innerHTML = saveClass === '' ? '<div>' + saveMessage + '</div>' : '<div class="' + saveClass + '">' + saveMessage + '</div>';
+            status.innerHTML =
+                saveClass === ""
+                    ? "<div>" + saveMessage + "</div>"
+                    : '<div class="' + saveClass + '">' + saveMessage + "</div>";
         };
         // Add field data to array
         forEach(formFields, function (field) {
@@ -266,20 +278,26 @@ function copyToClipboard(text, el) {
      */
     formSaver.deleteForm = function (btn, formID, options, event) {
         // Defaults and settings
-        var overrides = getDataOptions(btn ? btn.getAttribute('data-options') : {});
+        var overrides = getDataOptions(btn ? btn.getAttribute("data-options") : {});
         var settings = extend(settings || defaults, options || {}, overrides); // Merge user options with defaults
         // Selectors and variables
         var form = document.querySelector(formID);
-        var formSaverID = 'formSaver-' + form.id;
+        var formSaverID = "formSaver-" + form.id;
         var formStatus = form.querySelectorAll(settings.selectorStatus);
-        var formMessage = settings.deleteClass === '' ? '<div>' + settings.deleteMessage + '</div>' : '<div class="' + settings.deleteClass + '">' + settings.deleteMessage + '</div>';
+        var formMessage = settings.deleteClass === ""
+            ? "<div>" + settings.deleteMessage + "</div>"
+            : '<div class="' +
+                settings.deleteClass +
+                '">' +
+                settings.deleteMessage +
+                "</div>";
         /**
          * Display succes message
          * @private
          */
         var displayStatus = function () {
-            if (settings.deleteClear === true || settings.deleteClear === 'true') {
-                sessionStorage.setItem(formSaverID + '-formSaverMessage', formMessage);
+            if (settings.deleteClear === true || settings.deleteClear === "true") {
+                sessionStorage.setItem(formSaverID + "-formSaverMessage", formMessage);
                 location.reload(false);
             }
             else {
@@ -301,7 +319,7 @@ function copyToClipboard(text, el) {
     formSaver.loadForm = function (form, options) {
         // Selectors and variables
         var settings = extend(settings || defaults, options || {}); // Merge user options with defaults
-        var formSaverID = 'formSaver-' + form.id;
+        var formSaverID = "formSaver-" + form.id;
         var formSaverData = JSON.parse(localStorage.getItem(formSaverID));
         var formFields = form.elements;
         var formStatus = form.querySelectorAll(settings.selectorStatus);
@@ -312,12 +330,14 @@ function copyToClipboard(text, el) {
          */
         var populateField = function (field) {
             if (formSaverData) {
-                if (field.type.toLowerCase() === 'radio' || field.type.toLowerCase() === 'checkbox') {
-                    if (formSaverData[field.name + field.value] === 'on') {
+                if (field.type.toLowerCase() === "radio" ||
+                    field.type.toLowerCase() === "checkbox") {
+                    if (formSaverData[field.name + field.value] === "on") {
                         field.checked = true;
                     }
                 }
-                else if (field.type.toLowerCase() !== 'hidden' && field.type.toLowerCase() !== 'submit') {
+                else if (field.type.toLowerCase() !== "hidden" &&
+                    field.type.toLowerCase() !== "submit") {
                     if (formSaverData[field.name]) {
                         field.value = formSaverData[field.name];
                     }
@@ -329,8 +349,8 @@ function copyToClipboard(text, el) {
          * @param  {Element} status The element that displays the status message
          */
         var displayStatus = function (status) {
-            status.innerHTML = sessionStorage.getItem(formSaverID + '-formSaverMessage');
-            sessionStorage.removeItem(formSaverID + '-formSaverMessage');
+            status.innerHTML = sessionStorage.getItem(formSaverID + "-formSaverMessage");
+            sessionStorage.removeItem(formSaverID + "-formSaverMessage");
         };
         // Populate form with data from localStorage
         forEach(formFields, function (field) {
@@ -352,11 +372,11 @@ function copyToClipboard(text, el) {
         var del = getClosest(toggle, settings.selectorDelete);
         if (save) {
             event.preventDefault();
-            formSaver.saveForm(save, save.getAttribute('data-form-save'), settings);
+            formSaver.saveForm(save, save.getAttribute("data-form-save"), settings);
         }
         else if (del) {
             event.preventDefault();
-            formSaver.deleteForm(del, del.getAttribute('data-form-delete'), settings);
+            formSaver.deleteForm(del, del.getAttribute("data-form-delete"), settings);
         }
     };
     /**
@@ -367,7 +387,7 @@ function copyToClipboard(text, el) {
         if (!settings)
             return;
         document.documentElement.classList.remove(settings.initClass);
-        document.removeEventListener('click', eventHandler, false);
+        document.removeEventListener("click", eventHandler, false);
         settings = null;
         forms = null;
     };
@@ -386,13 +406,14 @@ function copyToClipboard(text, el) {
         settings = extend(defaults, options || {}); // Merge user options with defaults
         forms = document.forms;
         // Add class to HTML element to activate conditional CSS
-        document.documentElement.className += (document.documentElement.className ? ' ' : '') + settings.initClass;
+        document.documentElement.className +=
+            (document.documentElement.className ? " " : "") + settings.initClass;
         // Get saved form data on page load
         forEach(forms, function (form) {
             formSaver.loadForm(form, settings);
         });
         // Listen for click events
-        document.addEventListener('click', eventHandler, false);
+        document.addEventListener("click", eventHandler, false);
     };
     //
     // Public APIs
