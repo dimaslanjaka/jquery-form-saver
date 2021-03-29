@@ -1,5 +1,5 @@
 {
-  "name": "@dimaslanjaka/smartform",
+  "name": "jquery-form-saver",
   "version": "1.0.6",
   "description": "Save user field and reuse for next page",
   "main": "./dist",
@@ -41,7 +41,7 @@
   "scripts": {
     "postinstall": "gulp",
     "test": "snyk test",
-    "add-typescript": "npx npm-force-resolutions && yarn global add typescript",
+    "add-typescript": "npx npm-force-resolutions && npm -i typescript -g",
     "dev": "gulp watch"
   },
   "dependencies": {
@@ -51,7 +51,8 @@
     "@types/jquery": "*"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry-git": "https://npm.pkg.github.com/",
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",

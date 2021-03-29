@@ -1,0 +1,18 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "allowJs": true,
+    "outFile": "./dist/js/form-saver.js",
+    "allowUmdGlobalAccess": true,
+    "allowUnusedLabels": true,
+    "allowUnreachableCode": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./src/js",
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}

@@ -1,15 +1,42 @@
-{
-  "compileOnSave": true,
+/*
+ * VSCode Typehinting Module
+ */
+ {
   "compilerOptions": {
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "tmp/js",
+    "moduleResolution": "Node",
     "allowJs": true,
-    "outFile": "./dist/js/form-saver.js",
-    "allowUmdGlobalAccess": true,
-    "allowUnusedLabels": true,
-    "allowUnreachableCode": true,
-    "skipLibCheck": true
+    "typeRoots": [
+      "./node_modules/@types",
+      "./libs/typings",
+      "./libs/js"
+    ],
+    "types": [
+      "datatables.net",
+      "jquery",
+      "requirejs",
+      "node",
+      "select2"
+    ],
+    "target": "ES5",
+    "lib": [
+      "DOM",
+      "ES5",
+      "ES6",
+      "ES2015",
+      "ES2016",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020"
+    ]
   },
   "include": [
-    "./src/js"
+    "./src/js",
+    "./test/"
   ],
   "exclude": [
     "dist",
