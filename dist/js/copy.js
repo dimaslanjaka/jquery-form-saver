@@ -1,6 +1,3 @@
-/**
- * Copy to clipboard
- */
 function copyToClipboard(text, el) {
     var copyTest = document.queryCommandSupported("copy");
     var elOriginalText = el.attr("data-original-title");
@@ -22,7 +19,6 @@ function copyToClipboard(text, el) {
         el.attr("data-original-title", elOriginalText);
     }
     else {
-        // Fallback if browser doesn't support .execCommand('copy')
         window.prompt("Copy to clipboard: Ctrl+C or Command+C, Enter", text);
     }
 }

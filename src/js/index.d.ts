@@ -2,7 +2,6 @@
 
 declare const $: JQuery;
 interface jQuery extends JQuery {}
-
 interface JQuery extends jQuery {
   /**
    * setter and getter attribute value
@@ -93,9 +92,21 @@ interface JQueryStatic {
   guid(): String;
 }
 
-/**
- * Progressbar timer
- */
+interface SettingForm {
+  selectorStatus: string;
+  selectorSave: string;
+  selectorDelete: string;
+  selectorIgnore: string;
+  deleteClear: true;
+  saveMessage: string;
+  deleteMessage: string;
+  saveClass: string;
+  deleteClass: string;
+  initClass: string;
+  callbackSave: Function;
+  callbackDelete: Function;
+  callbackLoad: Function;
+}
 
 /**
  * Arrays

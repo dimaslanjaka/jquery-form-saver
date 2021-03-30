@@ -6,21 +6,26 @@
  * @todo save form user input
  */
 // declare unique id generator
-function uniqueIDGen(a = "", b = false) {
-  const c = Date.now() / 1000;
-  let d = c.toString(16).split(".").join("");
-  while (d.length < 14) d += "0";
-  let e = "";
-  if (b) {
-    e = ".";
-    e += Math.round(Math.random() * 100000000);
+if (typeof makeid == "undefined") {
+  function makeid(length: number) {
+    var result = "";
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
   }
-  return a + d + e;
 }
 //check if running in browser and jquery is loaded
-const isNotNode = !(typeof module !== "undefined" && module.exports);
-console.log(`is browser : ${isNotNode}`);
-if (isNotNode) {
+var isBrowser = new Function(
+  "try {return this===window;}catch(e){ return false;}"
+);
+
+console.log(`is browser : ${isBrowser()}`);
+if (isBrowser()) {
   (function () {
     const isJqueryLoaded = typeof jQuery != "undefined";
     console.log(`is jQuery loaded : ${isJqueryLoaded}`);
@@ -45,7 +50,7 @@ if (isNotNode) {
       } else {
         formField = JSON.parse(formSaved);
       }
-      var uniqueid = uniqueIDGen("formsaver");
+      var uniqueid = makeid(5);
 
       (function ($) {
         $.fn.getIDName = function () {

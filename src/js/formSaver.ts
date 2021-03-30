@@ -1,30 +1,98 @@
 /// <reference path="index.d.ts">
-import {
-  extend,
-  forEach,
-  getClosest,
-  getDataOptions,
-  eventHandler,
-  isBrowser,
-  isNode,
-  formsaver,
-} from "./func";
+/**
+ * A simple forEach() implementation for Arrays, Objects and NodeLists.
+ * @private
+ * @author Todd Motto
+ * @link   https://github.com/toddmotto/foreach
+ * @param {Array|Object|NodeList} collection Collection of items to iterate
+ * @param {Function}              callback   Callback function for each iteration
+ * @param {Array|Object|NodeList} [scope=null]      Object/NodeList/Array that forEach is iterating over (aka `this`)
+ */
+var forEach = function (collection, callback, scope = null) {
+  if (Object.prototype.toString.call(collection) === "[object Object]") {
+    for (var prop in collection) {
+      if (Object.prototype.hasOwnProperty.call(collection, prop)) {
+        callback.call(scope, collection[prop], prop, collection);
+      }
+    }
+  } else {
+    for (var i = 0, len = collection.length; i < len; i++) {
+      callback.call(scope, collection[i], i, collection);
+    }
+  }
+};
 
-interface SettingForm {
-  selectorStatus: string;
-  selectorSave: string;
-  selectorDelete: string;
-  selectorIgnore: string;
-  deleteClear: true;
-  saveMessage: string;
-  deleteMessage: string;
-  saveClass: string;
-  deleteClass: string;
-  initClass: string;
-  callbackSave: Function;
-  callbackDelete: Function;
-  callbackLoad: Function;
-}
+/**
+ * Get the closest matching element up the DOM tree.
+ * @private
+ * @param  {Element} elem     Starting element
+ * @param  {String}  selector Selector to match against
+ * @return {Boolean|Element}  Returns null if not match found
+ */
+var getClosest = function (elem, selector) {
+  // Element.matches() polyfill
+  if (!Element.prototype.matches) {
+    Element.prototype.matches =
+      Element.prototype.matchesSelector ||
+      Element.prototype.mozMatchesSelector ||
+      Element.prototype.msMatchesSelector ||
+      Element.prototype.oMatchesSelector ||
+      Element.prototype.webkitMatchesSelector ||
+      function (s) {
+        var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+          i = matches.length;
+        while (--i >= 0 && matches.item(i) !== this) {}
+        return i > -1;
+      };
+  }
+
+  // Get closest match
+  for (; elem && elem !== document; elem = elem.parentNode) {
+    if (elem.matches(selector)) return elem;
+  }
+
+  return null;
+};
+
+/**
+ * Convert data-options attribute into an object of key/value pairs
+ * @private
+ * @param {String} options Link-specific options as a data attribute string
+ * @returns {Object}
+ */
+var getDataOptions = function (options) {
+  return !options ||
+    !(typeof JSON === "object" && typeof JSON.parse === "function")
+    ? {}
+    : JSON.parse(options);
+};
+
+/**
+ * Handle events
+ * @private
+ */
+var eventHandler = function (event) {
+  var toggle = event.target;
+  var save = getClosest(toggle, settings.selectorSave);
+  var del = getClosest(toggle, settings.selectorDelete);
+  if (save) {
+    event.preventDefault();
+    formSaver.saveForm(save, save.getAttribute("data-form-save"), settings);
+  } else if (del) {
+    event.preventDefault();
+    formSaver.deleteForm(del, del.getAttribute("data-form-delete"), settings);
+  }
+};
+/**
+ * Is Browser (not node)
+ */
+var isBrowser = new Function(
+  "try {return this===window;}catch(e){ return false;}"
+);
+/**
+ * Is Node (not browser)
+ */
+var isNode = new Function("try {return this===global;}catch(e){return false;}");
 
 var settings: SettingForm, forms: any;
 
@@ -44,7 +112,52 @@ var defaults: SettingForm = {
   callbackDelete: function () {},
   callbackLoad: function () {},
 };
-export class formSaver {
+
+/**
+ * Merge two or more objects together.
+ * (c) 2017 Chris Ferdinandi, MIT License, https://gomakethings.com
+ * @param   {Boolean}  deep     If true, do a deep (or recursive) merge [optional]
+ * @param   {Object}   objects  The objects to merge together
+ * @returns {Object|SettingForm}            Merged values of defaults and options
+ */
+function extend_setting_form(...param: any[]): SettingForm {
+  // Variables
+  var extended: SettingForm = defaults;
+  var deep = false;
+  var i = 0;
+
+  // Check if a deep merge
+  if (Object.prototype.toString.call(arguments[0]) === "[object Boolean]") {
+    deep = arguments[0];
+    i++;
+  }
+
+  // Merge the object into the extended object
+  var merge = function (obj) {
+    for (var prop in obj) {
+      if (obj.hasOwnProperty(prop)) {
+        // If property is an object, merge properties
+        if (
+          deep &&
+          Object.prototype.toString.call(obj[prop]) === "[object Object]"
+        ) {
+          extended[prop] = extend_setting_form(extended[prop], obj[prop]);
+        } else {
+          extended[prop] = obj[prop];
+        }
+      }
+    }
+  };
+
+  // Loop through each object and conduct a merge
+  for (; i < arguments.length; i++) {
+    merge(arguments[i]);
+  }
+
+  return extended;
+}
+
+class formSaver {
   /**
    * Save form data to localStorage
    * @public
@@ -53,13 +166,13 @@ export class formSaver {
    * @param  {Object} options
    * @param  {Event} event
    */
-  saveForm(btn, formID, options, event) {
+  static saveForm(btn, formID, options, event = null) {
     // Defaults and settings
     var overrides = getDataOptions(
       btn ? btn.getAttribute("data-options") : null
     );
 
-    var merged: SettingForm = extend(
+    var merged: SettingForm = extend_setting_form(
       settings || defaults,
       options || {},
       overrides
@@ -136,10 +249,14 @@ export class formSaver {
    * @param  {Object} options
    * @param  {Event} event
    */
-  deleteForm(btn, formID, options, event) {
+  static deleteForm(btn, formID, options, event = null) {
     // Defaults and settings
     var overrides = getDataOptions(btn ? btn.getAttribute("data-options") : {});
-    var settings = extend(settings || defaults, options || {}, overrides); // Merge user options with defaults
+    var settings = extend_setting_form(
+      settings || defaults,
+      options || {},
+      overrides
+    ); // Merge user options with defaults
 
     // Selectors and variables
     var form = document.querySelector(formID);
@@ -182,7 +299,7 @@ export class formSaver {
    */
   loadForm(form, options) {
     // Selectors and variables
-    var settings = extend(settings || defaults, options || {}); // Merge user options with defaults
+    var settings = extend_setting_form(settings || defaults, options || {}); // Merge user options with defaults
     var formSaverID = "formSaver-" + form.id;
     var formSaverData = JSON.parse(localStorage.getItem(formSaverID));
     var formFields = form.elements;
@@ -262,7 +379,7 @@ export class formSaver {
     this.destroy();
 
     // Selectors and variables
-    settings = extend(defaults, options || {}); // Merge user options with defaults
+    settings = extend_setting_form(defaults, options || {}); // Merge user options with defaults
     forms = document.forms;
 
     // Add class to HTML element to activate conditional CSS

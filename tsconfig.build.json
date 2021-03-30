@@ -1,6 +1,13 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "module": "commonjs",
+    "strict": false,
+    "target": "ES2015",
+    "noImplicitAny": false,
+    "sourceMap": false,
+    "removeComments": true,
+    "declaration": false,
     "allowJs": true,
     "outDir": "dist/js/",
     "allowUmdGlobalAccess": true,

@@ -1,6 +1,16 @@
 (function () {
-  formsaver();
+  /**
+   * jQuery("input,textarea,select").each(function (i, el) {
+    $(this).smartForm();
+  });
+   */
+  if (typeof formsaver == "function") {
+    formsaver();
+  } else {
+    console.error("form saver not loaded");
+  }
 })();
+
 $("#create").on("submit", function (e) {
   e.preventDefault();
   var form = $(this);

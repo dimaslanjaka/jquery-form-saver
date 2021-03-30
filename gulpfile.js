@@ -18,108 +18,76 @@ var browserify = require("browserify");
 var gulp = require("gulp");
 var source = require("vinyl-source-stream");
 const fs = require("fs");
+var del = require("del");
+var ts = require("gulp-typescript");
 
-gulp.task("browserify", function () {
-  return browserify()
-    .add("./dist/js/formSaver.js")
+const browserifying = function (output, ...input) {
+  var browser = browserify({
+    insertGlobals: true,
+    debug: true,
+    standalone: true,
+  });
+  for (let file of arguments) {
+    browser.add(file);
+  }
+  return browser
     .bundle()
-    .pipe(fs.createWriteStream("./dist/js/bundle.js"));
+    .pipe(fs.createWriteStream("./dist/release/bundle.js"));
+};
+gulp.task("browserify", function () {
+  return browserifying(
+    "./dist/release/bundle.js",
+    "./dist/js/Object.js",
+    "./dist/js/formSaver.js",
+    "./dist/js/jquery-saver.js"
+  );
 });
 
-// Clean dist
+// Watch files
 
-function clear() {
-  return src("./dist/*", {
-    read: false,
-  }).pipe(clean());
+function watchFiles() {
+  watch("./src/js/*", build);
 }
 
-// JS function
+var tsProject = ts.createProject("tsconfig.build.json");
+gulp.task("tsc", function () {
+  var tsResult = gulp
+    .src("lib/**/*.ts") // or tsProject.src()
+    .pipe(tsProject());
 
-function js() {
-  const source = "./src/js/*.{js,ts}";
+  return tsResult.js.pipe(gulp.dest("dist/js"));
+});
 
-  return src(source)
-    .pipe(changed(source))
+function build() {
+  //exec("tsc -p tsconfig.build.json");
+  return gulp
+    .src([
+      "./dist/js/Object.js",
+      "./dist/js/formSaver.js",
+      "./dist/js/jquery-saver.js",
+    ])
     .pipe(concat("bundle.js"))
-    .pipe(uglify())
+    .pipe(gulp.dest("./dist/release/"));
+}
+
+gulp.task("build", build);
+
+gulp.task("clean", function (cb) {
+  // You can use multiple globbing patterns as you would with `gulp.src`
+  return del(["dist"], cb);
+});
+
+gulp.task("minjs", function () {
+  return gulp
+    .src("./dist/release/bundle.js")
+    .pipe(terser())
     .pipe(
       rename({
         extname: ".min.js",
       })
     )
-    .pipe(dest("./dist/js/"))
-    .pipe(browsersync.stream());
-}
-
-// CSS function
-
-function css() {
-  const source = "./src/scss/main.scss";
-
-  return src(source)
-    .pipe(changed(source))
-    .pipe(sass())
-    .pipe(
-      autoprefixer({
-        overrideBrowserslist: ["last 2 versions"],
-        cascade: false,
-      })
-    )
-    .pipe(
-      rename({
-        extname: ".min.css",
-      })
-    )
-    .pipe(cssnano())
-    .pipe(dest("./dist/css/"))
-    .pipe(browsersync.stream());
-}
-
-// Optimize images
-
-function img() {
-  return src("./src/img/*").pipe(imagemin()).pipe(dest("./dist/img"));
-}
-
-// Watch files
-
-function watchFiles() {
-  //watch("./src/scss/*", css);
-  //watch("./src/js/*", js);
-  //watch("./src/img/*", img);
-  watch("./src/js/*", build);
-}
-
-// BrowserSync
-
-function browserSync() {
-  browsersync.init({
-    server: {
-      baseDir: "./",
-    },
-    port: 3000,
-  });
-}
-
-async function build() {
-  const compile = await exec("tsc -p tsconfig.build.json");
-  const source = "./dist/js/bundle.js";
-  return (
-    src(source)
-      .pipe(changed(source))
-      //.pipe(concat('bundle.js'))
-      //.pipe(uglify())
-      .pipe(terser())
-      .pipe(
-        rename({
-          extname: ".min.js",
-        })
-      )
-      .pipe(dest("./dist/js/"))
-      .pipe(browsersync.stream())
-  );
-}
+    .pipe(dest("./dist/release/"));
+});
 
 /**
  * Executes a shell command and return it as a Promise.
@@ -141,5 +109,6 @@ function exec(cmd) {
 // Tasks to define the execution of the functions simultaneously or in series
 
 //exports.default = series(clear, parallel(js, css, img));
-exports.default = series(parallel(build, "browserify"));
+exports.default = series(parallel("tsc", "build", "minjs"));
 exports.watch = parallel(watchFiles);
+exports.browser = parallel("build", "browserify");
