@@ -1,36 +1,43 @@
 /// <reference path="./Object.d.ts"/>
 /// <reference path="./globals.d.ts"/>
+/// <reference path="./index.d.ts"/>
 
 /**
  * SMARTFORM
  * @todo save form user input
  */
-// declare unique id generator
-if (typeof makeid == "undefined") {
-  function makeid(length: number) {
-    var result = "";
-    var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
 
-    return result;
+/**
+ * unique id generator
+ * @param length digit number string
+ * @returns random string
+ */
+var makeid = function (length: number) {
+  var result = "";
+  var characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
-}
-//check if running in browser and jquery is loaded
+
+  return result;
+};
+
+/**
+ * check if running in browser
+ */
 var isBrowser = new Function(
   "try {return this===window;}catch(e){ return false;}"
 );
 
-console.log(`is browser : ${isBrowser()}`);
+//console.log(`is browser : ${isBrowser()}`);
 if (isBrowser()) {
   (function () {
     const isJqueryLoaded = typeof jQuery != "undefined";
-    console.log(`is jQuery loaded : ${isJqueryLoaded}`);
+    //console.log(`is jQuery loaded : ${isJqueryLoaded}`);
     if (isJqueryLoaded) {
-      console.log("Apply plugin smartform jQuery");
+      //console.log("Apply plugin smartform jQuery");
       /**
        * Element Counter
        */
@@ -97,15 +104,22 @@ if (isBrowser()) {
               $(this).attr("name") || "empty" + "]"
           );
         };
+        $.fn.has_attr = function (name: string) {
+          var attr = $(this).attr("name");
+          // For some browsers, `attr` is undefined; for others,
+          // `attr` is false.  Check for both.
+          return typeof attr !== "undefined" && attr !== false;
+        };
         $.fn.smartForm = function () {
           Count++;
+
           if ($(this).attr("no-save")) {
             return;
           }
           var t = $(this);
           //set indicator
           t.attr("aria-smartform", uniqueid);
-          var item;
+          var item: string | number | boolean | symbol | object;
           var key = t.getIDName().toString();
           var type = $(this).attr("type");
           // begin restoration
@@ -160,7 +174,7 @@ if (isBrowser()) {
             typeof tag != "undefined";
 
           if (allowed && val) {
-            console.log(tag, allowed && val);
+            //console.log(tag, allowed && val);
             switch (t.prop("tagName")) {
               case "SELECT":
               case "INPUT":

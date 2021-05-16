@@ -19,6 +19,10 @@ interface JQuery extends jQuery {
    * @todo save typed words
    */
   smartForm(): void;
+  /**
+   * Check has attribute
+   */
+  has_attr(name: string): boolean;
 }
 
 declare namespace JQuery {
