@@ -1,22 +1,17 @@
-if (typeof makeid == "undefined") {
-    function makeid(length) {
-        var result = "";
-        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
+var makeid = function (length) {
+    var result = "";
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-}
+    return result;
+};
 var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
-console.log(`is browser : ${isBrowser()}`);
 if (isBrowser()) {
     (function () {
         const isJqueryLoaded = typeof jQuery != "undefined";
-        console.log(`is jQuery loaded : ${isJqueryLoaded}`);
         if (isJqueryLoaded) {
-            console.log("Apply plugin smartform jQuery");
             var Count = -1;
             var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
             var formField;
@@ -59,6 +54,10 @@ if (isBrowser()) {
                         $(this).attr("id") +
                         "/" +
                         $(this).attr("name") || "empty" + "]");
+                };
+                $.fn.has_attr = function (name) {
+                    var attr = $(this).attr("name");
+                    return typeof attr !== "undefined" && attr !== false;
                 };
                 $.fn.smartForm = function () {
                     Count++;
@@ -114,7 +113,6 @@ if (isBrowser()) {
                         t.attr("aria-smartform") &&
                         typeof tag != "undefined";
                     if (allowed && val) {
-                        console.log(tag, allowed && val);
                         switch (t.prop("tagName")) {
                             case "SELECT":
                             case "INPUT":
