@@ -7,29 +7,28 @@
  * @todo save form user input
  */
 
-/**
- * unique id generator
- * @param length digit number string
- * @returns random string
- */
-var makeid = function (length: number) {
-  var result = "";
-  var characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
+if (typeof makeid == "undefined") {
+  /**
+   * unique id generator
+   * @param length digit number string
+   * @returns random string
+   */
+  var makeid = function (length: number) {
+    var result = "";
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
 
-  return result;
-};
+    return result;
+  };
+}
 
 /**
  * check if running in browser
  */
-var isBrowser = new Function(
-  "try {return this===window;}catch(e){ return false;}"
-);
+var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
 
 //console.log(`is browser : ${isBrowser()}`);
 if (isBrowser()) {
@@ -45,8 +44,7 @@ if (isBrowser()) {
       /**
        * Local Storage key
        */
-      var storageKey: String =
-        location.pathname.replace(/\/$/s, "") + "/formField";
+      var storageKey: String = location.pathname.replace(/\/$/s, "") + "/formField";
       /**
        * Element Indexer
        */
@@ -74,10 +72,7 @@ if (isBrowser()) {
                 var id: string = Math.random().toString(20).substr(2, 6);
                 $(this).attr("id", id);
                 (<any>formField)[Count] = id;
-                localStorage.setItem(
-                  storageKey.toString(),
-                  JSON.stringify(formField)
-                );
+                localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
               } else {
                 $(this).attr("id", (<any>formField)[Count]);
               }
@@ -117,8 +112,14 @@ if (isBrowser()) {
             return;
           }
           var t = $(this);
+          /**
+           * Is this element has select2 initialized ?
+           */
+          var is_select2 = $(this).data("select2");
+
           //set indicator
-          t.attr("aria-smartform", uniqueid);
+          t.attr("aria-formsaver", uniqueid);
+
           var item: string | number | boolean | symbol | object;
           var key = t.getIDName().toString();
           var type = $(this).attr("type");
@@ -151,6 +152,7 @@ if (isBrowser()) {
             //console.log('load', type, key, item);
           }
         };
+        
         $.arrive = function (target, callback) {
           if (target) {
             $(target).bind("DOMNodeInserted", callback);
@@ -168,10 +170,7 @@ if (isBrowser()) {
           var t = $(this);
           var val = localStorage.getItem(t.getIDName().toString());
           var tag = t.prop("tagName");
-          var allowed =
-            !t.attr("no-save") &&
-            t.attr("aria-smartform") &&
-            typeof tag != "undefined";
+          var allowed = !t.attr("no-save") && t.attr("aria-formsaver") && typeof tag != "undefined";
 
           if (allowed && val) {
             //console.log(tag, allowed && val);
@@ -188,7 +187,7 @@ if (isBrowser()) {
         // detach from removed elements
         $(document).bind("DOMNodeRemoved", function () {
           var t = $(this);
-          var allowed = !t.attr("no-save") && t.attr("aria-smartform");
+          var allowed = !t.attr("no-save") && t.attr("aria-formsaver");
           if (allowed) {
             switch (t.prop("tagName")) {
               case "SELECT":
@@ -205,7 +204,7 @@ if (isBrowser()) {
           var t = $(this);
           var key = t.getIDName().toString();
           var item = t.val();
-          var allowed = !t.attr("no-save") && t.attr("aria-smartform");
+          var allowed = !t.attr("no-save") && t.attr("aria-formsaver");
           if (key && item !== "" && allowed) {
             if (t.attr("type") == "checkbox") {
               localStorage.setItem(key, t.is(":checked").toString());
@@ -230,10 +229,10 @@ if (isBrowser()) {
         $(document).on("focus", "input,textarea,select", function () {
           var t = $(this);
           t.getIDName();
-          var aria = t.attr("aria-smartform");
+          var aria = t.attr("aria-formsaver");
           if (aria && aria != uniqueid) {
             t.smartForm();
-            t.attr("aria-smartform", uniqueid);
+            t.attr("aria-formsaver", uniqueid);
           }
         });
       })(jQuery);
