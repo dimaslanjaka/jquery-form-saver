@@ -1,5 +1,11 @@
 interface ObjectConstructor {
+  /**
+   * Count size length of object
+   */
+  size: (obj: any) => number;
+
   [pair: any]: any;
+
   /**
    * check if has child and go for callback
    * @param str  match child property
@@ -15,10 +21,7 @@ interface ObjectConstructor {
    * @author Dimas Lanjaka <dimaslanjaka@gmail.com>
    */
   alt(str: any, alternative: string | number | boolean): any;
-  /**
-   * Count size length of object
-   */
-  size: (obj: any) => number;
+
   /**
    * Check object has child
    * @param str

@@ -1,13 +1,16 @@
 /// <reference types="jquery" />
 
 declare const $: JQuery;
+
 interface jQuery extends JQuery {}
+
 interface JQuery extends jQuery {
   /**
    * setter and getter attribute value
    * @param arg0 fill attribute name to set, empty for get value
    */
   attr(arg0: string);
+
   /**
    * Get current ID(*) or NAME attribute
    */
@@ -19,6 +22,7 @@ interface JQuery extends jQuery {
    * @todo save typed words
    */
   smartForm(): void;
+
   /**
    * Check has attribute
    */
@@ -64,6 +68,12 @@ declare namespace JQuery {
 
 interface JQueryStatic {
   /**
+   * User framework
+   * @copyright Universal PHPJS Framework
+   */
+  user: user;
+
+  /**
    * ```js
    * // listen on spesific wrapper
    * $.arrive('#container', function(){
@@ -80,11 +90,7 @@ interface JQueryStatic {
    * @param callback callback function
    */
   arrive(target?: string | any, callback: any): any;
-  /**
-   * User framework
-   * @copyright Universal PHPJS Framework
-   */
-  user: user;
+
   /**
    * Generates a GUID string.
    * @returns The generated GUID.
@@ -132,6 +138,7 @@ interface HTMLElement
     HTMLOrSVGElement {
   mozMatchesSelector: (selectors: string) => boolean;
   msMatchesSelector: (selectors: string) => boolean;
+
   [attachEvent: string]: any;
 }
 
@@ -145,6 +152,7 @@ interface Element
     Slottable {
   mozMatchesSelector: (selectors: string) => boolean;
   msMatchesSelector: (selectors: string) => boolean;
+
   [attachEvent: string]: any;
 }
 
@@ -153,9 +161,6 @@ interface Element
  */
 // Add IE-specific interfaces to Window
 interface Window {
-  attachEvent(event: string, listener: EventListener): boolean;
-  detachEvent(event: string, listener: EventListener): void;
-  [func: string]: any;
   HTMLElement: HTMLElement;
   user: user;
   /**
@@ -163,6 +168,13 @@ interface Window {
    */
   readonly opera: string;
   dataLayer: [];
-  gtag(message?: any, ...optionalParams: any[]): void;
   mozRTCPeerConnection: any;
+
+  attachEvent(event: string, listener: EventListener): boolean;
+
+  detachEvent(event: string, listener: EventListener): void;
+
+  [func: string]: any;
+
+  gtag(message?: any, ...optionalParams: any[]): void;
 }

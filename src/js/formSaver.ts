@@ -1,4 +1,4 @@
-/// <reference path="index.d.ts">
+/// <reference path="./index.d.ts">
 /**
  * A simple forEach() implementation for Arrays, Objects and NodeLists.
  * @private
