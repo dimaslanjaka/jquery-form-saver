@@ -8,7 +8,7 @@ type NotFunction<T> = T extends Function ? never : T;
 
 Object.size = function (obj) {
     var size = 0,
-        key;
+        key: any;
     for (key in obj) {
         if (obj.hasOwnProperty(key)) size++;
     }
@@ -17,7 +17,7 @@ Object.size = function (obj) {
 Object.child = function (str, callback) {
     var self: any = this;
     if (self.hasOwnProperty(str)) {
-        if (typeof callback == 'function') {
+        if (typeof callback == "function") {
             return callback(self[str]);
         } else {
             return true;
@@ -25,7 +25,7 @@ Object.child = function (str, callback) {
     } else {
         return undefined;
     }
-}
+};
 
 Object.alt = function (str, alternative) {
     var self: any = this;
@@ -34,8 +34,8 @@ Object.alt = function (str, alternative) {
     } else {
         return alternative;
     }
-}
+};
 
 Object.has = function (str: string | number) {
     return this.hasOwnProperty(str);
-}
+};

@@ -1,5 +1,72 @@
-class formSaver2 {
-    static save(el) {
+if (typeof makeid == "undefined") {
+    var makeid = function (length) {
+        var result = "";
+        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    };
+}
+var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
+var formFieldBuild;
+var formSaved = localStorage.getItem(storageKey.toString());
+if (!formSaved) {
+    formFieldBuild = [];
+}
+else {
+    formFieldBuild = JSON.parse(formSaved);
+}
+var formField = formFieldBuild;
+var uniqueid = makeid(5);
+var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
+var Count = -1;
+var lStorage = (function () {
+    var ls = {
+        hasData: function (key) {
+            return !!localStorage[key] && !!localStorage[key].length;
+        },
+        get: function (key) {
+            if (!this.hasData(key)) {
+                return false;
+            }
+            var data = localStorage[key];
+            try {
+                return JSON.parse(data);
+            }
+            catch (e) {
+                return data;
+            }
+        },
+        set: function (key, value) {
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
+            catch (e) {
+                localStorage.setItem(key, value);
+            }
+        },
+        extend: function (key, value) {
+            if (this.hasData(key)) {
+                var _value = this.get(key);
+                $.extend(_value, JSON.parse(JSON.stringify(value)));
+                this.set(key, _value);
+            }
+            else {
+                this.set(key, value);
+            }
+        },
+        remove: function (key) {
+            localStorage.removeItem(key);
+        },
+    };
+    return ls;
+})();
+var formSaver2 = (function () {
+    function formSaver2() {
+    }
+    formSaver2.save = function (el) {
         var key = this.get_identifier(el);
         var item = el.value;
         var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver");
@@ -13,7 +80,7 @@ class formSaver2 {
                 $('[name="' + el.getAttribute("name") + '"]').each(function (i, e) {
                     localStorage.setItem(key, "off");
                 });
-                setTimeout(() => {
+                setTimeout(function () {
                     localStorage.setItem(key, item.toString());
                     console.log("save radio button ", formSaver2.offset(el));
                 }, 500);
@@ -23,24 +90,24 @@ class formSaver2 {
                 localStorage.setItem(key, item.toString());
             }
         }
-    }
-    static offset(el) {
+    };
+    formSaver2.offset = function (el) {
         return el.getBoundingClientRect();
-    }
-    static hasAttribute(el, name) {
+    };
+    formSaver2.hasAttribute = function (el, name) {
         return el.nodeType === 1 && el.hasAttribute(name);
-    }
-    static restore(el) {
+    };
+    formSaver2.restore = function (el) {
         if (el instanceof jQuery) {
             el = el.get(0);
         }
-        let nodeValid = el.nodeType === 1;
+        var nodeValid = el.nodeType === 1;
         Count++;
         if (el.hasAttribute("no-save"))
             return;
         el.setAttribute("aria-formsaver", uniqueid);
-        let item;
-        let key = this.get_identifier(el);
+        var item;
+        var key = this.get_identifier(el);
         var type = el.getAttribute("type");
         if (key) {
             if (type === "checkbox") {
@@ -48,7 +115,7 @@ class formSaver2 {
                 if (item === null) {
                     return;
                 }
-                console.log(`value checkbox ${item}`);
+                console.log("value checkbox " + item);
                 el.checked = item;
                 return;
             }
@@ -68,18 +135,18 @@ class formSaver2 {
                 }
             }
         }
-    }
-    static is_select2(el) {
+    };
+    formSaver2.is_select2 = function (el) {
         return this.is_jquery() && $(el).data("select2");
-    }
-    static is_jquery() {
+    };
+    formSaver2.is_jquery = function () {
         return typeof jQuery != "undefined";
-    }
-    static get_identifier(el) {
+    };
+    formSaver2.get_identifier = function (el) {
         console.log(el.getAttribute("id"));
         if (!el.hasAttribute("id")) {
             if (!(Count in formField)) {
-                let ID = makeid(5);
+                var ID = makeid(5);
                 el.setAttribute("id", ID);
                 formField[Count] = ID;
                 localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
@@ -90,18 +157,18 @@ class formSaver2 {
             Count++;
         }
         else if (el.getAttribute("id") == "null") {
-            let ID = makeid(5);
+            var ID = makeid(5);
             el.setAttribute("id", ID);
             formField[Count] = ID;
             localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
         }
         return location.pathname + el.getAttribute("id");
-    }
-}
-
+    };
+    return formSaver2;
+}());
 if (isBrowser) {
     (function () {
-        const isJqueryLoaded = typeof jQuery != "undefined";
+        var isJqueryLoaded = typeof jQuery != "undefined";
         if (isJqueryLoaded) {
             (function ($) {
                 $.fn.getIDName = function () {
@@ -179,105 +246,7 @@ function formsaver() {
         }
     }
 }
-
-const lStorage = (function () {
-    var ls = {
-        hasData: function (key) {
-            return !!localStorage[key] && !!localStorage[key].length;
-        },
-        get: function (key) {
-            if (!this.hasData(key)) {
-                return false;
-            }
-            var data = localStorage[key];
-            try {
-                return JSON.parse(data);
-            }
-            catch (e) {
-                return data;
-            }
-        },
-        set: function (key, value) {
-            try {
-                localStorage.setItem(key, JSON.stringify(value));
-            }
-            catch (e) {
-                localStorage.setItem(key, value);
-            }
-        },
-        extend: function (key, value) {
-            if (this.hasData(key)) {
-                var _value = this.get(key);
-                $.extend(_value, JSON.parse(JSON.stringify(value)));
-                this.set(key, _value);
-            }
-            else {
-                this.set(key, value);
-            }
-        },
-        remove: function (key) {
-            localStorage.removeItem(key);
-        },
-    };
-    return ls;
-})();
-
-Object.size = function (obj) {
-    var size = 0, key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key))
-            size++;
-    }
-    return size;
-};
-Object.child = function (str, callback) {
-    var self = this;
-    if (self.hasOwnProperty(str)) {
-        if (typeof callback == "function") {
-            return callback(self[str]);
-        }
-        else {
-            return true;
-        }
-    }
-    else {
-        return undefined;
-    }
-};
-Object.alt = function (str, alternative) {
-    var self = this;
-    if (self.hasOwnProperty(str)) {
-        return self[str];
-    }
-    else {
-        return alternative;
-    }
-};
-Object.has = function (str) {
-    return this.hasOwnProperty(str);
-};
-
-if (typeof makeid == "undefined") {
-    var makeid = function (length) {
-        var result = "";
-        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    };
-}
-var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
-var formFieldBuild;
-var formSaved = localStorage.getItem(storageKey.toString());
-if (!formSaved) {
-    formFieldBuild = [];
-}
-else {
-    formFieldBuild = JSON.parse(formSaved);
-}
-var formField = formFieldBuild;
-var uniqueid = makeid(5);
-var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
-var Count = -1;
+define("main", ["require", "exports", "./_conf", "./formSaver2", "./jquery-saver"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+});

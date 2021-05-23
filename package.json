@@ -37,13 +37,18 @@
     "jshint-stylish": "^2.2.1",
     "lazypipe": "^1.0.2",
     "node-fs": "^0.1.7",
-    "snyk": "^1.369.1"
+    "snyk": "^1.369.1",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.4.0-dev.20210523",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0"
   },
   "scripts": {
     "start": "gulp",
     "test": "snyk test",
     "add-typescript": "npx npm-force-resolutions && npm -i typescript -g",
-    "dev": "gulp watch"
+    "dev": "gulp watch",
+    "build": "gulp && gulp tsc && webpack && gulp browserify && gulp minjs"
   },
   "dependencies": {
     "@types/datatables.net": "*",
@@ -51,8 +56,7 @@
     "@types/gulp": "^4.0.6",
     "@types/jquery": "*",
     "browserify": "^17.0.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
-    "typescript": "^4.2.3"
+    "gulp-typescript": "^6.0.0-alpha.1"
   },
   "publishConfig": {
     "registry-git": "https://npm.pkg.github.com/",

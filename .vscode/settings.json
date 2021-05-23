@@ -1,7 +1,8 @@
 {
-  "files.autoSave": "afterDelay",
-  "editor.wordWrap": "on",
-  "npm.packageManager": "yarn",
-  "prettier.packageManager": "yarn",
-  "npm.autoDetect": "off"
+    "files.autoSave": "afterDelay",
+    "editor.wordWrap": "on",
+    "npm.packageManager": "npm",
+    "npm.autoDetect": "off",
+    "terminal.integrated.env.windows": { "PATH": "${env:PATH};./node_modules/.bin" },
+    "terminal.integrated.env.linux": { "PATH": "${env:PATH};./node_modules/.bin" }
 }

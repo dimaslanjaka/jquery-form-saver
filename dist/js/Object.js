@@ -9,7 +9,7 @@ Object.size = function (obj) {
 Object.child = function (str, callback) {
     var self = this;
     if (self.hasOwnProperty(str)) {
-        if (typeof callback == 'function') {
+        if (typeof callback == "function") {
             return callback(self[str]);
         }
         else {
