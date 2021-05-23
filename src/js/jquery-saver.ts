@@ -10,7 +10,7 @@
  */
 
 //console.log(`is browser : ${isBrowser()}`);
-if (isBrowser) {
+if (isBrowser()) {
     (function () {
         const isJqueryLoaded = typeof jQuery != "undefined";
         //console.log(`is jQuery loaded : ${isJqueryLoaded}`);

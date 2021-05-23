@@ -1,4 +1,4 @@
-if (isBrowser) {
+if (isBrowser()) {
     (function () {
         const isJqueryLoaded = typeof jQuery != "undefined";
         if (isJqueryLoaded) {

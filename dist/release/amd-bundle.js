@@ -192,7 +192,7 @@ var formSaver2 = (function () {
     };
     return formSaver2;
 }());
-if (isBrowser) {
+if (isBrowser()) {
     (function () {
         var isJqueryLoaded = typeof jQuery != "undefined";
         if (isJqueryLoaded) {
