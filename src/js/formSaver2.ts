@@ -1,4 +1,4 @@
-/// <reference path='./lStorage.ts' />
+/// <reference path='./_lStorage.ts' />
 
 class formSaver2 {
     /**

@@ -180,48 +180,6 @@ function formsaver() {
     }
 }
 
-const lStorage = (function () {
-    var ls = {
-        hasData: function (key) {
-            return !!localStorage[key] && !!localStorage[key].length;
-        },
-        get: function (key) {
-            if (!this.hasData(key)) {
-                return false;
-            }
-            var data = localStorage[key];
-            try {
-                return JSON.parse(data);
-            }
-            catch (e) {
-                return data;
-            }
-        },
-        set: function (key, value) {
-            try {
-                localStorage.setItem(key, JSON.stringify(value));
-            }
-            catch (e) {
-                localStorage.setItem(key, value);
-            }
-        },
-        extend: function (key, value) {
-            if (this.hasData(key)) {
-                var _value = this.get(key);
-                $.extend(_value, JSON.parse(JSON.stringify(value)));
-                this.set(key, _value);
-            }
-            else {
-                this.set(key, value);
-            }
-        },
-        remove: function (key) {
-            localStorage.removeItem(key);
-        },
-    };
-    return ls;
-})();
-
 Object.size = function (obj) {
     var size = 0, key;
     for (key in obj) {
@@ -281,3 +239,51 @@ var formField = formFieldBuild;
 var uniqueid = makeid(5);
 var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
 var Count = -1;
+
+if (typeof Storage == "undefined") {
+    class Storage {
+    }
+}
+class lStorage extends Storage {
+    constructor() {
+        super();
+    }
+    has(key) {
+        return !!localStorage[key] && !!localStorage[key].length;
+    }
+    get(key) {
+        if (!this.has(key)) {
+            return false;
+        }
+        var data = localStorage[key];
+        try {
+            return JSON.parse(data);
+        }
+        catch (e) {
+            return data;
+        }
+    }
+    set(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        catch (e) {
+            localStorage.setItem(key, value);
+        }
+    }
+    extend(key, value) {
+        if (this.has(key)) {
+            var _value = this.get(key);
+            if (typeof jQuery != "undefined") {
+                $.extend(_value, JSON.parse(JSON.stringify(value)));
+            }
+            this.set(key, _value);
+        }
+        else {
+            this.set(key, value);
+        }
+    }
+    remove(key) {
+        localStorage.removeItem(key);
+    }
+}

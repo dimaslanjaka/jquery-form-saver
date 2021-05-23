@@ -1,3 +1,18 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 if (typeof makeid == "undefined") {
     var makeid = function (length) {
         var result = "";
@@ -22,47 +37,58 @@ var formField = formFieldBuild;
 var uniqueid = makeid(5);
 var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
 var Count = -1;
-var lStorage = (function () {
-    var ls = {
-        hasData: function (key) {
-            return !!localStorage[key] && !!localStorage[key].length;
-        },
-        get: function (key) {
-            if (!this.hasData(key)) {
-                return false;
-            }
-            var data = localStorage[key];
-            try {
-                return JSON.parse(data);
-            }
-            catch (e) {
-                return data;
-            }
-        },
-        set: function (key, value) {
-            try {
-                localStorage.setItem(key, JSON.stringify(value));
-            }
-            catch (e) {
-                localStorage.setItem(key, value);
-            }
-        },
-        extend: function (key, value) {
-            if (this.hasData(key)) {
-                var _value = this.get(key);
-                $.extend(_value, JSON.parse(JSON.stringify(value)));
-                this.set(key, _value);
-            }
-            else {
-                this.set(key, value);
-            }
-        },
-        remove: function (key) {
-            localStorage.removeItem(key);
-        },
+if (typeof Storage == "undefined") {
+    var Storage_1 = (function () {
+        function Storage() {
+        }
+        return Storage;
+    }());
+}
+var lStorage = (function (_super) {
+    __extends(lStorage, _super);
+    function lStorage() {
+        return _super.call(this) || this;
+    }
+    lStorage.prototype.has = function (key) {
+        return !!localStorage[key] && !!localStorage[key].length;
     };
-    return ls;
-})();
+    lStorage.prototype.get = function (key) {
+        if (!this.has(key)) {
+            return false;
+        }
+        var data = localStorage[key];
+        try {
+            return JSON.parse(data);
+        }
+        catch (e) {
+            return data;
+        }
+    };
+    lStorage.prototype.set = function (key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        catch (e) {
+            localStorage.setItem(key, value);
+        }
+    };
+    lStorage.prototype.extend = function (key, value) {
+        if (this.has(key)) {
+            var _value = this.get(key);
+            if (typeof jQuery != "undefined") {
+                $.extend(_value, JSON.parse(JSON.stringify(value)));
+            }
+            this.set(key, _value);
+        }
+        else {
+            this.set(key, value);
+        }
+    };
+    lStorage.prototype.remove = function (key) {
+        localStorage.removeItem(key);
+    };
+    return lStorage;
+}(Storage));
 var formSaver2 = (function () {
     function formSaver2() {
     }
