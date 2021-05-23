@@ -30,11 +30,15 @@ class formSaver2 {
     static hasAttribute(el, name) {
         return el.nodeType === 1 && el.hasAttribute(name);
     }
-    static restore(el) {
+    static convertElement(el) {
         if (el instanceof jQuery) {
             el = el.get(0);
         }
         let nodeValid = el.nodeType === 1;
+        return el;
+    }
+    static restore(el) {
+        el = this.convertElement(el);
         Count++;
         if (el.hasAttribute("no-save"))
             return;
@@ -76,7 +80,7 @@ class formSaver2 {
         return typeof jQuery != "undefined";
     }
     static get_identifier(el) {
-        console.log(el.getAttribute("id"));
+        el = this.convertElement(el);
         if (!el.hasAttribute("id")) {
             if (!(Count in formField)) {
                 let ID = makeid(5);

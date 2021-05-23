@@ -1,4 +1,5 @@
 /// <reference path='./_lStorage.ts' />
+/// <reference path='./_conf.ts' />
 
 class formSaver2 {
     /**
@@ -7,6 +8,7 @@ class formSaver2 {
      * @returns
      */
     static save(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement) {
+        el = this.convertElement(el);
         var key = this.get_identifier(el);
         var item = el.value;
         var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver");
@@ -44,18 +46,23 @@ class formSaver2 {
         return el.nodeType === 1 && el.hasAttribute(name);
     }
 
-    /**
-     * Restore form value
-     * @param el
-     * @returns
-     */
-    static restore(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement) {
+    private static convertElement(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement) {
         if (el instanceof jQuery) {
             el = el.get(0);
         }
 
         let nodeValid = el.nodeType === 1;
 
+        return el;
+    }
+
+    /**
+     * Restore form value
+     * @param el
+     * @returns
+     */
+    static restore(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement) {
+        el = this.convertElement(el);
         Count++;
         // skip no save
         if (el.hasAttribute("no-save")) return;
@@ -117,8 +124,8 @@ class formSaver2 {
         return typeof jQuery != "undefined";
     }
 
-    static get_identifier(el: HTMLElement) {
-        console.log(el.getAttribute("id"));
+    static get_identifier(el: HTMLSelectElement | HTMLTextAreaElement | HTMLInputElement) {
+        el = this.convertElement(el);
         if (!el.hasAttribute("id")) {
             if (!(Count in formField)) {
                 let ID = makeid(5);

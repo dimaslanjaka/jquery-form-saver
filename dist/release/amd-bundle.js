@@ -123,11 +123,15 @@ var formSaver2 = (function () {
     formSaver2.hasAttribute = function (el, name) {
         return el.nodeType === 1 && el.hasAttribute(name);
     };
-    formSaver2.restore = function (el) {
+    formSaver2.convertElement = function (el) {
         if (el instanceof jQuery) {
             el = el.get(0);
         }
         var nodeValid = el.nodeType === 1;
+        return el;
+    };
+    formSaver2.restore = function (el) {
+        el = this.convertElement(el);
         Count++;
         if (el.hasAttribute("no-save"))
             return;
@@ -169,7 +173,7 @@ var formSaver2 = (function () {
         return typeof jQuery != "undefined";
     };
     formSaver2.get_identifier = function (el) {
-        console.log(el.getAttribute("id"));
+        el = this.convertElement(el);
         if (!el.hasAttribute("id")) {
             if (!(Count in formField)) {
                 var ID = makeid(5);

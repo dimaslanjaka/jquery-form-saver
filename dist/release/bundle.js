@@ -1,3 +1,76 @@
+if (typeof makeid == "undefined") {
+    var makeid = function (length) {
+        var result = "";
+        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    };
+}
+var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
+var formFieldBuild;
+var formSaved = localStorage.getItem(storageKey.toString());
+if (!formSaved) {
+    formFieldBuild = [];
+}
+else {
+    formFieldBuild = JSON.parse(formSaved);
+}
+var formField = formFieldBuild;
+var uniqueid = makeid(5);
+var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
+var Count = -1;
+
+if (typeof Storage == "undefined") {
+    class Storage {
+    }
+}
+class lStorage extends Storage {
+    constructor() {
+        super();
+    }
+    has(key) {
+        return !!localStorage[key] && !!localStorage[key].length;
+    }
+    get(key) {
+        if (!this.has(key)) {
+            return false;
+        }
+        var data = localStorage[key];
+        try {
+            return JSON.parse(data);
+        }
+        catch (e) {
+            return data;
+        }
+    }
+    set(key, value) {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        catch (e) {
+            localStorage.setItem(key, value);
+        }
+    }
+    extend(key, value) {
+        if (this.has(key)) {
+            var _value = this.get(key);
+            if (typeof jQuery != "undefined") {
+                $.extend(_value, JSON.parse(JSON.stringify(value)));
+            }
+            this.set(key, _value);
+        }
+        else {
+            this.set(key, value);
+        }
+    }
+    remove(key) {
+        localStorage.removeItem(key);
+    }
+}
+
 class formSaver2 {
     static save(el) {
         var key = this.get_identifier(el);
@@ -30,11 +103,15 @@ class formSaver2 {
     static hasAttribute(el, name) {
         return el.nodeType === 1 && el.hasAttribute(name);
     }
-    static restore(el) {
+    static convertElement(el) {
         if (el instanceof jQuery) {
             el = el.get(0);
         }
         let nodeValid = el.nodeType === 1;
+        return el;
+    }
+    static restore(el) {
+        el = this.convertElement(el);
         Count++;
         if (el.hasAttribute("no-save"))
             return;
@@ -76,7 +153,7 @@ class formSaver2 {
         return typeof jQuery != "undefined";
     }
     static get_identifier(el) {
-        console.log(el.getAttribute("id"));
+        el = this.convertElement(el);
         if (!el.hasAttribute("id")) {
             if (!(Count in formField)) {
                 let ID = makeid(5);
@@ -214,76 +291,3 @@ Object.alt = function (str, alternative) {
 Object.has = function (str) {
     return this.hasOwnProperty(str);
 };
-
-if (typeof makeid == "undefined") {
-    var makeid = function (length) {
-        var result = "";
-        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        var charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
-    };
-}
-var storageKey = location.pathname.replace(/\/$/s, "") + "/formField";
-var formFieldBuild;
-var formSaved = localStorage.getItem(storageKey.toString());
-if (!formSaved) {
-    formFieldBuild = [];
-}
-else {
-    formFieldBuild = JSON.parse(formSaved);
-}
-var formField = formFieldBuild;
-var uniqueid = makeid(5);
-var isBrowser = new Function("try {return this===window;}catch(e){ return false;}");
-var Count = -1;
-
-if (typeof Storage == "undefined") {
-    class Storage {
-    }
-}
-class lStorage extends Storage {
-    constructor() {
-        super();
-    }
-    has(key) {
-        return !!localStorage[key] && !!localStorage[key].length;
-    }
-    get(key) {
-        if (!this.has(key)) {
-            return false;
-        }
-        var data = localStorage[key];
-        try {
-            return JSON.parse(data);
-        }
-        catch (e) {
-            return data;
-        }
-    }
-    set(key, value) {
-        try {
-            localStorage.setItem(key, JSON.stringify(value));
-        }
-        catch (e) {
-            localStorage.setItem(key, value);
-        }
-    }
-    extend(key, value) {
-        if (this.has(key)) {
-            var _value = this.get(key);
-            if (typeof jQuery != "undefined") {
-                $.extend(_value, JSON.parse(JSON.stringify(value)));
-            }
-            this.set(key, _value);
-        }
-        else {
-            this.set(key, value);
-        }
-    }
-    remove(key) {
-        localStorage.removeItem(key);
-    }
-}

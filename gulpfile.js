@@ -4,14 +4,15 @@ const { dest, parallel, series, watch } = require("gulp");
 const terser = require("gulp-terser");
 const rename = require("gulp-rename");
 const concat = require("gulp-concat");
-const process = require("process");
 var browserify = require("browserify");
 var gulp = require("gulp");
 const fs = require("fs");
 var del = require("del");
 var ts = require("gulp-typescript");
 var merge = require("merge2");
-const { spawn, exec } = require("child_process");
+const { exec } = require("child_process");
+const print = require("gulp-print").default;
+var { order } = require("./libs/gulp-order");
 
 const browserifying = function () {
     var browser = browserify({
@@ -64,9 +65,17 @@ gulp.task("tsc", function () {
 function build_concat() {
     return gulp
         .src(["./dist/js/*.js", "!./dist/js/main.js"])
+        .pipe(order(["_*.js", "*.js"]))
         .pipe(concat("bundle.js"))
         .pipe(gulp.dest("./dist/release/"));
 }
+
+gulp.task("order", function (done) {
+    gulp.src("src/js/*.ts")
+        .pipe(order(["_*.js", "*.js"]))
+        .pipe(print());
+    done();
+});
 
 function build_amd() {
     return gulp
