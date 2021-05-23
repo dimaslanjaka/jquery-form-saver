@@ -1,5 +1,6 @@
 class formSaver2 {
     static save(el) {
+        el = this.convertElement(el);
         var key = this.get_identifier(el);
         var item = el.value;
         var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver");

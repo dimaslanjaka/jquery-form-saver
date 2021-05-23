@@ -1,4 +1,4 @@
-/// <reference path="./Object.d.ts" />
+/// <reference path="./_a_Object.d.ts" />
 if (typeof Storage == "undefined") {
     class Storage {}
 }

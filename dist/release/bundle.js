@@ -1,3 +1,38 @@
+Object.size = function (obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key))
+            size++;
+    }
+    return size;
+};
+Object.child = function (str, callback) {
+    var self = this;
+    if (self.hasOwnProperty(str)) {
+        if (typeof callback == "function") {
+            return callback(self[str]);
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        return undefined;
+    }
+};
+Object.alt = function (str, alternative) {
+    var self = this;
+    if (self.hasOwnProperty(str)) {
+        return self[str];
+    }
+    else {
+        return alternative;
+    }
+};
+Object.has = function (str) {
+    return this.hasOwnProperty(str);
+};
+
 if (typeof makeid == "undefined") {
     var makeid = function (length) {
         var result = "";
@@ -73,6 +108,7 @@ class lStorage extends Storage {
 
 class formSaver2 {
     static save(el) {
+        el = this.convertElement(el);
         var key = this.get_identifier(el);
         var item = el.value;
         var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver");
@@ -256,38 +292,3 @@ function formsaver() {
         }
     }
 }
-
-Object.size = function (obj) {
-    var size = 0, key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key))
-            size++;
-    }
-    return size;
-};
-Object.child = function (str, callback) {
-    var self = this;
-    if (self.hasOwnProperty(str)) {
-        if (typeof callback == "function") {
-            return callback(self[str]);
-        }
-        else {
-            return true;
-        }
-    }
-    else {
-        return undefined;
-    }
-};
-Object.alt = function (str, alternative) {
-    var self = this;
-    if (self.hasOwnProperty(str)) {
-        return self[str];
-    }
-    else {
-        return alternative;
-    }
-};
-Object.has = function (str) {
-    return this.hasOwnProperty(str);
-};

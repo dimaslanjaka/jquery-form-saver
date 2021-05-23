@@ -1,5 +1,5 @@
 /// <reference path="./_conf.ts" />
-/// <reference path="./Object.d.ts"/>
+/// <reference path="./_a_Object.d.ts"/>
 /// <reference path="./globals.d.ts"/>
 /// <reference path="./index.d.ts"/>
 /// <reference path="./formSaver2.ts" />

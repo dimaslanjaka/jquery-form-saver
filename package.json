@@ -1,6 +1,6 @@
 {
   "name": "jquery-form-saver",
-  "version": "1.0.72",
+  "version": "1.0.8",
   "description": "Save user field and reuse for next page",
   "main": "dist/js/form-saver.min.js",
   "filename": "dist/js/form-saver.min.js",

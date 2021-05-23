@@ -1,8 +1,11 @@
 {
-    "files.autoSave": "afterDelay",
+    "files.autoSave": "onFocusChange",
     "editor.wordWrap": "on",
     "npm.packageManager": "npm",
     "npm.autoDetect": "off",
     "terminal.integrated.env.windows": { "PATH": "${env:PATH};./node_modules/.bin" },
-    "terminal.integrated.env.linux": { "PATH": "${env:PATH};./node_modules/.bin" }
+    "terminal.integrated.env.linux": {
+        "PATH": "${env:PATH};./node_modules/.bin"
+    },
+    "editor.formatOnSave": true
 }
