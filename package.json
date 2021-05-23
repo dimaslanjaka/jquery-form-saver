@@ -48,7 +48,7 @@
     "test": "snyk test",
     "add-typescript": "npx npm-force-resolutions && npm -i typescript -g",
     "dev": "gulp watch",
-    "build": "gulp && gulp tsc && webpack && gulp browserify && gulp minjs"
+    "build": "gulp clean && gulp tsc && gulp build && webpack && gulp browserify && gulp minjs"
   },
   "dependencies": {
     "@types/datatables.net": "*",
