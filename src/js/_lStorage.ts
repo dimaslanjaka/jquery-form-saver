@@ -4,12 +4,14 @@ if (typeof Storage == "undefined") {
 }
 
 class lStorage extends Storage {
-    constructor() {
+    private prefix = "";
+    constructor(prefix = "") {
         super();
+        this.prefix = prefix;
     }
 
     has(key: string | number) {
-        return !!localStorage[key] && !!localStorage[key].length;
+        return !!localStorage[this.prefix + key] && !!localStorage[this.prefix + key].length;
     }
 
     /**
@@ -18,10 +20,10 @@ class lStorage extends Storage {
      * @returns
      */
     get(key: string | number) {
-        if (!this.has(key)) {
+        if (!this.has(this.prefix + key)) {
             return false;
         }
-        var data = localStorage[key];
+        var data = localStorage[this.prefix + key];
         try {
             return JSON.parse(data);
         } catch (e) {
@@ -31,25 +33,25 @@ class lStorage extends Storage {
 
     set(key: string, value: string) {
         try {
-            localStorage.setItem(key, JSON.stringify(value));
+            localStorage.setItem(this.prefix + key, JSON.stringify(value));
         } catch (e) {
-            localStorage.setItem(key, value);
+            localStorage.setItem(this.prefix + key, value);
         }
     }
 
     extend(key: any, value: any) {
-        if (this.has(key)) {
-            var _value = this.get(key);
+        if (this.has(this.prefix + key)) {
+            var _value = this.get(this.prefix + key);
             if (typeof jQuery != "undefined") {
                 $.extend(_value, JSON.parse(JSON.stringify(value)));
             }
-            this.set(key, _value);
+            this.set(this.prefix + key, _value);
         } else {
-            this.set(key, value);
+            this.set(this.prefix + key, value);
         }
     }
 
     remove(key: string) {
-        localStorage.removeItem(key);
+        localStorage.removeItem(this.prefix + key);
     }
 }

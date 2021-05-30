@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
         "module": "CommonJS",
-        "lib": ["es5", "es6", "dom"],
-        "rootDir": "./src/js/",
-        "outDir": "tmp/dev/js/",
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "skipDefaultLibCheck": true,
-        "experimentalDecorators": true,
-        "types": ["jquery"]
+        "outDir": "tmp/js",
+        "moduleResolution": "Node",
+        "allowJs": true,
+        "typeRoots": ["./node_modules/@types", "./src/js", "./libs"],
+        "types": ["jquery", "node"],
+        "target": "ES5",
+        "lib": ["DOM", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"]
     },
-    "include": ["src/js/main.ts"]
+    "include": ["./src/js", "./test/"],
+    "exclude": ["dist", "node_modules"]
 }

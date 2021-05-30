@@ -27,6 +27,18 @@ interface JQuery extends jQuery {
      * Check has attribute
      */
     has_attr(name: string): boolean;
+
+    /**
+     * Select2 Countries
+     * @param select2Opt
+     */
+    select2Country(select2Opt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any> = {}): void;
+
+    /**
+     * Select2 Language Countries
+     * @param select2Opt
+     */
+    select2LangCountry(select2Opt: Select2.Options<Select2.DataFormat | Select2.GroupedDataFormat, any> = {}): void;
 }
 
 declare namespace JQuery {

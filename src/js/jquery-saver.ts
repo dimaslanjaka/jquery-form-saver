@@ -30,9 +30,10 @@ if (isBrowser()) {
                     // `attr` is false.  Check for both.
                     return typeof attr !== "undefined" && attr !== false;
                 };
+
                 $.fn.smartForm = function () {
                     Count++;
-                    formSaver2.restore(<any>$(this).get(0));
+                    new formSaver2(<any>$(this).get(0));
                 };
 
                 $.arrive = function (target, callback) {
@@ -46,63 +47,23 @@ if (isBrowser()) {
                         }
                     }
                 };
-
-                // bind to new elements
-                $(document).bind("DOMNodeInserted", function () {
-                    switch ($(this).prop("tagName")) {
-                        case "SELECT":
-                        case "INPUT":
-                        case "TEXTAREA":
-                            formSaver2.restore(<any>$(this).get(0));
-                            break;
-                    }
-                });
-
-                // detach from removed elements
-                $(document).bind("DOMNodeRemoved", function () {
-                    var t = $(this);
-                    var allowed = !t.attr("no-save") && t.attr("aria-formsaver");
-                    if (allowed) {
-                        switch (t.prop("tagName")) {
-                            case "SELECT":
-                            case "INPUT":
-                            case "TEXTAREA":
-                                t.off("change");
-                                break;
-                        }
-                    }
-                });
-
-                //save value to localstorage
-                $(document).on("change", "select, input, textarea", function (e) {
-                    formSaver2.save(this);
-                });
-
-                $(document).on("focus", "input,textarea,select", function () {
-                    var t = $(this);
-                    t.getIDName();
-                    var aria = t.attr("aria-formsaver");
-                    if (aria && aria != uniqueid) {
-                        t.smartForm();
-                        t.attr("aria-formsaver", uniqueid);
-                    }
-                });
             })(jQuery);
         }
     })();
 }
 
 /**
- * Set all forms to be smart
+ * Set all forms to be saved with method vanilla
  * @todo save input fields into browser for reusable form
+ * @param show_debug debug process saving and restoration
  */
-function formsaver() {
+function formsaver(show_debug: boolean = false) {
     if (typeof jQuery != "undefined") {
-        console.log("Starting smartform jQuery");
+        if (show_debug) console.log("Starting smartform jQuery");
 
         if (typeof jQuery != "undefined") {
             jQuery("input,textarea,select").each(function (i, el) {
-                $(this).smartForm();
+                new formSaver2(<any>this, { debug: show_debug });
             });
         }
     }
