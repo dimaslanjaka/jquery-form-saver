@@ -43,4 +43,4 @@ const isBrowser = new Function("try {return this===window;}catch(e){ return fals
 /**
  * Element Counter
  */
-const Count = -1;
+let Count = -1;

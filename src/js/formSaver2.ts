@@ -60,8 +60,8 @@ class formSaver2 {
 
         // detach from removed elements
         $(document).bind("DOMNodeRemoved", function () {
-            var t = $(this);
-            var allowed = !t.attr("no-save") && t.attr("aria-formsaver");
+            const t = $(this);
+            const allowed = !t.attr("no-save") && t.attr("aria-formsaver");
             if (allowed) {
                 switch (t.prop("tagName")) {
                     case "SELECT":
@@ -80,9 +80,9 @@ class formSaver2 {
 
         // validate formsaver
         $(document).on("focus", "input,textarea,select", function () {
-            var t = $(this);
+            const t = $(this);
             t.getIDName();
-            var aria = t.attr("aria-formsaver");
+            const aria = t.attr("aria-formsaver");
             if (aria && aria != uniqueid) {
                 console.log("aria id invalid");
                 t.smartForm();
@@ -117,7 +117,8 @@ class formSaver2 {
             el = el.get(0);
         }
 
-        let nodeValid = el.nodeType === 1;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const nodeValid = el.nodeType === 1;
 
         return el;
     }
@@ -125,6 +126,7 @@ class formSaver2 {
     /**
      * Restore form value
      * @param el
+     * @param debug
      * @returns
      */
     static restore(el: IEHtml, debug = false) {
@@ -134,8 +136,8 @@ class formSaver2 {
         if (el.hasAttribute("no-save")) return;
         el.setAttribute("aria-formsaver", uniqueid);
         let item: any;
-        let key = this.get_identifier(el);
-        var type = el.getAttribute("type");
+        const key = this.get_identifier(el);
+        const type = el.getAttribute("type");
         //console.log(`restoring ${key} ${type}`);
         // begin restoration
         if (key.length > 0) {
@@ -151,12 +153,12 @@ class formSaver2 {
             }
             // radio input button
             else if (type === "radio") {
-                var value: any = localStorage.getItem(key);
+                let value: any = localStorage.getItem(key);
                 if (formSaver2Storage.IsJsonString(value)) {
                     value = JSON.parse(value);
                 }
-                var ele = document.getElementsByName(el.getAttribute("name"));
-                for (var i = 0; i < ele.length; i++) ele[i].checked = false;
+                const ele = document.getElementsByName(el.getAttribute("name"));
+                for (let i = 0; i < ele.length; i++) ele[i].checked = false;
 
                 setTimeout(function () {
                     if (value && typeof value == "object" && value.hasOwnProperty("index")) {
@@ -196,9 +198,9 @@ class formSaver2 {
      */
     static save(el: IEHtml, debug = false) {
         el = this.convertElement(el);
-        var key = this.get_identifier(el);
-        var item = el.value;
-        var allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver") && el.hasAttribute("name");
+        const key = this.get_identifier(el);
+        const item = el.value;
+        const allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver") && el.hasAttribute("name");
         if (debug) console.log(`${el.tagName} ${key} ${allowed}`);
         if (key && item !== "" && allowed) {
             if (el.getAttribute("type") == "checkbox") {
@@ -206,9 +208,9 @@ class formSaver2 {
                 if (debug) console.log("save checkbox button ", formSaver2.offset(el));
                 return;
             } else if (el.getAttribute("type") == "radio") {
-                let ele = document.getElementsByName(el.getAttribute("name"));
-                let getVal = getCheckedValue(ele);
-                let self = this;
+                const ele = document.getElementsByName(el.getAttribute("name"));
+                const getVal = getCheckedValue(ele);
+                const self = this;
                 for (let checkboxIndex = 0; checkboxIndex < ele.length; checkboxIndex++) {
                     if (ele.hasOwnProperty(checkboxIndex)) {
                         const element = ele[checkboxIndex];
@@ -229,7 +231,7 @@ class formSaver2 {
 
     static delete(el: IEHtml, debug = false) {
         el = this.convertElement(el);
-        var key = this.get_identifier(el);
+        const key = this.get_identifier(el);
         if (debug) console.log(`deleting ${key}`);
         localStorage.removeItem(key);
     }
@@ -255,7 +257,7 @@ class formSaver2 {
         el = this.convertElement(el);
         if (!el.hasAttribute("id")) {
             if (!(Count in formField)) {
-                let ID = makeid(5);
+                const ID = makeid(5);
                 el.setAttribute("id", ID);
                 (<any>formField)[Count] = ID;
                 localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
@@ -267,7 +269,7 @@ class formSaver2 {
              */
             Count++;
         } else if (el.getAttribute("id") == "null") {
-            let ID = makeid(5);
+            const ID = makeid(5);
             el.setAttribute("id", ID);
             (<any>formField)[Count] = ID;
             localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
@@ -277,7 +279,7 @@ class formSaver2 {
     }
 
     constructor(el: IEHtml, options?: { debug?: boolean; method?: "vanilla" | "jquery" }) {
-        let defaultOpt = {
+        const defaultOpt = {
             debug: false,
             method: "vanilla",
         };
@@ -311,7 +313,7 @@ class formSaver2 {
  */
 function getCheckedValue(el: HTMLCollectionOf<HTMLInputElement> | NodeListOf<HTMLElement> | NodeListOf<IEHtml>) {
     let result: { value?: string; index?: number; id?: string } = {};
-    for (var i = 0, length = el.length; i < length; i++) {
+    for (let i = 0, length = el.length; i < length; i++) {
         if (el[i].checked) {
             result = { value: el[i].value, index: i, id: formSaver2.get_identifier(<any>el[i]) };
         }
