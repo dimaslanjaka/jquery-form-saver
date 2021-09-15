@@ -22,27 +22,27 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: echo "::set-output name=dir::$(npm config get cache)"
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - name: Cache NPM dependencies
-        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
-        uses: actions/cache@v2
-        with:
-          path: |
-            ${{ steps.npm-cache-dir.outputs.dir }}
-            ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            ./node_modules
-            ~/.npm
-          key: |
-            ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-            ${{ runner.os }}-yarn-
+    - name: Get npm cache directory
+      id: npm-cache-dir
+      run: echo "::set-output name=dir::$(npm config get cache)"
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+    - name: Cache NPM dependencies
+      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      uses: actions/cache@v2
+      with:
+        path: |
+          ${{ steps.npm-cache-dir.outputs.dir }}
+          ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          ./node_modules
+          ~/.npm
+        key: |
+          ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+          ${{ runner.os }}-yarn-
 
     - name: Build
       run: |
