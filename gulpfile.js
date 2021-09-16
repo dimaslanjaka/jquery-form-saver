@@ -14,6 +14,14 @@ const { exec } = require("child_process");
 const print = require("gulp-print").default;
 var { order } = require("./libs/gulp-order");
 
+// DOCS
+var header = require("gulp-header");
+var footer = require("gulp-footer");
+var plumber = require("gulp-plumber");
+var markdown = require("gulp-markdown");
+var fileinclude = require("gulp-file-include");
+var tap = require("gulp-tap");
+
 const browserifying = function () {
     var browser = browserify({
         insertGlobals: true,
@@ -86,6 +94,8 @@ function build_concat() {
     return source.pipe(gulp.dest("./docs/dist/release/"));
 }
 
+gulp.task("build:concat", build_concat);
+
 gulp.task("order", function (done) {
     gulp.src("src/js/*.ts")
         .pipe(order(["_*.js", "*.js"]))
@@ -117,23 +127,24 @@ function build_amd() {
         .pipe(gulp.dest("dist/release/"));
 }
 
+gulp.task("build:amd", build_amd);
+
 gulp.task("minjs", function (done) {
     const bundle = "./dist/release";
     if (fs.existsSync(bundle)) {
-        return (
-            gulp
-                .src(["./dist/release/*.js", "!**.min.js", "!./dist/release/*.min.js"])
-                .pipe(terser())
-                /*
-            .pipe(
-                rename({
-                    extname: ".min.js",
-                })
-            )
-            */
-                .pipe(rename({ suffix: ".min" }))
-                .pipe(dest("./dist/release/"))
-        );
+        let run = gulp
+            .src(["!**.min.js", "./dist/release/*.js", "!./dist/release/*.min.js"])
+            .pipe(terser())
+            /*
+    .pipe(
+        rename({
+            extname: ".min.js",
+        })
+    )
+    */
+            .pipe(rename({ suffix: ".min" }));
+        run.pipe(dest("./dist/release/"));
+        return run.pipe(dest("./docs/dist/release/"));
     }
     done();
 });
@@ -145,12 +156,6 @@ gulp.task("clean", function (cb) {
 
 gulp.task("build", parallel(build_amd, build_concat));
 
-var header = require("gulp-header");
-var footer = require("gulp-footer");
-var plumber = require("gulp-plumber");
-var markdown = require("gulp-markdown");
-var fileinclude = require("gulp-file-include");
-var tap = require("gulp-tap");
 function docs(done) {
     let opt = {
         input: "src/docs/*.{html,md,markdown}",
