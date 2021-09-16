@@ -6,9 +6,8 @@
  * @param show_debug debug process saving and restoration
  */
 function formsaver(show_debug: boolean = false) {
-    console.log(`Formsaver ${show_debug}`);
     if (typeof jQuery != "undefined") {
-        if (show_debug) console.log("starting form saver with jQuery");
+        if (show_debug) console.log(`starting form saver with jQuery debug(${show_debug})`);
 
         if (typeof jQuery != "undefined") {
             jQuery("input,textarea,select").each(function (i, el) {
@@ -16,7 +15,7 @@ function formsaver(show_debug: boolean = false) {
             });
         }
     } else {
-        if (show_debug) console.log("starting form saver without jQuery");
+        if (show_debug) console.log(`starting form saver without jQuery debug(${show_debug})`);
         var elements = document.querySelectorAll("input,textarea,select");
         if (show_debug) console.log(elements);
         elements.forEach(function (el, key, parent) {
