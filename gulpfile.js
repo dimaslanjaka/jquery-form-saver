@@ -71,38 +71,15 @@ function buildDev(done) {
     return build(done, true);
 }
 
-function gulpDest(path) {
-    let m = function (path) {
-        if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
-    };
-    if (typeof path == "string") {
-        m(path);
-        return gulp.dest(path);
-    }
-    if (Array.isArray(path)) {
-        let arry = [];
-        path.map(function (p) {
-            m(p);
-            arry.push(gulp.dest(p));
-        });
-        return merge(arry);
-    }
-}
-
 var tsProject = ts.createProject("tsconfig.build.json");
-gulp.task("tsc", function () { 
+gulp.task("tsc", function () {
     var tsResult = gulp
         .src("src/**/*.ts") // or tsProject.src()
         .pipe(tsProject());
 
     //return tsResult.js.pipe(gulp.dest("dist"));
 
-    return merge([
-        tsResult.dts.pipe(gulpDest("dist")),
-        tsResult.js.pipe(gulpDest("dist")),
-        tsResult.dts.pipe(gulpDest("docs/dist")),
-        tsResult.js.pipe(gulpDest("docs/dist")),
-    ]);
+    return merge([tsResult.dts.pipe(gulp.dest("dist")), tsResult.js.pipe(gulp.dest("dist"))]);
 });
 
 /**
@@ -113,8 +90,7 @@ function build_concat() {
         .src(["./dist/js/*.js", "!./dist/js/browserify.js"])
         .pipe(order(["_*.js", "*.js"]))
         .pipe(concat("bundle.js"));
-    source.pipe(gulpDest("./dist/release/"));
-    return source.pipe(gulpDest("./docs/dist/release/"));
+    return source.pipe(gulp.dest("./dist/release/"));
 }
 
 gulp.task("build:concat", build_concat);
@@ -147,7 +123,7 @@ function build_amd() {
                 outFile: "amd-bundle.js",
             })
         )
-        .pipe(gulpDest("dist/release/"));
+        .pipe(gulp.dest("dist/release/"));
 }
 
 gulp.task("build:amd", build_amd);
@@ -156,7 +132,7 @@ gulp.task("minjs", function (done) {
     const bundle = "./dist/release";
     if (fs.existsSync(bundle)) {
         let run = gulp
-            .src(["!**.min.js", "./dist/release/*.js", "!./dist/release/*.min.js"])
+            .src(["!**.min.js", "./dist/release/*.js"])
             .pipe(terser())
             /*
     .pipe(
@@ -166,8 +142,7 @@ gulp.task("minjs", function (done) {
     )
     */
             .pipe(rename({ suffix: ".min" }));
-        run.pipe(dest("./dist/release/"));
-        return run.pipe(dest("./docs/dist/release/"));
+        return run.pipe(gulp.dest("./dist/release/"));
     }
     done();
 });
@@ -204,7 +179,7 @@ function docs(done) {
         )
         .pipe(header(fs.readFileSync(opt.templates + "/_header.html", "utf8")))
         .pipe(footer(fs.readFileSync(opt.templates + "/_footer.html", "utf8")))
-        .pipe(gulpDest(opt.output));
+        .pipe(gulp.dest(opt.output));
 }
 // Generate documentation
 gulp.task("docs", docs);
