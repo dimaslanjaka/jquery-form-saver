@@ -1,113 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
-        <title>Form Saver</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <!-- stylesheets -->
+        <title>Form Saver - WMI Gitlab</title>
         <link
             rel="stylesheet"
             href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
             integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
             crossorigin="anonymous"
         />
-        <style type="text/css">
-            body {
-                max-width: 40em;
-                width: 88%;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        </style>
     </head>
-
     <body>
-        <main>
-            <nav>
-                <h1>Form Saver</h1>
-                <p><a href="https://github.com/dimaslanjaka/smartform">GitHub</a></p>
-                <hr />
-            </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 m-2">
+                    <label for="">Input without name and id attribute</label>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" />
+                    </div>
+                    <label for="">Input only with name attribute</label>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" name="yes" />
+                    </div>
+                    <label for="">Input only with id attribute</label>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" id="yeah" />
+                    </div>
 
-            <section></section>
-        </main>
-    </body>
-</html>
-<form id="form-id">
-    <div class="input-group">
-        <label>Text Input</label>
-        <input name="input" type="text">
-    </div>
-  <div class="input-group">
-        <label>Text Input to Ignore</label>
-        <input data-form-no-save name="input-ignore" type="text">
-    </div>
-    <div>
-        <label>
-            <input type="checkbox" name="checkbox1" value="1" class="form-control">
-            Checkbox 1
-        </label>
-    </div>
-    <div class="input-group">
-        <label>
-        <input type="checkbox" name="checkbox2" value="2" class="form-control">
-            Checkbox 2
-        </label>
-    </div>
-    <div class="input-group">
-        <label>
-            Radio 1
-        </label>
-        <input type="radio" name="radioset" value="radio1" class="form-control">
-    </div>
-    <div class="input-group">
-        <label>
-        <input type="radio" name="radioset" value="radio2" class="form-control">
-            Radio 2
-        </label>
-    </div>
-    <div class="input-group">
-        <select name="select" class="form-control">
-            <option>Select 1</option>
-            <option>Select 2</option>
-            <option>Select 3</option>
-        </select>
-    </div>
-    <div class="input-group">
-        <textarea name="textarea" class="form-control"></textarea>
-    </div>
-    <div class="form-saver">
-        <div data-form-status></div>
-        <div>
-            <button data-form-save="#form-id" class="btn d-none">
-                Save Form Data
-            </button>
-            <button data-form-delete="#form-id" class="btn" onclick="localStorage.clear();">
-                Delete Form Data
-            </button>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" aria-label="Checkbox for following text input" />
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" />
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="radio" aria-label="Radio button for following text input" />
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Text input with radio button" />
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radio" id="radio1" value="option1" />
+                        <label class="form-check-label" for="radio1"> radio label </label>
+                    </div>
+
+                    <div class="">
+                        <button class="btn btn-danger btn-block" onclick="localStorage.clear();">
+                            Clear Saved Fields
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</form>
-
-			</section>
-		</main>
-
-		<!-- Javascript -->
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-		<script src="dist/release/bundle.js"></script>
-		<script>
-			formsaver(true);
-
-			setInterval(() => {
-				$.ajax({url:'/smartform/live.txt', success:function(res){
-					console.log(res);
-				}} );
-			}, 3000);
-		</script>
-
-
-	</body>
+        <script src="dist/release/bundle.js"></script>
+        <script>
+            (function () {
+                console.clear();
+                console.log("Form saver page start");
+                //automatically save and restore all forms
+                formsaver(true);
+            })();
+        </script>
+    </body>
 </html>
