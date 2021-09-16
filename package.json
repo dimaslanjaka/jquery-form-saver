@@ -48,7 +48,6 @@
     "webpack-cli": "^4.7.0"
   },
   "scripts": {
-    "start": "gulp",
     "test": "snyk test",
     "add-typescript": "npx npm-force-resolutions && npm -i typescript -g",
     "dev": "gulp watch",

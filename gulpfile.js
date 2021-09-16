@@ -71,15 +71,33 @@ function buildDev(done) {
     return build(done, true);
 }
 
+function mkdir(path) {
+    let m = function (path) {
+        if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
+    };
+    if (typeof path == "string") m(path);
+    if (Array.isArray(path)) {
+        path.map(function (p) {
+            m(p);
+        });
+    }
+}
+
 var tsProject = ts.createProject("tsconfig.build.json");
 gulp.task("tsc", function () {
+    mkdir(["dist", "docs/dist"]);
     var tsResult = gulp
         .src("src/**/*.ts") // or tsProject.src()
         .pipe(tsProject());
 
     //return tsResult.js.pipe(gulp.dest("dist"));
 
-    return merge([tsResult.dts.pipe(gulp.dest("dist")), tsResult.js.pipe(gulp.dest("dist"))]);
+    return merge([
+        tsResult.dts.pipe(gulp.dest("dist")),
+        tsResult.js.pipe(gulp.dest("dist")),
+        tsResult.dts.pipe(gulp.dest("docs/dist")),
+        tsResult.js.pipe(gulp.dest("docs/dist")),
+    ]);
 });
 
 /**
