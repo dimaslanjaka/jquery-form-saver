@@ -2,9 +2,9 @@ name: NodeJS with Gulp
 
 on:
   push:
-    branches: [ master ]
+    branches: [ compiler ]
   pull_request:
-    branches: [ master ]
+    branches: [ compiler ]
 
 jobs:
   build:
@@ -49,6 +49,7 @@ jobs:
       run: |
         npm install
         npm run build
+
     - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
