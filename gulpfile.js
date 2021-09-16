@@ -162,40 +162,11 @@ function guid() {
 }
 
 function docs(done) {
-    let opt = {
-        input: "src/docs/*.{html,md,markdown}",
-        output: "docs/",
-        templates: "src/docs/_templates/",
-        assets: "src/docs/assets/**",
-    };
-    if (!fs.existsSync(opt.output)) {
-        fs.mkdirSync(opt.output);
-    }
     // copy dist
     gulp.src(["dist/**/*"]).pipe(gulp.dest("docs/dist"));
     gulp.src(["src/docs/static/**/*"]).pipe(gulp.dest("docs/static"));
     gulp.src(["*.md"]).pipe(gulp.dest("docs"));
     fs.writeFileSync("docs/live.txt", guid());
-
-    return gulp
-        .src(opt.input)
-        .pipe(plumber())
-        .pipe(
-            fileinclude({
-                prefix: "@@",
-                basepath: "@file",
-            })
-        )
-        .pipe(
-            tap(function (file, t) {
-                if (/\.md|\.markdown/.test(file.path)) {
-                    return t.through(markdown);
-                }
-            })
-        )
-        .pipe(header(fs.readFileSync(opt.templates + "/_header.html", "utf8")))
-        .pipe(footer(fs.readFileSync(opt.templates + "/_footer.html", "utf8")))
-        .pipe(gulp.dest(opt.output));
 }
 
 // Generate documentation
