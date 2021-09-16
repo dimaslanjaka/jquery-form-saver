@@ -48,7 +48,6 @@ jobs:
             - name: Build
               run: |
                   npm install
-                  npx gulp
                   npx gulp build:concat
                   npx gulp build:amd
                   npx gulp browserify
