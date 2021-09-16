@@ -153,7 +153,6 @@ gulp.task("clean", function (cb) {
 });
 
 gulp.task("build", parallel(build_amd, build_concat));
-
 function docs(done) {
     let opt = {
         input: "src/docs/*.{html,md,markdown}",
@@ -166,6 +165,8 @@ function docs(done) {
     }
     // copy dist
     gulp.src(["dist/**/*"]).pipe(gulp.dest("docs/dist"));
+    gulp.src(["*.md"]).pipe(gulp.dest("docs"));
+
     return gulp
         .src(opt.input)
         .pipe(plumber())
@@ -186,6 +187,7 @@ function docs(done) {
         .pipe(footer(fs.readFileSync(opt.templates + "/_footer.html", "utf8")))
         .pipe(gulp.dest(opt.output));
 }
+
 // Generate documentation
 gulp.task("docs", docs);
 gulp.task("docs:clean", function (done) {
