@@ -21,6 +21,7 @@ var plumber = require("gulp-plumber");
 var markdown = require("gulp-markdown");
 var fileinclude = require("gulp-file-include");
 var tap = require("gulp-tap");
+var source = require("vinyl-source-stream");
 
 const browserifying = function () {
     var browser = browserify({
@@ -166,7 +167,11 @@ function docs(done) {
     gulp.src(["dist/**/*"]).pipe(gulp.dest("docs/dist"));
     gulp.src(["src/docs/static/**/*"]).pipe(gulp.dest("docs"));
     gulp.src(["*.md"]).pipe(gulp.dest("docs"));
-    fs.writeFileSync("docs/live.txt", guid());
+    // write docs/live.txt
+    var stream = source("live.txt");
+    stream.end(guid());
+    stream.pipe(gulp.dest("docs"));
+    done();
 }
 
 // Generate documentation
