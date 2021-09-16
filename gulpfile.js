@@ -147,7 +147,7 @@ function build_amd() {
                 outFile: "amd-bundle.js",
             })
         )
-        .pipe(gulp.dest("dist/release/"));
+        .pipe(gulpDest("dist/release/"));
 }
 
 gulp.task("build:amd", build_amd);
@@ -204,7 +204,7 @@ function docs(done) {
         )
         .pipe(header(fs.readFileSync(opt.templates + "/_header.html", "utf8")))
         .pipe(footer(fs.readFileSync(opt.templates + "/_footer.html", "utf8")))
-        .pipe(gulp.dest(opt.output));
+        .pipe(gulpDest(opt.output));
 }
 // Generate documentation
 gulp.task("docs", docs);
