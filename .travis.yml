@@ -1,9 +1,0 @@
-language: node_js
-node_js:
-  - "0.10"
-before_script:
-  - npm install -g gulp typescript
-script:
-  - npm test
-  - tsc -p tsconfig.build.json
-  - gulp
