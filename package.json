@@ -54,7 +54,7 @@
     "dev": "gulp watch",
     "clean": "gulp clean && gulp docs:clean",
     "build": "gulp tsc && gulp build && webpack && gulp browserify && gulp minjs",
-    "install": "npm run build"
+    "inst-all": "npm run build"
   },
   "dependencies": {
     "ansi-colors": "^1.1.0",
