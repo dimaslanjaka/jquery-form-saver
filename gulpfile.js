@@ -195,7 +195,6 @@ gulp.task("docs:clean", function (done) {
     return del(["docs"], done);
 });
 
-//exports.default = series(clear, parallel(js, css, img));
-exports.default = series("clean", "tsc", "build", "minjs");
+exports.default = series("tsc", "build", "minjs");
 exports.watch = parallel(watchFiles);
 exports.browser = parallel("build", "browserify");
