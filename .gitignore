@@ -4,9 +4,6 @@ test/results
 test/coverage
 tmp
 
-# docs
-docs
-
 ## OS X
 .DS_Store
 ._*
