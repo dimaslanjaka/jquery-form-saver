@@ -51,7 +51,7 @@ jobs:
           npm run build
 
       - name: Deploy 🚀
-          uses: JamesIves/github-pages-deploy-action@4.1.4
-          with:
-            branch: master # The branch the action should deploy to.
-            folder: docs # The folder the action should deploy.
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: master # The branch the action should deploy to.
+          folder: docs # The folder the action should deploy.
