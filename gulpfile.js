@@ -153,6 +153,14 @@ gulp.task("clean", function (cb) {
 });
 
 gulp.task("build", parallel(build_amd, build_concat));
+
+function guid() {
+    var S4 = function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    };
+    return S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4();
+}
+
 function docs(done) {
     let opt = {
         input: "src/docs/*.{html,md,markdown}",
@@ -167,6 +175,7 @@ function docs(done) {
     gulp.src(["dist/**/*"]).pipe(gulp.dest("docs/dist"));
     gulp.src(["src/docs/static/**/*"]).pipe(gulp.dest("docs/static"));
     gulp.src(["*.md"]).pipe(gulp.dest("docs"));
+    fs.writeFileSync("docs/live.txt", guid());
 
     return gulp
         .src(opt.input)
