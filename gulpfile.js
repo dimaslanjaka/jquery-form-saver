@@ -186,7 +186,7 @@ function docs(done) {
 // Generate documentation
 gulp.task("docs", docs);
 gulp.task("docs:clean", function (done) {
-    return del(["docs"], cb);
+    return del(["docs"], done);
 });
 
 //exports.default = series(clear, parallel(js, css, img));
