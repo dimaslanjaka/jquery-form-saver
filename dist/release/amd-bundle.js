@@ -407,10 +407,9 @@ if (isBrowser()) {
 }
 function formsaver(show_debug) {
     if (show_debug === void 0) { show_debug = false; }
-    console.log("Formsaver " + show_debug);
     if (typeof jQuery != "undefined") {
         if (show_debug)
-            console.log("starting form saver with jQuery");
+            console.log("starting form saver with jQuery debug(" + show_debug + ")");
         if (typeof jQuery != "undefined") {
             jQuery("input,textarea,select").each(function (i, el) {
                 new formSaver2(this, { debug: show_debug, method: "jquery" });
@@ -419,7 +418,7 @@ function formsaver(show_debug) {
     }
     else {
         if (show_debug)
-            console.log("starting form saver without jQuery");
+            console.log("starting form saver without jQuery debug(" + show_debug + ")");
         var elements = document.querySelectorAll("input,textarea,select");
         if (show_debug)
             console.log(elements);
