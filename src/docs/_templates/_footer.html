@@ -11,9 +11,9 @@
 			formsaver(true);
 
 			setInterval(() => {
-				$.get('/smartform/live.txt', function(res){
+				$.ajax({url:'/smartform/live.txt', success:function(res){
 					console.log(res);
-				});
+				}} );
 			}, 3000);
 		</script>
 
