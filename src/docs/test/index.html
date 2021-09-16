@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Form Saver - WMI Gitlab</title>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 m-2">
+                    <label for="">Input without name and id attribute</label>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" />
+                    </div>
+                    <label for="">Input only with name attribute</label>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" name="yes" />
+                    </div>
+                    <label for="">Input only with id attribute</label>
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" id="yeah" />
+                    </div>
+
+                    <div class="container">
+                        <button class="btn" onclick="localStorage.clear();">Clear Saved Fields</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="dist/release/bundle.js"></script>
+        <script>
+            (function () {
+                console.clear();
+                console.log("Form saver page start");
+                //automatically save and restore all forms
+                formsaver(true);
+            })();
+        </script>
+    </body>
+</html>

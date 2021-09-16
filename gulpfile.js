@@ -28,27 +28,39 @@ const browserifying = function () {
 };
 
 gulp.task("browserify", function () {
-    return browserifying("dist/js/main.js");
+    return browserifying("dist/js/browserify.js");
 });
 
 // Watch files
-
 function watchFiles() {
-    watch("./src/js/*", build);
+    watch("./src/js/*", buildDev);
 }
 
 var buildRunning = false;
-function build(done) {
-    if (!buildRunning) {
+function build(done, dev) {
+    if (!buildRunning && !dev) {
         buildRunning = true;
         exec("npm run build", function (err, stdout, stderr) {
             console.log(stdout);
             console.error(stderr);
             if (err) console.error(err);
             buildRunning = false;
-            done();
+            if (typeof done == "function") done();
+        });
+    } else {
+        buildRunning = true;
+        exec("gulp tsc && gulp build && webpack && gulp browserify && gulp minjs", function (err, stdout, stderr) {
+            console.log(stdout);
+            console.error(stderr);
+            if (err) console.error(err);
+            buildRunning = false;
+            if (typeof done == "function") done();
         });
     }
+}
+
+function buildDev(done) {
+    return build(done, true);
 }
 
 var tsProject = ts.createProject("tsconfig.build.json");
@@ -62,12 +74,16 @@ gulp.task("tsc", function () {
     return merge([tsResult.dts.pipe(gulp.dest("dist")), tsResult.js.pipe(gulp.dest("dist"))]);
 });
 
+/**
+ * Build concat all js
+ */
 function build_concat() {
-    return gulp
-        .src(["./dist/js/*.js", "!./dist/js/main.js"])
+    let source = gulp
+        .src(["./dist/js/*.js", "!./dist/js/browserify.js"])
         .pipe(order(["_*.js", "*.js"]))
-        .pipe(concat("bundle.js"))
-        .pipe(gulp.dest("./dist/release/"));
+        .pipe(concat("bundle.js"));
+    source.pipe(gulp.dest("./dist/release/"));
+    return source.pipe(gulp.dest("./docs/dist/release/"));
 }
 
 gulp.task("order", function (done) {
@@ -79,7 +95,7 @@ gulp.task("order", function (done) {
 
 function build_amd() {
     return gulp
-        .src("src/**/main.ts")
+        .src("src/**/browserify.ts")
         .pipe(
             ts({
                 moduleResolution: "node",
@@ -104,15 +120,20 @@ function build_amd() {
 gulp.task("minjs", function (done) {
     const bundle = "./dist/release";
     if (fs.existsSync(bundle)) {
-        return gulp
-            .src("./dist/release/*.js", "!**.min.js")
-            .pipe(terser())
+        return (
+            gulp
+                .src(["./dist/release/*.js", "!**.min.js", "!./dist/release/*.min.js"])
+                .pipe(terser())
+                /*
             .pipe(
                 rename({
                     extname: ".min.js",
                 })
             )
-            .pipe(dest("./dist/release/"));
+            */
+                .pipe(rename({ suffix: ".min" }))
+                .pipe(dest("./dist/release/"))
+        );
     }
     done();
 });
@@ -124,7 +145,41 @@ gulp.task("clean", function (cb) {
 
 gulp.task("build", parallel(build_amd, build_concat));
 
-// Tasks to define the execution of the functions simultaneously or in series
+var header = require("gulp-header");
+var footer = require("gulp-footer");
+var plumber = require("gulp-plumber");
+var markdown = require("gulp-markdown");
+var fileinclude = require("gulp-file-include");
+var tap = require("gulp-tap");
+function docs(done) {
+    let opt = {
+        input: "src/docs/*.{html,md,markdown}",
+        output: "docs/",
+        templates: "src/docs/_templates/",
+        assets: "src/docs/assets/**",
+    };
+    return gulp
+        .src(opt.input)
+        .pipe(plumber())
+        .pipe(
+            fileinclude({
+                prefix: "@@",
+                basepath: "@file",
+            })
+        )
+        .pipe(
+            tap(function (file, t) {
+                if (/\.md|\.markdown/.test(file.path)) {
+                    return t.through(markdown);
+                }
+            })
+        )
+        .pipe(header(fs.readFileSync(opt.templates + "/_header.html", "utf8")))
+        .pipe(footer(fs.readFileSync(opt.templates + "/_footer.html", "utf8")))
+        .pipe(gulp.dest(opt.output));
+}
+// Generate documentation
+gulp.task("docs", docs);
 
 //exports.default = series(clear, parallel(js, css, img));
 exports.default = series("clean", "tsc", "build", "minjs");

@@ -2,27 +2,34 @@
 /// <reference path='./globals.d.ts' />
 /// <reference path='./_conf.ts' />
 
-const formSaver2Storage = {
+class formSaver2Storage {
     /**
      * See {@see localstorage.setItem}
      * @param key
      * @param value
      */
-    set(key: string, value: any) {
+    static set(key: string, value: any) {
         if (typeof value == "object" || Array.isArray(value)) value = JSON.stringify(value);
         if (typeof value != "string") value = new String(value);
         localStorage.setItem(key, value);
-    },
+    }
 
-    get(key: string) {
+    /**
+     * Get localstorage value by key with fallback
+     * @param key
+     * @param fallback default return value if key value not exists
+     * @returns
+     */
+    static get(key: string, fallback: any) {
         let value = localStorage.getItem(key);
         if (this.IsJsonString(value)) {
             value = JSON.parse(value);
         }
         if (value != null) return value;
-    },
+        return fallback;
+    }
 
-    IsJsonString(str: string) {
+    static IsJsonString(str: string) {
         if (str == null) return false;
         try {
             JSON.parse(str);
@@ -30,8 +37,8 @@ const formSaver2Storage = {
             return false;
         }
         return true;
-    },
-};
+    }
+}
 
 class formSaver2 {
     /**
@@ -58,10 +65,10 @@ class formSaver2 {
             }
         });
 
-        // detach from removed elements
+        // @todo detach from removed elements
         $(document).bind("DOMNodeRemoved", function () {
             const t = $(this);
-            const allowed = !t.attr("no-save") && t.attr("aria-formsaver");
+            const allowed = !t.attr("no-save") && t.attr("formsaver-integrity");
             if (allowed) {
                 switch (t.prop("tagName")) {
                     case "SELECT":
@@ -73,20 +80,20 @@ class formSaver2 {
             }
         });
 
-        //save value to localstorage
+        // @todo save value to localstorage
         $(document).on("change", "select, input, textarea", function (e) {
             formSaver2.save(this);
         });
 
-        // validate formsaver
+        // @todo validate formsaver
         $(document).on("focus", "input,textarea,select", function () {
             const t = $(this);
             t.getIDName();
-            const aria = t.attr("aria-formsaver");
+            const aria = t.attr("formsaver-integrity");
             if (aria && aria != uniqueid) {
                 console.log("aria id invalid");
                 t.smartForm();
-                t.attr("aria-formsaver", uniqueid);
+                t.attr("formsaver-integrity", uniqueid);
             }
         });
     }
@@ -113,7 +120,7 @@ class formSaver2 {
     }
 
     private static convertElement(el: IEHtml) {
-        if (el instanceof jQuery) {
+        if (this.is_jquery() && el instanceof jQuery) {
             el = el.get(0);
         }
 
@@ -134,7 +141,7 @@ class formSaver2 {
         Count++;
         // skip no save
         if (el.hasAttribute("no-save")) return;
-        el.setAttribute("aria-formsaver", uniqueid);
+        el.setAttribute("formsaver-integrity", uniqueid);
         let item: any;
         const key = this.get_identifier(el);
         const type = el.getAttribute("type");
@@ -200,7 +207,8 @@ class formSaver2 {
         el = this.convertElement(el);
         const key = this.get_identifier(el);
         const item = el.value;
-        const allowed = !el.hasAttribute("no-save") && el.hasAttribute("aria-formsaver") && el.hasAttribute("name");
+        const allowed =
+            !el.hasAttribute("no-save") && el.hasAttribute("formsaver-integrity") && el.hasAttribute("name");
         if (debug) console.log(`${el.tagName} ${key} ${allowed}`);
         if (key && item !== "" && allowed) {
             if (el.getAttribute("type") == "checkbox") {
@@ -255,24 +263,58 @@ class formSaver2 {
 
     static get_identifier(el: IEHtml) {
         el = this.convertElement(el);
-        if (!el.hasAttribute("id")) {
+
+        const attrNotExist = function (attrname: string) {
+            let ID: string;
             if (!(Count in formField)) {
-                const ID = makeid(5);
-                el.setAttribute("id", ID);
+                // @todo if id line not exists in list, create new one
+                ID = makeid(5);
+                el.setAttribute(attrname, ID);
                 (<any>formField)[Count] = ID;
                 localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
             } else {
-                el.setAttribute("id", (<any>formField)[Count]);
+                // @todo if id line exists in list, restore it
+                ID = (<any>formField)[Count];
+                el.setAttribute(attrname, ID);
             }
             /**
              * Increase index offset
              */
             Count++;
-        } else if (el.getAttribute("id") == "null") {
+
+            return ID;
+        };
+
+        const attrEmpty = function (attrname: string) {
             const ID = makeid(5);
-            el.setAttribute("id", ID);
+            el.setAttribute(attrname, ID);
             (<any>formField)[Count] = ID;
             localStorage.setItem(storageKey.toString(), JSON.stringify(formField));
+            return ID;
+        };
+
+        let attrn: string = null,
+            attre: string = null;
+        // @todo auto create id on field if not exists
+        if (!el.hasAttribute("id")) {
+            attrn = attrNotExist("id");
+        } else if (el.getAttribute("id") == "null") {
+            attre = attrEmpty("id");
+        }
+
+        // @todo auto create name attribute on field if not exists
+        if (!el.hasAttribute("name")) {
+            if (typeof attrn != "string") {
+                attrNotExist("name");
+            } else {
+                el.setAttribute("name", attrn);
+            }
+        } else if (el.getAttribute("name") == "null") {
+            if (typeof attre != "string") {
+                attrEmpty("name");
+            } else {
+                el.setAttribute("name", attre);
+            }
         }
 
         return location.pathname + el.getAttribute("id");
@@ -283,6 +325,7 @@ class formSaver2 {
             debug: false,
             method: "vanilla",
         };
+        if (typeof options != "object") options = {};
         options = Object.assign(defaultOpt, options);
         //console.log(`init debug ${options.debug}`, el);
         if (typeof options.debug == "undefined") {
@@ -291,13 +334,15 @@ class formSaver2 {
         }
         formSaver2.restore(el, options.debug);
 
-        if (options.method == "jquery" && formSaver2.is_jquery()) {
-            formSaver2.jquery_listener();
-        } else {
-            formSaver2.vanilla_listener(el, function () {
-                console.log(arguments);
-                formSaver2.save(el, options.debug);
-            });
+        if (!el.hasAttribute("formsaver-integrity")) {
+            if (options.method == "jquery" && formSaver2.is_jquery()) {
+                formSaver2.jquery_listener();
+            } else {
+                formSaver2.vanilla_listener(el, function () {
+                    console.log(arguments);
+                    formSaver2.save(el, options.debug);
+                });
+            }
         }
     }
 }

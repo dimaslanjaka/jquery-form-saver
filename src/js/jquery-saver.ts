@@ -51,20 +51,3 @@ if (isBrowser()) {
         }
     })();
 }
-
-/**
- * Set all forms to be saved with method vanilla
- * @todo save input fields into browser for reusable form
- * @param show_debug debug process saving and restoration
- */
-function formsaver(show_debug: boolean = false) {
-    if (typeof jQuery != "undefined") {
-        if (show_debug) console.log("Starting smartform jQuery");
-
-        if (typeof jQuery != "undefined") {
-            jQuery("input,textarea,select").each(function (i, el) {
-                new formSaver2(<any>this, { debug: show_debug });
-            });
-        }
-    }
-}

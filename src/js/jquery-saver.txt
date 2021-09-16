@@ -116,7 +116,7 @@ if (isBrowser()) {
                     var is_select2 = $(this).data("select2");
 
                     //set indicator
-                    t.attr("aria-formsaver", uniqueid);
+                    t.attr("formsaver-integrity", uniqueid);
 
                     var item: string | number | boolean | symbol | object;
                     var key = t.getIDName().toString();
@@ -168,7 +168,7 @@ if (isBrowser()) {
                     var t = $(this);
                     var val = localStorage.getItem(t.getIDName().toString());
                     var tag = t.prop("tagName");
-                    var allowed = !t.attr("no-save") && t.attr("aria-formsaver") && typeof tag != "undefined";
+                    var allowed = !t.attr("no-save") && t.attr("formsaver-integrity") && typeof tag != "undefined";
 
                     if (allowed && val) {
                         //console.log(tag, allowed && val);
@@ -185,7 +185,7 @@ if (isBrowser()) {
                 // detach from removed elements
                 $(document).bind("DOMNodeRemoved", function () {
                     var t = $(this);
-                    var allowed = !t.attr("no-save") && t.attr("aria-formsaver");
+                    var allowed = !t.attr("no-save") && t.attr("formsaver-integrity");
                     if (allowed) {
                         switch (t.prop("tagName")) {
                             case "SELECT":
@@ -202,7 +202,7 @@ if (isBrowser()) {
                     var t = $(this);
                     var key = t.getIDName().toString();
                     var item = t.val();
-                    var allowed = !t.attr("no-save") && t.attr("aria-formsaver");
+                    var allowed = !t.attr("no-save") && t.attr("formsaver-integrity");
                     if (key && item !== "" && allowed) {
                         if (t.attr("type") == "checkbox") {
                             localStorage.setItem(key, t.is(":checked").toString());
@@ -227,10 +227,10 @@ if (isBrowser()) {
                 $(document).on("focus", "input,textarea,select", function () {
                     var t = $(this);
                     t.getIDName();
-                    var aria = t.attr("aria-formsaver");
+                    var aria = t.attr("formsaver-integrity");
                     if (aria && aria != uniqueid) {
                         t.smartForm();
-                        t.attr("aria-formsaver", uniqueid);
+                        t.attr("formsaver-integrity", uniqueid);
                     }
                 });
             })(jQuery);
