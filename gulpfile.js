@@ -164,7 +164,7 @@ function guid() {
 function docs(done) {
     // copy dist
     gulp.src(["dist/**/*"]).pipe(gulp.dest("docs/dist"));
-    gulp.src(["src/docs/static/**/*"]).pipe(gulp.dest("docs/static"));
+    gulp.src(["src/docs/static/**/*"]).pipe(gulp.dest("docs"));
     gulp.src(["*.md"]).pipe(gulp.dest("docs"));
     fs.writeFileSync("docs/live.txt", guid());
 }
