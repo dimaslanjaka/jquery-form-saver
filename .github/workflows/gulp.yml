@@ -54,6 +54,7 @@ jobs:
                   npx gulp browserify
                   npx gulp minjs
                   npx gulp docs
+                  cp *.md docs/
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@4.1.5

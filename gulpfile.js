@@ -161,6 +161,11 @@ function docs(done) {
         templates: "src/docs/_templates/",
         assets: "src/docs/assets/**",
     };
+    if (!fs.existsSync(opt.output)) {
+        fs.mkdirSync(opt.output);
+    }
+    // copy dist
+    gulp.src(["dist/**/*"]).pipe(gulp.dest("docs/dist"));
     return gulp
         .src(opt.input)
         .pipe(plumber())
