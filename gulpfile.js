@@ -71,21 +71,26 @@ function buildDev(done) {
     return build(done, true);
 }
 
-function mkdir(path) {
+function gulpDest(path) {
     let m = function (path) {
         if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive: true });
     };
-    if (typeof path == "string") m(path);
+    if (typeof path == "string") {
+        m(path);
+        return gulp.dest(path);
+    }
     if (Array.isArray(path)) {
+        let arry = [];
         path.map(function (p) {
             m(p);
+            arry.push(gulp.dest(p));
         });
+        return merge(arry);
     }
 }
 
 var tsProject = ts.createProject("tsconfig.build.json");
-gulp.task("tsc", function () {
-    mkdir(["dist", "docs/dist"]);
+gulp.task("tsc", function () { 
     var tsResult = gulp
         .src("src/**/*.ts") // or tsProject.src()
         .pipe(tsProject());
@@ -93,10 +98,10 @@ gulp.task("tsc", function () {
     //return tsResult.js.pipe(gulp.dest("dist"));
 
     return merge([
-        tsResult.dts.pipe(gulp.dest("dist")),
-        tsResult.js.pipe(gulp.dest("dist")),
-        tsResult.dts.pipe(gulp.dest("docs/dist")),
-        tsResult.js.pipe(gulp.dest("docs/dist")),
+        tsResult.dts.pipe(gulpDest("dist")),
+        tsResult.js.pipe(gulpDest("dist")),
+        tsResult.dts.pipe(gulpDest("docs/dist")),
+        tsResult.js.pipe(gulpDest("docs/dist")),
     ]);
 });
 
@@ -108,8 +113,8 @@ function build_concat() {
         .src(["./dist/js/*.js", "!./dist/js/browserify.js"])
         .pipe(order(["_*.js", "*.js"]))
         .pipe(concat("bundle.js"));
-    source.pipe(gulp.dest("./dist/release/"));
-    return source.pipe(gulp.dest("./docs/dist/release/"));
+    source.pipe(gulpDest("./dist/release/"));
+    return source.pipe(gulpDest("./docs/dist/release/"));
 }
 
 gulp.task("build:concat", build_concat);
