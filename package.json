@@ -48,13 +48,12 @@
     "webpack-cli": "^4.7.0"
   },
   "scripts": {
-    "start": "gulp",
+    "install": "gulp",
     "test": "snyk test",
     "add-typescript": "npx npm-force-resolutions && npm -i typescript -g",
     "dev": "gulp watch",
     "clean": "gulp clean && gulp docs:clean",
-    "build": "gulp tsc && gulp build && webpack && gulp browserify && gulp minjs",
-    "inst-all": "npm run build"
+    "compile": "gulp tsc && gulp build && webpack && gulp browserify && gulp minjs"
   },
   "dependencies": {
     "ansi-colors": "^1.1.0",
@@ -80,7 +79,8 @@
   "keywords": [
     "save",
     "form",
-    "jQuery"
+    "jQuery",
+    "VanillaJS"
   ],
   "author": "Dimas Lanjaka",
   "license": "ISC",

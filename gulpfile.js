@@ -48,7 +48,7 @@ var buildRunning = false;
 function build(done, dev) {
     if (!buildRunning && !dev) {
         buildRunning = true;
-        exec("npm run build", function (err, stdout, stderr) {
+        exec("npm run compile", function (err, stdout, stderr) {
             console.log(stdout);
             console.error(stderr);
             if (err) console.error(err);
