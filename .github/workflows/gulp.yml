@@ -48,6 +48,7 @@ jobs:
             - name: Build
               run: |
                   npm install
+                  npx gulp clean
                   npx gulp tsc
                   npx gulp build:concat
                   npx gulp build:amd
