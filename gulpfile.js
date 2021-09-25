@@ -1,4 +1,4 @@
-const { dest, parallel, series, watch } = require("gulp");
+const { parallel, series, watch } = require("gulp");
 
 // Load plugins
 const terser = require("gulp-terser");
@@ -15,12 +15,6 @@ const print = require("gulp-print").default;
 var { order } = require("./libs/gulp-order");
 
 // DOCS
-var header = require("gulp-header");
-var footer = require("gulp-footer");
-var plumber = require("gulp-plumber");
-var markdown = require("gulp-markdown");
-var fileinclude = require("gulp-file-include");
-var tap = require("gulp-tap");
 var source = require("vinyl-source-stream");
 
 const browserifying = function () {
@@ -42,7 +36,7 @@ gulp.task("browserify", function () {
 
 // Watch files
 function watchFiles() {
-    watch("./src/js/*", buildDev);
+    watch(["./src/js/*", "./src/docs/**/*"], series("clean", buildDev, docs));
 }
 
 var buildRunning = false;
@@ -150,7 +144,7 @@ gulp.task("minjs", function (done) {
 
 gulp.task("clean", function (cb) {
     // You can use multiple globbing patterns as you would with `gulp.src`
-    return del(["dist"], cb);
+    return del(["dist", "docs/dist"], cb);
 });
 
 gulp.task("build", parallel(build_amd, build_concat));

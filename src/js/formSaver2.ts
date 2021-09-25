@@ -338,6 +338,7 @@ class formSaver2 {
             if (options.method == "jquery" && formSaver2.is_jquery()) {
                 formSaver2.jquery_listener();
             } else {
+                console.log("vanilla listener started");
                 formSaver2.vanilla_listener(el, function () {
                     console.log(arguments);
                     formSaver2.save(el, options.debug);
