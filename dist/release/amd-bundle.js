@@ -142,6 +142,7 @@ var formSaver2 = (function () {
                 formSaver2.jquery_listener();
             }
             else {
+                console.log("vanilla listener started");
                 formSaver2.vanilla_listener(el, function () {
                     console.log(arguments);
                     formSaver2.save(el, options.debug);
