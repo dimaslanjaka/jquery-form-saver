@@ -29,11 +29,17 @@ function watchFiles() {
     watch(["./src/js/*", "./src/docs/**/*"], series(build, docs));
 }
 
+let buildProcess = false;
 function build(done: () => void) {
-    exec("webpack");
-    tsc();
-    browserifyrun();
-    minjs();
+    if (!buildProcess) {
+        buildProcess = true;
+        exec("webpack");
+        tsc();
+        browserifyrun();
+        minjs(function () {
+            buildProcess = false;
+        });
+    }
     done();
 }
 
@@ -99,7 +105,7 @@ function minjs(done?: () => void) {
     if (fs.existsSync(bundle)) {
         let run = gulp
             .src(["./dist/release/*.js", "!./dist/release/*.min.js"])
-            .pipe(terser())
+            .pipe(<any>terser())
             .pipe(rename({ suffix: ".min" }));
         return run.pipe(gulp.dest("./dist/release/"));
     }
@@ -121,7 +127,7 @@ function guid() {
     return S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4();
 }
 
-function docs(done) {
+function docs(done: () => void) {
     // copy dist
     gulp.src(["dist/**/*"]).pipe(gulp.dest("docs/dist"));
     gulp.src(["src/docs/static/**/*"]).pipe(gulp.dest("docs"));
