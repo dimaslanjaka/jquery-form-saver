@@ -129,7 +129,7 @@ gulp.task("minjs", function (done) {
     if (fs.existsSync(bundle)) {
         let run = gulp
             .src(["./dist/release/*.js", "!./dist/release/*.min.js"])
-            .pipe(terser({ mangle: { toplevel: true } }))
+            .pipe(terser())
             .pipe(rename({ suffix: ".min" }));
         return run.pipe(gulp.dest("./dist/release/"));
     }
