@@ -36,7 +36,7 @@ gulp.task("browserify", function () {
 
 // Watch files
 function watchFiles() {
-    watch(["./src/js/*", "./src/docs/**/*"], series("clean", buildDev, docs));
+    watch(["./src/js/*", "./src/docs/**/*"], series("clean", "tsc", buildDev, docs));
 }
 
 var buildRunning = false;
@@ -127,7 +127,7 @@ gulp.task("minjs", function (done) {
     const bundle = "./dist/release";
     if (fs.existsSync(bundle)) {
         let run = gulp
-            .src(["!**.min.js", "./dist/release/*.js"])
+            .src(["!dist/*.min.js", "!dist/**/*.min.js", "./dist/release/*.js"])
             .pipe(terser())
             /*
     .pipe(

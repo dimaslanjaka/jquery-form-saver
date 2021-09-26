@@ -19,6 +19,7 @@ function formsaver(show_debug: boolean = false) {
         var elements = document.querySelectorAll("input,textarea,select");
         if (show_debug) console.log(elements);
         elements.forEach(function (el, key, parent) {
+            //console.log(el);
             new formSaver2(<any>el, { debug: show_debug, method: "vanilla" });
         });
     }
