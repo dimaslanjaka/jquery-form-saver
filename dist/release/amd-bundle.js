@@ -137,17 +137,15 @@ var formSaver2 = (function () {
             console.log("change debug to false");
         }
         formSaver2.restore(el, options.debug);
-        if (!el.hasAttribute("formsaver-integrity")) {
-            if (options.method == "jquery" && formSaver2.is_jquery()) {
-                formSaver2.jquery_listener();
-            }
-            else {
-                console.log("vanilla listener started");
-                formSaver2.vanilla_listener(el, function () {
-                    console.log(arguments);
-                    formSaver2.save(el, options.debug);
-                });
-            }
+        if (options.method == "jquery" && formSaver2.is_jquery()) {
+            formSaver2.jquery_listener();
+        }
+        else {
+            console.log("vanilla listener started");
+            formSaver2.vanilla_listener(el, function () {
+                console.log(arguments);
+                formSaver2.save(el, options.debug);
+            });
         }
     }
     formSaver2.offset = function (el) {
