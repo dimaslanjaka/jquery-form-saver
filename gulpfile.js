@@ -4,15 +4,16 @@ const { parallel, series, watch } = require("gulp");
 const terser = require("gulp-terser");
 const rename = require("gulp-rename");
 const concat = require("gulp-concat");
-var browserify = require("browserify");
-var gulp = require("gulp");
+const browserify = require("browserify");
+const gulp = require("gulp");
 const fs = require("fs");
-var del = require("del");
-var ts = require("gulp-typescript");
-var merge = require("merge2");
+const del = require("del");
+const ts = require("gulp-typescript");
+const merge = require("merge2");
 const { exec } = require("child_process");
 const print = require("gulp-print").default;
-var { order } = require("./libs/gulp-order");
+const { order } = require("./libs/gulp-order");
+const path = require("path");
 
 // DOCS
 var source = require("vinyl-source-stream");
@@ -124,18 +125,11 @@ function build_amd() {
 gulp.task("build:amd", build_amd);
 
 gulp.task("minjs", function (done) {
-    const bundle = "./dist/release";
+    const bundle = path.join(__dirname, "dist/release");
     if (fs.existsSync(bundle)) {
         let run = gulp
-            .src(["!dist/*.min.js", "!dist/**/*.min.js", "./dist/release/*.js"])
-            .pipe(terser())
-            /*
-    .pipe(
-        rename({
-            extname: ".min.js",
-        })
-    )
-    */
+            .src(["./dist/release/*.js", "!./dist/release/*.min.js"])
+            .pipe(terser({ mangle: { toplevel: true } }))
             .pipe(rename({ suffix: ".min" }));
         return run.pipe(gulp.dest("./dist/release/"));
     }
@@ -147,7 +141,7 @@ gulp.task("clean", function (cb) {
     return del(["dist", "docs/dist"], cb);
 });
 
-gulp.task("build", parallel(build_amd, build_concat));
+gulp.task("build", series(build_amd, build_concat));
 
 function guid() {
     var S4 = function () {
@@ -174,6 +168,6 @@ gulp.task("docs:clean", function (done) {
     return del(["docs"], done);
 });
 
-exports.default = series("tsc", "build", "minjs");
-exports.watch = parallel(watchFiles);
+exports.default = series("tsc", "build", "minjs", "docs");
+exports.watch = series(watchFiles);
 exports.browser = parallel("build", "browserify");
