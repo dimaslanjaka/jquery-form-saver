@@ -30,53 +30,35 @@ const browserifying = function () {
     }
     return browser.bundle().pipe(fs.createWriteStream("./dist/release/browserify-bundle.js"));
 };
-
-gulp.task("browserify", function () {
+function browserifyrun() {
     return browserifying("dist/js/browserify.js");
-});
+}
+
+gulp.task("browserify", browserifyrun);
 
 // Watch files
 function watchFiles() {
-    watch(["./src/js/*", "./src/docs/**/*"], series("clean", "tsc", buildDev, docs));
+    watch(["./src/js/*", "./src/docs/**/*"], series(build, docs));
 }
 
-var buildRunning = false;
-function build(done, dev) {
-    if (!buildRunning && !dev) {
-        buildRunning = true;
-        exec("npm run compile", function (err, stdout, stderr) {
-            console.log(stdout);
-            console.error(stderr);
-            if (err) console.error(err);
-            buildRunning = false;
-            if (typeof done == "function") done();
-        });
-    } else {
-        buildRunning = true;
-        exec("gulp tsc && gulp build && webpack && gulp browserify && gulp minjs", function (err, stdout, stderr) {
-            console.log(stdout);
-            console.error(stderr);
-            if (err) console.error(err);
-            buildRunning = false;
-            if (typeof done == "function") done();
-        });
-    }
+function build(done) {
+    tsc();
+    exec("webpack");
+    browserifyrun();
+    minjs(done);
 }
 
-function buildDev(done) {
-    return build(done, true);
-}
-
-var tsProject = ts.createProject("tsconfig.build.json");
-gulp.task("tsc", function () {
-    var tsResult = gulp
+const tsProject = ts.createProject("tsconfig.build.json");
+function tsc() {
+    const tsResult = gulp
         .src("src/**/*.ts") // or tsProject.src()
         .pipe(tsProject());
 
     //return tsResult.js.pipe(gulp.dest("dist"));
 
     return merge([tsResult.dts.pipe(gulp.dest("dist")), tsResult.js.pipe(gulp.dest("dist"))]);
-});
+}
+gulp.task("tsc", tsc);
 
 /**
  * Build concat all js
@@ -124,7 +106,7 @@ function build_amd() {
 
 gulp.task("build:amd", build_amd);
 
-gulp.task("minjs", function (done) {
+function minjs(done) {
     const bundle = path.join(__dirname, "dist/release");
     if (fs.existsSync(bundle)) {
         let run = gulp
@@ -134,7 +116,8 @@ gulp.task("minjs", function (done) {
         return run.pipe(gulp.dest("./dist/release/"));
     }
     done();
-});
+}
+gulp.task("minjs", minjs);
 
 gulp.task("clean", function (cb) {
     // You can use multiple globbing patterns as you would with `gulp.src`
