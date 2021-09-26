@@ -17,6 +17,15 @@
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1165447249910969"
             crossorigin="anonymous"
         ></script>
+        <style>
+            pre {
+                white-space: pre-wrap; /* css-3 */
+                white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+                white-space: -pre-wrap; /* Opera 4-6 */
+                white-space: -o-pre-wrap; /* Opera 7 */
+                word-wrap: break-word; /* Internet Explorer 5.5+ */
+            }
+        </style>
     </head>
     <body>
         <div class="container-fluid">
@@ -71,20 +80,34 @@
                 </div>
             </div>
 
-            <div class="text-center">
-                <i class="fab fa-github"></i>
-                <a href="https://github.com/dimaslanjaka/smartform/tree/compiler"
-                    >https://github.com/dimaslanjaka/smartform/tree/compiler</a
-                >
+            <div class="row">
+                <div class="col">
+                    <pre class="language-html">
+                        <code>
+    &lt;script src=&quot;https://raw.githack.com/dimaslanjaka/smartform/master/dist/release/bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      (function () {
+        formsaver(true);
+      })();
+    &lt;/script&gt;
+                        </code>
+                    </pre>
+                </div>
+                <div class="text-center col">
+                    <i class="fab fa-github"></i>
+                    <a href="https://github.com/dimaslanjaka/smartform/tree/compiler"
+                        >https://github.com/dimaslanjaka/smartform/tree/compiler</a
+                    >
+                </div>
             </div>
         </div>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css" />
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
         <script src="dist/release/bundle.min.js"></script>
         <script>
             (function () {
-                //console.clear();
-                //console.log("Form saver page start");
-                //automatically save and restore all forms
                 formsaver(true);
+                hljs.highlightAll();
             })();
         </script>
     </body>
