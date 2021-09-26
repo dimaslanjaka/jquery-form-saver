@@ -11,6 +11,12 @@
             integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
             crossorigin="anonymous"
         />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" />
+        <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1165447249910969"
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body>
         <div class="container-fluid">
@@ -20,15 +26,18 @@
                     <div class="form-group mb-2">
                         <input type="text" class="form-control" />
                     </div>
+
                     <label for="">Input only with name attribute</label>
                     <div class="form-group mb-2">
                         <input type="text" class="form-control" name="yes" />
                     </div>
+
                     <label for="">Input only with id attribute</label>
                     <div class="form-group mb-2">
                         <input type="text" class="form-control" id="yeah" />
                     </div>
 
+                    <label for="">Input without id with checkbox</label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
@@ -38,21 +47,20 @@
                         <input type="text" class="form-control" aria-label="Text input with checkbox" />
                     </div>
 
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <input type="radio" aria-label="Radio button for following text input" />
-                            </div>
+                    <div class="form-check d-flex justify-content-around mb-3">
+                        <div>
+                            <input type="radio" aria-label="Radio button for following text input" name="radio" />
+                            <label class="form-check-label">radio without id and same name</label>
                         </div>
-                        <input type="text" class="form-control" aria-label="Text input with radio button" />
-                    </div>
+                        <div class="">
+                            <input class="form-check-input" type="radio" name="radio" id="radio1" value="option1" />
+                            <label class="form-check-label" for="radio1"> radio with id and name </label>
+                        </div>
 
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="radio" id="radio1" value="option1" />
-                        <label class="form-check-label" for="radio1"> radio label </label>
-
-                        <input class="form-check-input" type="radio" name="radio" id="radio2" value="option2" />
-                        <label class="form-check-label" for="radio1"> radio 2 label </label>
+                        <div>
+                            <input class="form-check-input" type="radio" name="radio" id="radio2" value="option2" />
+                            <label class="form-check-label" for="radio1"> radio with id and name 2 </label>
+                        </div>
                     </div>
 
                     <div class="">
@@ -61,6 +69,13 @@
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <div class="text-center">
+                <i class="fab fa-github"></i>
+                <a href="https://github.com/dimaslanjaka/smartform/tree/compiler"
+                    >https://github.com/dimaslanjaka/smartform/tree/compiler</a
+                >
             </div>
         </div>
         <script src="dist/release/bundle.min.js"></script>
