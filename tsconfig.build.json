@@ -1,20 +1,21 @@
 {
-  "compileOnSave": true,
-  "compilerOptions": {
-    "module": "commonjs",
-    "strict": false,
-    "target": "ES2015",
-    "noImplicitAny": false,
-    "sourceMap": false,
-    "removeComments": true,
-    "declaration": false,
-    "allowJs": true,
-    "outDir": "dist/js/",
-    "allowUmdGlobalAccess": true,
-    "allowUnusedLabels": true,
-    "allowUnreachableCode": true,
-    "skipLibCheck": true
-  },
-  "include": ["./src/js"],
-  "exclude": ["dist", "node_modules"]
+    "compileOnSave": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "strict": false,
+        "target": "ES2015",
+        "noImplicitAny": false,
+        "sourceMap": false,
+        "removeComments": true,
+        "declaration": false,
+        "allowJs": true,
+        "outDir": "dist/js/",
+        "allowUmdGlobalAccess": true,
+        "allowUnusedLabels": true,
+        "allowUnreachableCode": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
+    },
+    "include": ["./src/js"],
+    "exclude": ["dist", "node_modules"]
 }

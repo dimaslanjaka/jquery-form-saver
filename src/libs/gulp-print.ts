@@ -1,7 +1,8 @@
-import * as map from "map-stream";
-import * as path from "path";
-import * as fancyLog from "fancy-log";
-import * as colors from "ansi-colors";
+/// <reference path="map-stream.d.ts"/>
+import map from "map-stream";
+import path from "path";
+import fancyLog from "fancy-log";
+import colors from "ansi-colors";
 import * as stream from "stream";
 import * as vinyl from "vinyl";
 
