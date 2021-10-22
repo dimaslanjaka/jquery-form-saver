@@ -25,4 +25,6 @@ https://github.com/dimaslanjaka/smartform
 </script>
 ```
 
-### [Codepen Example](https://codepen.io/dimaslanjaka/pen/qBNOoOe?editors=1010)
+### Codepen Example
+- [Text Input](https://codepen.io/dimaslanjaka/pen/qBNOoOe?editors=1010)
+- [Radio Button](https://codepen.io/dimaslanjaka/pen/LYjbjvr)
