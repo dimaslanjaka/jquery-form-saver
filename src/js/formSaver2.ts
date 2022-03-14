@@ -191,15 +191,18 @@ class formSaver2 {
                     return;
                 }
 
-                el.value = item;
+                // @todo check if element isn't ignored
+                if (!formSaver2.isIgnored(el, debug)) {
+                    el.value = item;
 
-                // select2
-                if (this.is_select2(el)) {
-                    console.log(`restoring ${el.getAttribute("id")} which Initialized select2`);
-                    $(el).val(item).trigger("change");
+                    // select2
+                    if (this.is_select2(el)) {
+                        console.log(`restoring ${el.getAttribute("id")} which Initialized with select2`);
+                        if (typeof jQuery !== 'undefined') $(el).val(item).trigger("change");
+                    }
                 }
             }
-            //if (debug) console.log("load", type, key, item);
+            if (debug) console.log("load", type, key, item);
         }
     }
 
