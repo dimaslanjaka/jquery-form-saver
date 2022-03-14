@@ -239,12 +239,17 @@ class formSaver2 {
                 if (item === null || !item.toString().length) {
                     return;
                 }
-                el.value = item;
-                if (this.is_select2(el)) {
-                    console.log(`restoring ${el.getAttribute("id")} which Initialized select2`);
-                    $(el).val(item).trigger("change");
+                if (!formSaver2.isIgnored(el, debug)) {
+                    el.value = item;
+                    if (this.is_select2(el)) {
+                        console.log(`restoring ${el.getAttribute("id")} which Initialized with select2`);
+                        if (typeof jQuery !== 'undefined')
+                            $(el).val(item).trigger("change");
+                    }
                 }
             }
+            if (debug)
+                console.log("load", type, key, item);
         }
     }
     static save(el, debug = false) {
