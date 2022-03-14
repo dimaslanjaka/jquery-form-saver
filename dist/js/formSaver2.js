@@ -92,7 +92,7 @@ class formSaver2 {
     static restore(el, debug = false) {
         el = this.convertElement(el);
         Count++;
-        if (formSaver2.isIgnored(el))
+        if (formSaver2.isIgnored(el, debug))
             return;
         el.setAttribute("formsaver-integrity", uniqueid);
         let item;
