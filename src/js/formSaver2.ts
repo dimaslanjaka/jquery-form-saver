@@ -129,6 +129,11 @@ class formSaver2 {
 
         return el;
     }
+    
+    // is ignored?
+    static isIgnored(el: IEHtml, debug = false) {
+      return el.hasAttribute('no-save') || el.classList.contains('no-save');
+    }
 
     /**
      * Restore form value
@@ -139,8 +144,8 @@ class formSaver2 {
     static restore(el: IEHtml, debug = false) {
         el = this.convertElement(el);
         Count++;
-        // skip no save
-        if (el.hasAttribute("no-save")) return;
+        // skip no save (ignore)
+        if (formSaver2.isIgnored(el)) return;
         el.setAttribute("formsaver-integrity", uniqueid);
         let item: any;
         const key = this.get_identifier(el);
