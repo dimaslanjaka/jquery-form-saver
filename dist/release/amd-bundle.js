@@ -206,11 +206,15 @@ var formSaver2 = (function () {
         var nodeValid = el.nodeType === 1;
         return el;
     };
+    formSaver2.isIgnored = function (el, debug) {
+        if (debug === void 0) { debug = false; }
+        return el.hasAttribute('no-save') || el.classList.contains('no-save');
+    };
     formSaver2.restore = function (el, debug) {
         if (debug === void 0) { debug = false; }
         el = this.convertElement(el);
         Count++;
-        if (el.hasAttribute("no-save"))
+        if (formSaver2.isIgnored(el))
             return;
         el.setAttribute("formsaver-integrity", uniqueid);
         var item;

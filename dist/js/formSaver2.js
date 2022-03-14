@@ -86,10 +86,13 @@ class formSaver2 {
         const nodeValid = el.nodeType === 1;
         return el;
     }
+    static isIgnored(el, debug = false) {
+        return el.hasAttribute('no-save') || el.classList.contains('no-save');
+    }
     static restore(el, debug = false) {
         el = this.convertElement(el);
         Count++;
-        if (el.hasAttribute("no-save"))
+        if (formSaver2.isIgnored(el))
             return;
         el.setAttribute("formsaver-integrity", uniqueid);
         let item;
