@@ -145,7 +145,7 @@ class formSaver2 {
         el = this.convertElement(el);
         Count++;
         // skip no save (ignore)
-        if (formSaver2.isIgnored(el)) return;
+        if (formSaver2.isIgnored(el, debug)) return;
         el.setAttribute("formsaver-integrity", uniqueid);
         let item: any;
         const key = this.get_identifier(el);
