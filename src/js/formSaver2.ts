@@ -132,7 +132,12 @@ class formSaver2 {
     
     // is ignored?
     static isIgnored(el: IEHtml, debug = false) {
-      return el.hasAttribute('no-save') || el.classList.contains('no-save');
+        const ignored = el.hasAttribute('no-save');// || el.classList.contains('no-save');
+        if (debug) {
+            let id = el.id || el.getAttribute('name') || this.get_identifier(el) || 'unidentified element';
+            console.log(`${id} is ignored (${ignored})`);
+        }
+        return ignored;
     }
 
     /**
