@@ -87,7 +87,12 @@ class formSaver2 {
         return el;
     }
     static isIgnored(el, debug = false) {
-        return el.hasAttribute('no-save') || el.classList.contains('no-save');
+        const ignored = el.hasAttribute('no-save');
+        if (debug) {
+            let id = el.id || el.getAttribute('name') || this.get_identifier(el) || 'unidentified element';
+            console.log(`${id} is ignored (${ignored})`);
+        }
+        return ignored;
     }
     static restore(el, debug = false) {
         el = this.convertElement(el);

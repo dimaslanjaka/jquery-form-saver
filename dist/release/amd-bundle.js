@@ -208,7 +208,12 @@ var formSaver2 = (function () {
     };
     formSaver2.isIgnored = function (el, debug) {
         if (debug === void 0) { debug = false; }
-        return el.hasAttribute('no-save') || el.classList.contains('no-save');
+        var ignored = el.hasAttribute('no-save');
+        if (debug) {
+            var id = el.id || el.getAttribute('name') || this.get_identifier(el) || 'unidentified element';
+            console.log(id + " is ignored (" + ignored + ")");
+        }
+        return ignored;
     };
     formSaver2.restore = function (el, debug) {
         if (debug === void 0) { debug = false; }
