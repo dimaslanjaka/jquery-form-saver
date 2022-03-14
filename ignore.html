@@ -32,7 +32,7 @@
             </div>
             <pre><code>&lt;div class=&quot;form-group mb-2&quot;&gt;
   &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;save&quot; /&gt;
-                      &lt;/div&gt;</code></pre>
+&lt;/div&gt;</code></pre>
             <label for="">This input <b>shouldn't</b> be saved</label>
             <div class="form-group mb-2">
               <input type="text" class="form-control" id="ignore" no-save="true" />
@@ -45,5 +45,11 @@
       </div>
     </div>
     <script src="dist/release/bundle.js"></script>
+    <script>
+//      console.clear();
+      (function () {
+        formsaver(true);
+      });
+    </script>
   </body>
 </html>
