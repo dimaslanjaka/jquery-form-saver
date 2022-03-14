@@ -29,3 +29,4 @@ https://github.com/dimaslanjaka/smartform
 - [Multiple Example](http://dimaslanjaka.github.io/smartform/)
 - [Text Input](https://codepen.io/dimaslanjaka/pen/qBNOoOe?editors=1010)
 - [Radio Button](https://codepen.io/dimaslanjaka/pen/LYjbjvr)
+- [Ignore Save](https://www.webmanajemen.com/smartform/ignore.html) (ignoring input to save the data)
