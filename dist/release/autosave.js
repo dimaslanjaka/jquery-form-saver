@@ -27,5 +27,5 @@ function loadAutoSaveJS(url, completeCallback) {
 
 loadAutoSaveJS("https://raw.githack.com/dimaslanjaka/smartform/master/dist/release/bundle.min.js", function(){
    // auto save all inputs, select, radio, textarea without debug (silently)
-   autosave();
+   formsaver(false);
 });
