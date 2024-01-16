@@ -1,6 +1,15 @@
 function loadAutoSaveJS(url, completeCallback) {
    var script = document.createElement('script'), done = false,
        head = document.getElementsByTagName("head")[0];
+   // when <head/> not set
+   if (!head) {
+      // append to first <body/> tag
+      head = document.getElementsByTagName("body")[0];
+   }
+   if (!head) {
+      // append to first <script/> tag
+      head = document.getElementsByTagName("script")[0];
+   }
    script.src = url;
    script.onload = script.onreadystatechange = function(){
      if ( !done && (!this.readyState ||
