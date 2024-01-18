@@ -27,7 +27,7 @@ https://github.com/dimaslanjaka/smartform
 </script>
 ```
 
-or automatically save without any config calls.
+or automatically trigger save all inputs without any calls.
 
 ```html
 <script src="https://rawcdn.githack.com/dimaslanjaka/smartform/87404cd0bdb9497691042fdd51b8e44d150aa6a2/dist/release/autosave.js"></script>
