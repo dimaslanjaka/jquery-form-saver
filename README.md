@@ -12,6 +12,8 @@ https://github.com/dimaslanjaka/smartform
 -   field has name attribute (auto create if not exists)
 -   field has id attribute (auto create if not exists)
 
+## Usages
+
 ```html
 <!--include jquery before this, if your project has jquery-->
 <script src="dist/release/bundle.min.js"></script>
@@ -23,6 +25,12 @@ https://github.com/dimaslanjaka/smartform
         formsaver(true); // true for debug
     })();
 </script>
+```
+
+or automatically trigger save all inputs without any calls.
+
+```html
+<script src="https://rawcdn.githack.com/dimaslanjaka/smartform/87404cd0bdb9497691042fdd51b8e44d150aa6a2/dist/release/autosave.js"></script>
 ```
 
 ### Codepen Example
