@@ -15,6 +15,34 @@ https://github.com/dimaslanjaka/jquery-form-saver
 
 ## Usages
 
+### in module
+#### without jquery
+
+```js
+import formSaver2 from 'jquery-form-saver';
+
+// auto save input,textarea,select elements
+const elements = document.querySelectorAll('input,textarea,select');
+// debug to console.log
+const show_debug = true;
+if (show_debug) console.log(elements);
+elements.forEach(function (el, _key, _parent) {
+    new formSaver2(el, { debug: show_debug, method: 'vanilla' });
+});
+```
+
+#### with jquery
+
+```js
+// debug to console.log
+const show_debug = true;
+jQuery('input,textarea,select').each(function (_i, _el) {
+    new formSaver2(this, { debug: show_debug, method: 'jquery' });
+});
+```
+
+in browser
+
 ```html
 <!--include jquery before this, if your project has jquery-->
 <script src="dist/release/bundle.min.js"></script>
