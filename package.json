@@ -2,22 +2,12 @@
   "name": "jquery-form-saver",
   "version": "1.1.1",
   "description": "Save user field and reuse for next page",
-  "main": "dist/form-saver.js",
-  "types": "dist/types/js/formSaver2.d.ts",
+  "main": "dist/JqueryFormSaver.js",
+  "types": "dist/types/js/JqueryFormSaver.d.ts",
+  "module": "dist/esm/JqueryFormSaver.js",
   "exports": {
     ".": {
-      "types": {
-        "require": "./dist/types/js/formSaver2.d.ts",
-        "default": "./dist/types/js/formSaver2.d.ts"
-      },
-      "browser": {
-        "require": "./dist/browser/form-saver.cjs",
-        "default": "./dist/form-saver.js"
-      },
-      "default": {
-        "require": "./dist/node/form-saver.cjs",
-        "default": "./dist/form-saver.js"
-      }
+      "import": "./dist/esm/JqueryFormSaver.js"
     },
     "./package.json": "./package.json"
   },

@@ -10,10 +10,10 @@ const autoExternal = require('rollup-plugin-auto-external');
 const tsconfigBuild = require('./tsconfig.build.json');
 
 const lib = require('./package.json');
-const outputFileName = 'form-saver';
-const name = 'jquery-form-saver';
-const namedInput = './src/js/formSaver2.ts';
-const defaultInput = './src/js/formSaver2.ts';
+const outputFileName = 'JqueryFormSaver';
+const name = 'JqueryFormSaver';
+const namedInput = './src/js/JqueryFormSaver.ts';
+const defaultInput = './src/js/JqueryFormSaver.ts';
 
 const buildConfig = ({ es5, browser = true, minifiedVersion = true, ...config }) => {
   const { file } = config.output;
