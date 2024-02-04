@@ -1,15 +1,12 @@
 {
-    "compileOnSave": true,
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ESNext",
         "strict": false,
-        "target": "ES2015",
+        "declaration": true,
         "noImplicitAny": false,
-        "sourceMap": false,
+        "sourceMap": true,
         "removeComments": true,
-        "declaration": false,
         "allowJs": true,
-        "outDir": "dist/js/",
         "allowUmdGlobalAccess": true,
         "allowUnusedLabels": true,
         "allowUnreachableCode": true,

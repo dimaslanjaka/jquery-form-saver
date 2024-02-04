@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
-        "module": "CommonJS",
+        "module": "ESNext",
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "outDir": "tmp/js",
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outDir": "dist/types",
         "moduleResolution": "Node",
         "allowJs": true,
         "typeRoots": ["./node_modules/@types", "./src/js", "./src/libs"],

@@ -1,49 +1,85 @@
-// import resolve from '@rollup/plugin-node-resolve';
-// import commonjs from '@rollup/plugin-commonjs';
-// import { terser } from 'rollup-plugin-terser';
-// import json from '@rollup/plugin-json';
-// import typescript from '@rollup/plugin-typescript';
-
 const resolve = require('@rollup/plugin-node-resolve').default;
 const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('@rollup/plugin-terser');
 const json = require('@rollup/plugin-json');
 const typescript = require('@rollup/plugin-typescript');
+const path = require('path');
+const bundleSize = require('rollup-plugin-bundle-size');
+const { babel } = require('@rollup/plugin-babel');
+const autoExternal = require('rollup-plugin-auto-external');
+const tsconfigBuild = require('./tsconfig.build.json');
 
 const lib = require('./package.json');
 const outputFileName = 'form-saver';
 const name = 'jquery-form-saver';
-const input = './src/js/formSaver2.ts';
+const namedInput = './src/js/formSaver2.ts';
+const defaultInput = './src/js/formSaver2.ts';
 
-const buildConfig = config => {
+const buildConfig = ({ es5, browser = true, minifiedVersion = true, ...config }) => {
+  const { file } = config.output;
+  const ext = path.extname(file);
+  const basename = path.basename(file, ext);
+  const extArr = ext.split('.');
+  extArr.shift();
+
   const build = ({ minified }) => ({
-    input,
+    input: namedInput,
     ...config,
     output: {
       ...config.output,
-      file: `${config.output.file}.${minified ? 'min.js' : 'js'}`
+      file: `${path.dirname(file)}/${basename}.${(minified ? ['min', ...extArr] : extArr).join('.')}`
     },
     plugins: [
-      typescript(),
+      typescript.default({ compilerOptions: tsconfigBuild.compilerOptions }),
       json(),
-      resolve({ browser: true }),
+      resolve({ browser }),
       commonjs(),
       minified && terser(),
+      minified && bundleSize(),
+      ...(es5
+        ? [
+            babel({
+              babelHelpers: 'bundled',
+              presets: ['@babel/preset-env']
+            })
+          ]
+        : []),
       ...(config.plugins || [])
     ]
   });
 
-  return [build({ minified: false }), build({ minified: true })];
+  const configs = [build({ minified: false })];
+
+  if (minifiedVersion) {
+    configs.push(build({ minified: true }));
+  }
+
+  return configs;
 };
 
 const fun = async () => {
   const year = new Date().getFullYear();
-  const banner = `// ${lib.name} v${lib.version} Copyright (c) ${year} ${lib.author}`;
+  const banner = `// SmartForm v${lib.version} Copyright (c) ${year} ${lib.author} and contributors`;
 
   return [
+    // browser ESM bundle for CDN
     ...buildConfig({
+      input: namedInput,
       output: {
-        file: `dist/${outputFileName}`,
+        file: `dist/esm/${outputFileName}.js`,
+        format: 'esm',
+        preferConst: true,
+        exports: 'named',
+        banner
+      }
+    }),
+
+    // Browser UMD bundle for CDN
+    ...buildConfig({
+      input: defaultInput,
+      es5: true,
+      output: {
+        file: `dist/${outputFileName}.js`,
         name,
         format: 'umd',
         exports: 'default',
@@ -51,14 +87,55 @@ const fun = async () => {
       }
     }),
 
+    // Browser CJS bundle
     ...buildConfig({
+      input: defaultInput,
+      es5: false,
+      minifiedVersion: false,
       output: {
-        file: `dist/esm/${outputFileName}`,
-        format: 'esm',
-        preferConst: true,
-        exports: 'named',
+        file: `dist/browser/${name}.cjs`,
+        name,
+        format: 'cjs',
+        exports: 'default',
         banner
       }
+    }),
+
+    // Node.js commonjs bundle
+    {
+      input: defaultInput,
+      output: {
+        file: `dist/node/${name}.cjs`,
+        format: 'cjs',
+        preferConst: true,
+        exports: 'default',
+        banner
+      },
+      plugins: [
+        typescript.default({ compilerOptions: tsconfigBuild.compilerOptions }),
+        autoExternal(),
+        resolve(),
+        commonjs()
+      ]
+    },
+
+    // bundle release
+    ...buildConfig({
+      input: './src/js/main.ts',
+      minifiedVersion: true,
+      es5: true,
+      output: {
+        file: 'dist/release/bundle.js',
+        format: 'umd',
+        exports: 'default',
+        banner,
+        name: 'formsaver'
+      },
+      plugins: [
+        typescript.default({ compilerOptions: { ...tsconfigBuild.compilerOptions, declaration: false } }),
+        resolve(),
+        commonjs()
+      ]
     })
   ];
 };
