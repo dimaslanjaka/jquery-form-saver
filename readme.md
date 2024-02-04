@@ -19,7 +19,7 @@ https://github.com/dimaslanjaka/jquery-form-saver
 #### without jquery
 
 ```js
-import formSaver2 from 'jquery-form-saver';
+import JqueryFormSaver from 'jquery-form-saver';
 
 // auto save input,textarea,select elements
 const elements = document.querySelectorAll('input,textarea,select');
@@ -27,7 +27,7 @@ const elements = document.querySelectorAll('input,textarea,select');
 const show_debug = true;
 if (show_debug) console.log(elements);
 elements.forEach(function (el, _key, _parent) {
-    new formSaver2(el, { debug: show_debug, method: 'vanilla' });
+    new JqueryFormSaver(el, { debug: show_debug, method: 'vanilla' });
 });
 ```
 
@@ -37,7 +37,7 @@ elements.forEach(function (el, _key, _parent) {
 // debug to console.log
 const show_debug = true;
 jQuery('input,textarea,select').each(function (_i, _el) {
-    new formSaver2(this, { debug: show_debug, method: 'jquery' });
+    new JqueryFormSaver(this, { debug: show_debug, method: 'jquery' });
 });
 ```
 

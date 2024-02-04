@@ -1,6 +1,6 @@
 import IsJsonString from './isJsonString';
 
-export default class formSaver2Storage {
+export default class JqueryFormSaverStorage {
   /**
    * See {@see localstorage.setItem}
    * @param key

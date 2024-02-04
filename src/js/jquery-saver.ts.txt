@@ -2,9 +2,9 @@
 /// <reference path="./_a_Object.d.ts"/>
 /// <reference path="./globals.d.ts"/>
 /// <reference path="./index.d.ts"/>
-/// <reference path="./formSaver2.ts" />
+/// <reference path="./JqueryFormSaver.ts" />
 
-import formSaver2 from './formSaver2';
+import JqueryFormSaver from './JqueryFormSaver';
 import makeid from './makeid';
 
 const uniqueid = makeid(5);
@@ -38,7 +38,7 @@ if (isBrowser()) {
           if ($(this).attr('aria-autovalue')) {
             $(this).val(uniqueid).trigger('change');
           }
-          return formSaver2.get_identifier(this);
+          return JqueryFormSaver.get_identifier(this);
         };
         $.fn.has_attr = function (name: string) {
           const attr = $(this).attr(name);
@@ -49,7 +49,7 @@ if (isBrowser()) {
 
         $.fn.smartForm = function () {
           Count++;
-          new formSaver2(<any>$(this).get(0));
+          new JqueryFormSaver(<any>$(this).get(0));
         };
 
         $.arrive = function (target, callback) {

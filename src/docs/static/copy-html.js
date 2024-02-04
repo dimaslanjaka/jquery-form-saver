@@ -49,7 +49,7 @@ function populateField() {
 /**
  * @type {Array}
  */
-let listDeleted = formSaver2Storage.get('listWrapper', []);
+let listDeleted = JqueryFormSaverStorage.get('listWrapper', []);
 
 /**
  *
@@ -58,11 +58,11 @@ let listDeleted = formSaver2Storage.get('listWrapper', []);
 function deleteField(el) {
   listDeleted.push(el.parentElement.parentElement.id);
   el.parentElement.parentElement.remove();
-  formSaver2Storage.set('listWrapper', listDeleted);
+  JqueryFormSaverStorage.set('listWrapper', listDeleted);
 }
 
 function reset() {
-  formSaver2Storage.set('listWrapper', []);
+  JqueryFormSaverStorage.set('listWrapper', []);
   listDeleted = [];
   populateField();
 }

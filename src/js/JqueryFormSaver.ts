@@ -30,7 +30,7 @@ const uniqueid = makeid(5);
  */
 let Count = -1;
 
-class formSaver2 {
+class JqueryFormSaver {
   /**
    * Get Offsets Element
    * @param el
@@ -353,4 +353,4 @@ class formSaver2 {
 }
 
 /// modify this to tell typescript compiler
-export default formSaver2;
+export default JqueryFormSaver;

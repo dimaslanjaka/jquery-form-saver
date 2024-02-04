@@ -1,6 +1,6 @@
 //// MAIN SCRIPT
 
-import formSaver2 from './formSaver2';
+import JqueryFormSaver from './JqueryFormSaver';
 
 /**
  * Set all forms to be saved with method vanilla
@@ -13,7 +13,7 @@ export default function formsaver(show_debug: boolean = false) {
 
     if (typeof jQuery != 'undefined') {
       jQuery('input,textarea,select').each(function (_i, _el) {
-        new formSaver2(<any>this, { debug: show_debug, method: 'jquery' });
+        new JqueryFormSaver(<any>this, { debug: show_debug, method: 'jquery' });
       });
     }
   } else {
@@ -22,7 +22,7 @@ export default function formsaver(show_debug: boolean = false) {
     if (show_debug) console.log(elements);
     elements.forEach(function (el, _key, _parent) {
       //console.log(el);
-      new formSaver2(<any>el, { debug: show_debug, method: 'vanilla' });
+      new JqueryFormSaver(<any>el, { debug: show_debug, method: 'vanilla' });
     });
   }
 }
