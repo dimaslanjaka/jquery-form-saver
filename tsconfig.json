@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outDir": "dist/types",
+        "moduleResolution": "Node",
+        "allowJs": true,
+        "typeRoots": ["./node_modules/@types", "./src/js", "./src/libs"],
+        "types": ["jquery", "node"],
+        "target": "ES5",
+        "lib": ["DOM", "ES5", "ES6", "ES2015", "ES2016", "ES2017", "ES2018", "ES2019", "ES2020"]
+    },
+    "include": ["./src/js", "./src/libs", "src/docs/static"],
+    "exclude": ["dist", "node_modules", "./dist/release/*.js", "./dist/**/*.js"]
+}

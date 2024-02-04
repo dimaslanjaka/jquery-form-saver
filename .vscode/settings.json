@@ -1,0 +1,13 @@
+{
+    "files.autoSave": "off",
+    "editor.wordWrap": "on",
+    "npm.packageManager": "yarn",
+    "npm.autoDetect": "off",
+    "terminal.integrated.env.windows": {
+        "PATH": "${env:PATH};./node_modules/.bin"
+    },
+    "terminal.integrated.env.linux": {
+        "PATH": "${env:PATH};./node_modules/.bin"
+    },
+    "editor.formatOnSave": false
+}
