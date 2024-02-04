@@ -21,6 +21,13 @@
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "dist",
+    "src",
+    "*.json",
+    "LICENSE",
+    "*.md"
+  ],
   "directories": {
     "doc": "docs"
   },
