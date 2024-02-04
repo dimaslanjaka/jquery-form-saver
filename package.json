@@ -26,7 +26,7 @@
     "serve": "php -S localhost:4000",
     "clean": "rimraf dist/*",
     "build": "cross-env-shell NODE_ENV=production rollup -c -m",
-    "watch": "cross-env-shell NODE_ENV=production rollup -c -m -w"
+    "dev": "cross-env-shell NODE_ENV=production rollup -c -m -w"
   },
   "dependencies": {
     "jquery": "^3.7.1"
