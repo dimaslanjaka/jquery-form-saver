@@ -36,7 +36,7 @@ class formSaver2 {
    * @param el
    * @returns
    */
-  offset(el: HTMLElement) {
+  offset(el: IEHtml | Element | HTMLElement) {
     return el.getBoundingClientRect();
   }
 
@@ -92,7 +92,7 @@ class formSaver2 {
   /**
    * Pure javascript event listener
    */
-  vanilla_listener(el: IEHtml, callback: EventListenerOrEventListenerObject) {
+  vanilla_listener(el: IEHtml | Element | HTMLElement, callback: EventListenerOrEventListenerObject) {
     if (el.addEventListener) {
       el.addEventListener('change', callback);
     } else if (el.attachEvent) {
@@ -110,7 +110,7 @@ class formSaver2 {
     return el.nodeType === 1 && el.hasAttribute(name);
   }
 
-  private convertElement(el: IEHtml) {
+  private convertElement(el: IEHtml | Element | HTMLElement) {
     if (this.is_jquery() && el instanceof jQuery) {
       el = el.get(0);
     }
@@ -122,7 +122,7 @@ class formSaver2 {
   }
 
   // is ignored?
-  isIgnored(el: IEHtml, debug = false) {
+  isIgnored(el: IEHtml | Element | HTMLElement, debug = false) {
     const ignored = el.hasAttribute('no-save'); // || el.classList.contains('no-save');
     if (debug) {
       const id = el.id || el.getAttribute('name') || this.get_identifier(el) || 'unidentified element';
@@ -137,7 +137,7 @@ class formSaver2 {
    * @param debug
    * @returns
    */
-  restore(el: IEHtml, debug = false) {
+  restore(el: IEHtml | Element | HTMLElement, debug = false) {
     el = this.convertElement(el);
     Count++;
     // skip no save (ignore)
@@ -210,7 +210,7 @@ class formSaver2 {
    * @param el
    * @returns
    */
-  save(el: IEHtml, debug = false) {
+  save(el: IEHtml | Element | HTMLElement, debug = false) {
     el = this.convertElement(el);
     const key = this.get_identifier(el);
     const item = el.value;
@@ -243,7 +243,7 @@ class formSaver2 {
     }
   }
 
-  delete(el: IEHtml, debug = false) {
+  delete(el: IEHtml | Element | HTMLElement, debug = false) {
     el = this.convertElement(el);
     const key = this.get_identifier(el);
     if (debug) console.log(`deleting ${key}`);
@@ -255,7 +255,7 @@ class formSaver2 {
    * @param el
    * @returns
    */
-  is_select2(el: HTMLElement) {
+  is_select2(el: IEHtml | Element | HTMLElement) {
     return this.is_jquery() && $(el).data('select2');
   }
 
@@ -267,7 +267,7 @@ class formSaver2 {
     return typeof jQuery != 'undefined';
   }
 
-  get_identifier(el: IEHtml) {
+  get_identifier(el: IEHtml | Element | HTMLElement) {
     el = this.convertElement(el);
 
     const attrNotExist = function (attrname: string) {
@@ -326,7 +326,7 @@ class formSaver2 {
     return location.pathname + el.getAttribute('id');
   }
 
-  constructor(el: IEHtml, options?: { debug?: boolean; method?: 'vanilla' | 'jquery' }) {
+  constructor(el: IEHtml | Element | HTMLElement, options?: { debug?: boolean; method?: 'vanilla' | 'jquery' }) {
     const defaultOpt = {
       debug: false,
       method: 'vanilla'
