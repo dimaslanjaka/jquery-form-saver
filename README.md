@@ -33,6 +33,19 @@ or automatically trigger save all inputs without any calls.
 <script src="https://rawcdn.githack.com/dimaslanjaka/smartform/87404cd0bdb9497691042fdd51b8e44d150aa6a2/dist/release/autosave.js"></script>
 ```
 
+or used in reactjs
+
+```js
+componentDidMount() {
+  const script = document.createElement("script");
+  script.src = "https://rawcdn.githack.com/dimaslanjaka/smartform/87404cd0bdb9497691042fdd51b8e44d150aa6a2/dist/release/autosave.js";
+  script.async = true;
+  script.onload = () => this.scriptLoaded();
+
+  document.body.appendChild(script);
+}
+```
+
 ### Codepen Example
 - [Multiple Example](http://dimaslanjaka.github.io/smartform/)
 - [Text Input](https://codepen.io/dimaslanjaka/pen/qBNOoOe?editors=1010)
