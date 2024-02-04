@@ -2,7 +2,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.formsaver = factory());
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.JqueryFormSaver = factory());
 })(this, (function () { 'use strict';
 
     function getCheckedValue(el) {
@@ -304,30 +304,7 @@
         return JqueryFormSaver;
     }());
 
-    function formsaver(show_debug) {
-        if (show_debug === void 0) { show_debug = false; }
-        if (typeof jQuery != 'undefined') {
-            if (show_debug)
-                console.log("starting form saver with jQuery debug(".concat(show_debug, ")"));
-            if (typeof jQuery != 'undefined') {
-                jQuery('input,textarea,select').each(function (_i, _el) {
-                    new JqueryFormSaver(this, { debug: show_debug, method: 'jquery' });
-                });
-            }
-        }
-        else {
-            if (show_debug)
-                console.log("starting form saver without jQuery debug(".concat(show_debug, ")"));
-            var elements = document.querySelectorAll('input,textarea,select');
-            if (show_debug)
-                console.log(elements);
-            elements.forEach(function (el, _key, _parent) {
-                new JqueryFormSaver(el, { debug: show_debug, method: 'vanilla' });
-            });
-        }
-    }
-
-    return formsaver;
+    return JqueryFormSaver;
 
 }));
-//# sourceMappingURL=bundle.js.map
+//# sourceMappingURL=JqueryFormSaver.js.map
