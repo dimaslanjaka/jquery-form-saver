@@ -1,6 +1,6 @@
 # Smartform JS
 
-https://github.com/dimaslanjaka/smartform
+https://github.com/dimaslanjaka/jquery-form-saver
 
 ## Features
 
