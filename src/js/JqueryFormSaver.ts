@@ -331,6 +331,7 @@ class JqueryFormSaver {
       debug: false,
       method: 'vanilla'
     };
+    const self = this;
     if (typeof options != 'object') options = {};
     options = Object.assign(defaultOpt, options);
     //console.log(`init debug ${options.debug}`, el);
@@ -346,7 +347,7 @@ class JqueryFormSaver {
       console.log('vanilla listener started');
       this.vanilla_listener(el, function () {
         // console.log(arguments);
-        this.save(el, options.debug);
+        self.save(el, options.debug);
       });
     }
   }
