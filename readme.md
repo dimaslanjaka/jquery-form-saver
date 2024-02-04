@@ -59,11 +59,11 @@ in browser
 or automatically trigger save all inputs without any calls.
 
 ```html
-<script src="https://rawcdn.githack.com/dimaslanjaka/smartform/87404cd0bdb9497691042fdd51b8e44d150aa6a2/dist/release/autosave.js"></script>
+<script src="https://rawcdn.githack.com/dimaslanjaka/jquery-form-saver/87404cd0bdb9497691042fdd51b8e44d150aa6a2/dist/release/autosave.js"></script>
 ```
 
 ### Codepen Example
-- [Multiple Example](http://dimaslanjaka.github.io/smartform/)
+- [Multiple Example](http://dimaslanjaka.github.io/jquery-form-saver/)
 - [Text Input](https://codepen.io/dimaslanjaka/pen/qBNOoOe?editors=1010)
 - [Radio Button](https://codepen.io/dimaslanjaka/pen/LYjbjvr)
-- [Ignore Save](https://www.webmanajemen.com/smartform/ignore.html) (ignoring input to save the data)
+- [Ignore Save](https://www.webmanajemen.com/jquery-form-saver/ignore.html) (ignoring input to save the data)
