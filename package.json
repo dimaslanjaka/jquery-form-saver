@@ -3,12 +3,12 @@
   "version": "1.1.1",
   "description": "Save user field and reuse for next page",
   "main": "dist/form-saver.js",
-  "types": "dist/types/formSaver2.d.ts",
+  "types": "dist/types/js/formSaver2.d.ts",
   "exports": {
     ".": {
       "types": {
-        "require": "./dist/types/formSaver2.d.ts",
-        "default": "./dist/types/formSaver2.d.ts"
+        "require": "./dist/types/js/formSaver2.d.ts",
+        "default": "./dist/types/js/formSaver2.d.ts"
       },
       "browser": {
         "require": "./dist/browser/form-saver.cjs",
