@@ -3,3 +3,4 @@ node_modules
 .yarn/*gz
 yarn.lock
 package-lock.json
+/docs

@@ -52,6 +52,7 @@
   },
   "homepage": "https://github.com/dimaslanjaka/form-saver#readme",
   "devDependencies": {
+    "@babel/core": "^7.23.9",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -59,6 +60,7 @@
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
     "@types/fancy-log": "^2.0.2",
     "@types/gulp": "^4.0.17",
@@ -126,5 +128,9 @@
     "vinyl-source-stream": "^2.0.0",
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4"
+  },
+  "resolutions": {
+    "@babel/core": "^7.0.0",
+    "@types/babel__core": "^7.1.9"
   }
 }
