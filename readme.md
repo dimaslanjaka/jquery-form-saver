@@ -41,7 +41,7 @@ jQuery('input,textarea,select').each(function (_i, _el) {
 });
 ```
 
-in browser
+### in browser
 
 ```html
 <!--include jquery before this, if your project has jquery-->
