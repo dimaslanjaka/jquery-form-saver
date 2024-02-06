@@ -6,7 +6,7 @@ https://github.com/dimaslanjaka/jquery-form-saver
 
 -   Automatically save all input field whole document web to reuse later
 -   Allow browser save user input automatically and restore after page loaded.
--   Work without jquery (auto detect jquery undefined) using `smartform` function
+-   Work without jquery (auto detect jquery undefined) using `formsaver` function
 
 ## Requirements
 
