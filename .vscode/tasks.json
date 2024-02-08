@@ -13,6 +13,11 @@
 			"group": {
 				"kind": "build",
 				"isDefault": true
+			},
+			"options": {
+				"env": {
+					"PATH": "${env:PATH};./node_modules/.bin"
+				}
 			}
 		}
 	]

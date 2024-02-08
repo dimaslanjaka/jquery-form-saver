@@ -1,4 +1,4 @@
-// SmartForm v1.1.1 Copyright (c) 2024 Dimas Lanjaka and contributors
+// SmartForm v1.1.2 Copyright (c) 2024 Dimas Lanjaka and contributors
 'use strict';
 
 function getCheckedValue(el) {
@@ -45,6 +45,37 @@ else {
 var formField = formFieldBuild;
 var uniqueid = makeid(5);
 var Count = -1;
+if (typeof jQuery != 'undefined') {
+    (function ($) {
+        $.fn.getIDName = function () {
+            if ($(this).attr('aria-autovalue')) {
+                $(this).val(uniqueid).trigger('change');
+            }
+            return $(this).attr('name') || $(this).attr('id');
+        };
+        $.fn.has_attr = function (name) {
+            var attr = $(this).attr(name);
+            return typeof attr !== 'undefined' && attr !== false;
+        };
+        $.fn.smartForm = function () {
+            Count++;
+            new JqueryFormSaver($(this).get(0));
+        };
+        $.arrive = function (target, callback) {
+            if (target) {
+                $(target).bind('DOMNodeInserted', callback);
+            }
+            else {
+                if (typeof callback == 'function') {
+                    $(document).bind('DOMNodeInserted', callback);
+                }
+                else if (typeof target == 'function') {
+                    $(document).bind('DOMNodeInserted', target);
+                }
+            }
+        };
+    })(jQuery);
+}
 var JqueryFormSaver = (function () {
     function JqueryFormSaver(el, options) {
         var defaultOpt = {
