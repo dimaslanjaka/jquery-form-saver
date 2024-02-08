@@ -30,6 +30,45 @@ const uniqueid = makeid(5);
  */
 let Count = -1;
 
+// declare jquery plugin
+
+if (typeof jQuery != 'undefined') {
+  (function ($) {
+    $.fn.getIDName = function () {
+      // get attr id or name
+      if ($(this).attr('aria-autovalue')) {
+        // seeder auto value
+        $(this).val(uniqueid).trigger('change');
+      }
+      // return JqueryFormSaver.get_identifier(this);
+      return $(this).attr('name') || $(this).attr('id');
+    };
+    $.fn.has_attr = function (name: string) {
+      const attr = $(this).attr(name);
+      // For some browsers, `attr` is undefined; for others,
+      // `attr` is false.  Check for both.
+      return typeof attr !== 'undefined' && attr !== false;
+    };
+
+    $.fn.smartForm = function () {
+      Count++;
+      new JqueryFormSaver(<any>$(this).get(0));
+    };
+
+    $.arrive = function (target, callback) {
+      if (target) {
+        $(target).bind('DOMNodeInserted', callback);
+      } else {
+        if (typeof callback == 'function') {
+          $(document).bind('DOMNodeInserted', callback);
+        } else if (typeof target == 'function') {
+          $(document).bind('DOMNodeInserted', target);
+        }
+      }
+    };
+  })(jQuery);
+}
+
 class JqueryFormSaver {
   /**
    * Get Offsets Element
