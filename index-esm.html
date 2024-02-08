@@ -1,6 +1,4 @@
-<!-- @format -->
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,9 +9,14 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous" />
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0-10/css/all.min.css" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1165447249910969" crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2188063137129806"
+      crossorigin="anonymous"
+    ></script>
     <style>
       pre {
         white-space: pre-wrap; /* css-3 */
@@ -23,7 +26,6 @@
         word-wrap: break-word; /* Internet Explorer 5.5+ */
       }
     </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1165447249910969" crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="container-fluid">
@@ -47,7 +49,13 @@
 
           <label for="">Ignore Save Data</label>
           <div class="form-group mb-2">
-            <input type="text" class="form-control" id="no-save" no-save="true" />
+            <input
+              type="text"
+              class="form-control"
+              id="no-save"
+              no-save="true"
+              placeholder="all your inputs here will cleared later"
+            />
           </div>
 
           <label for="">Input without id with checkbox</label>
@@ -67,12 +75,12 @@
             </div>
             <div class="">
               <input class="form-check-input" type="radio" name="radio" id="radio1" value="option1" />
-              <label class="form-check-label" for="radio1"> radio with id and name </label>
+              <label class="form-check-label" for="radio1">radio with id and name</label>
             </div>
 
             <div>
               <input class="form-check-input" type="radio" name="radio" id="radio2" value="option2" />
-              <label class="form-check-label" for="radio1"> radio with id and name 2 </label>
+              <label class="form-check-label" for="radio1">radio with id and name 2</label>
             </div>
           </div>
 
@@ -98,21 +106,28 @@
         </div>
         <div class="text-center col">
           <i class="fab fa-github"></i>
-          <a href="https://github.com/dimaslanjaka/jquery-form-saver/tree/compiler">https://github.com/dimaslanjaka/jquery-form-saver/tree/compiler</a>
-          <br />
-          <i class="fas fa-external-link-alt"></i>
-          <a href="https://www.webmanajemen.com/jquery-form-saver/ignore.html">Ignore Save Example</a>
+          <a href="https://github.com/dimaslanjaka/jquery-form-saver/tree/compiler">
+            https://github.com/dimaslanjaka/jquery-form-saver/tree/compiler
+          </a>
+          <br>
+          <a href="/jquery-form-saver/index.html">without jQuery Example</a>
+          <br>
+          <a href="/jquery-form-saver/index-ignore.html">with jQuery Example</a>
+          <br>
+          <a href="/jquery-form-saver/index-esm.html">ESM Example</a>
         </div>
       </div>
     </div>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
-    <script src="dist/release/bundle.min.js"></script>
-    <script>
-      (function () {
-        formsaver(true);
-        hljs.highlightAll();
-      })();
+    <script type="module">
+      import JqueryFormSaver from './dist/esm/JqueryFormSaver.js';
+      const elements = document.querySelectorAll('input,textarea,select');
+      console.log(elements);
+      elements.forEach(function (el, _key, _parent) {
+        //console.log(el);
+        new JqueryFormSaver(el, { debug: true, method: 'vanilla' });
+      });
     </script>
   </body>
 </html>
