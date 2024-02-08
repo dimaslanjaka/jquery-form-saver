@@ -59,7 +59,7 @@ jQuery('input,textarea,select').each(function (_i, _el) {
 or automatically trigger save all inputs without any calls.
 
 ```html
-<script src="https://rawcdn.githack.com/dimaslanjaka/jquery-form-saver/master/dist/release/autosave.js"></script>
+<script src="https://raw.githack.com/dimaslanjaka/jquery-form-saver/master/dist/release/autosave.js"></script>
 ```
 
 ### Codepen Example
