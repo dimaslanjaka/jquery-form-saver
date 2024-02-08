@@ -62,6 +62,44 @@ const fun = async () => {
   const banner = `// SmartForm v${lib.version} Copyright (c) ${year} ${lib.author} and contributors`;
 
   return [
+    // bundle release
+    ...buildConfig({
+      input: './src/js/main.ts',
+      minifiedVersion: true,
+      es5: true,
+      output: {
+        file: 'dist/release/bundle.js',
+        format: 'umd',
+        exports: 'default',
+        banner,
+        name: 'formsaver'
+      },
+      plugins: [
+        typescript.default({ compilerOptions: { ...tsconfigBuild.compilerOptions, declaration: false } }),
+        resolve(),
+        commonjs()
+      ]
+    }),
+
+    // bundle autosave.js
+    ...buildConfig({
+      input: './src/js/autosave.ts',
+      minifiedVersion: true,
+      es5: true,
+      output: {
+        file: 'dist/release/autosave.js',
+        format: 'iife',
+        // exports: 'default',
+        banner
+        // name: 'formsaver'
+      },
+      plugins: [
+        typescript.default({ compilerOptions: { ...tsconfigBuild.compilerOptions, declaration: false } }),
+        resolve(),
+        commonjs()
+      ]
+    }),
+
     // browser ESM bundle for CDN
     ...buildConfig({
       input: namedInput,
@@ -117,26 +155,7 @@ const fun = async () => {
         resolve(),
         commonjs()
       ]
-    },
-
-    // bundle release
-    ...buildConfig({
-      input: './src/js/main.ts',
-      minifiedVersion: true,
-      es5: true,
-      output: {
-        file: 'dist/release/bundle.js',
-        format: 'umd',
-        exports: 'default',
-        banner,
-        name: 'formsaver'
-      },
-      plugins: [
-        typescript.default({ compilerOptions: { ...tsconfigBuild.compilerOptions, declaration: false } }),
-        resolve(),
-        commonjs()
-      ]
-    })
+    }
   ];
 };
 
