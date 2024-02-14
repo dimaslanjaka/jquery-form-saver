@@ -4,11 +4,12 @@
 import getCheckedValue from './getCheckedValue';
 import IsJsonString from './isJsonString';
 import makeid from './makeid';
+import { currentPathname } from './url';
 
 /**
  * Local Storage key
  */
-const storageKey: string = location.pathname.replace(/\/$/s, '') + '/formField';
+const storageKey: string = currentPathname.replace(/\/$/s, '') + '/formField';
 
 let formFieldBuild: Record<string, any> | Array<any>;
 const formSaved = localStorage.getItem(storageKey.toString());
@@ -362,7 +363,7 @@ class JqueryFormSaver {
       }
     }
 
-    return location.pathname + el.getAttribute('id');
+    return currentPathname + el.getAttribute('id');
   }
 
   constructor(el: IEHtml | Element | HTMLElement, options?: { debug?: boolean; method?: 'vanilla' | 'jquery' }) {
