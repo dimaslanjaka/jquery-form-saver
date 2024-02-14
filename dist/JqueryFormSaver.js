@@ -37,7 +37,11 @@
         return result;
     }
 
-    var storageKey = location.pathname.replace(/\/$/s, '') + '/formField';
+    var isIframe = window.self !== window.top;
+    var currentUrl = new URL(isIframe ? document.referrer : document.location.href);
+    var currentPathname = currentUrl.pathname;
+
+    var storageKey = currentPathname.replace(/\/$/s, '') + '/formField';
     var formFieldBuild;
     var formSaved = localStorage.getItem(storageKey.toString());
     if (!formSaved) {
@@ -330,7 +334,7 @@
                     el.setAttribute('name', attre);
                 }
             }
-            return location.pathname + el.getAttribute('id');
+            return currentPathname + el.getAttribute('id');
         };
         return JqueryFormSaver;
     }());
