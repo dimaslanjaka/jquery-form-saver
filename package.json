@@ -7,7 +7,9 @@
   "module": "dist/esm/JqueryFormSaver.js",
   "exports": {
     ".": {
-      "import": "./dist/esm/JqueryFormSaver.js"
+      "import": "./dist/esm/JqueryFormSaver.js",
+      "require": "./dist/browser/JqueryFormSaver.cjs",
+      "types": "./dist/types/js/JqueryFormSaver.d.ts"
     },
     "./package.json": "./package.json"
   },
