@@ -9,7 +9,7 @@ import { currentPathname } from './url';
 /**
  * Local Storage key
  */
-const storageKey: string = currentPathname.replace(/\/$/s, '') + '/formField';
+const storageKey: string = currentPathname.replace(/\/$/, '') + '/formField';
 
 let formFieldBuild: Record<string, any> | Array<any>;
 const formSaved = localStorage.getItem(storageKey.toString());
