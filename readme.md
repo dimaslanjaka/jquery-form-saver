@@ -15,6 +15,8 @@ https://github.com/dimaslanjaka/jquery-form-saver
 
 ## Usages
 
+> To ignore form inputs/textarea to being saved, add attribute `no-save='true'`
+
 ### in module
 #### without jquery
 
