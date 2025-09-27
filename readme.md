@@ -66,6 +66,10 @@ or automatically trigger save all inputs without any calls.
 <script src="https://rawcdn.githack.com/dimaslanjaka/jquery-form-saver/38176c68300c834d6692953a1be7407caed01832/dist/release/autosave.js"></script>
 ```
 
+## React
+
+> Read react usage at [https://github.com/dimaslanjaka/jquery-form-saver/blob/compiler/src/react/README.md](https://github.com/dimaslanjaka/jquery-form-saver/blob/compiler/src/react/README.md)
+
 ### Codepen Example
 - [Multiple Example](http://dimaslanjaka.github.io/jquery-form-saver/)
 - [Text Input](https://codepen.io/dimaslanjaka/pen/qBNOoOe?editors=1010)
