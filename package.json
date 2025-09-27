@@ -11,6 +11,11 @@
       "require": "./dist/browser/JqueryFormSaver.cjs",
       "types": "./dist/types/js/JqueryFormSaver.d.ts"
     },
+    "./react": {
+      "import": "./src/react/index.ts",
+      "require": "./src/react/index.ts",
+      "types": "./src/react/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -32,6 +37,14 @@
   },
   "dependencies": {
     "jquery": "^3.7.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "registry-git": "https://npm.pkg.github.com/",
@@ -69,6 +82,7 @@
     "@types/gulp-tap": "^1.0.5",
     "@types/jquery": "*",
     "@types/node": "^24.5.2",
+    "@types/react": "^18.0.0",
     "@types/rollup-plugin-auto-external": "^2",
     "@types/through": "0.0.33",
     "@types/vinyl-source-stream": "0.0.34",
@@ -109,5 +123,8 @@
   "resolutions": {
     "@babel/core": "^7.0.0",
     "@types/babel__core": "^7.1.9"
-  }
+  },
+  "workspaces": [
+    "demo/*"
+  ]
 }
