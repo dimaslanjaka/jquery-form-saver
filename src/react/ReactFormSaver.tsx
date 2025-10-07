@@ -9,6 +9,7 @@ interface ReactFormSaverProps {
   ignoredAttributes?: string[];
   autoSave?: boolean;
   className?: string;
+  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
   onSave?: (element: HTMLElement) => void;
   onRestore?: (element: HTMLElement) => void;
 }
@@ -96,6 +97,13 @@ export interface ReactFormSaverRef {
  * - `clearForm()` — clear saved entries
  * - `saveElementValue(elem)` / `restoreElementValue(elem)` / `clearElementValue(elem)`
  *
+ * onSubmit behavior:
+ * - If `onSubmit` is provided, the component will intercept the form submit event,
+ *   call `saveForm()` to persist values, prevent default browser submission, and
+ *   then call the provided `onSubmit` callback with the submit event.
+ * - This ensures controlled components can persist DOM values before the
+ *   consumer handles the submit logic (e.g., API calls).
+ *
  */
 export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>(
   (
@@ -106,6 +114,7 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
       ignoredAttributes = ['no-save'],
       autoSave = true,
       className,
+      onSubmit,
       onSave,
       onRestore
     },
@@ -136,11 +145,25 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
         },
         clearElementValue
       }),
-      [saveForm, restoreForm, clearForm, saveElementValue, restoreElementValue, clearElementValue, onSave, onRestore]
+  [saveForm, restoreForm, clearForm, saveElementValue, restoreElementValue, clearElementValue, onSave, onRestore, onSubmit]
     );
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+      // Always persist current form values first
+      try {
+        saveForm();
+      } catch (err) {
+        // ignore save errors
+      }
+      // Prevent default to let consumer control submission if they provided a handler
+      if (typeof onSubmit === 'function') {
+        e.preventDefault();
+        onSubmit(e);
+      }
+    };
+
     return (
-      <form ref={formRef} className={className}>
+      <form ref={formRef} className={className} onSubmit={handleSubmit} onReset={clearForm}>
         {children}
       </form>
     );
