@@ -23,36 +23,79 @@ export interface ReactFormSaverRef {
 }
 
 /**
- * React component version of JqueryFormSaver
- * Wraps form elements and automatically saves/restores their values
+ * React component version of JqueryFormSaver.
  *
- * @example
+ * Wraps form elements and automatically saves/restores their values to
+ * web storage (localStorage) using an optional `storagePrefix` key.
+ *
+ * Usage notes:
+ * - Inputs must have a `name` attribute to be saved/restored.
+ * - The component restores values into the DOM. If you use controlled React
+ *   inputs (value + onChange) you should synchronize the restored DOM value
+ *   back into React state after calling `restoreForm()` (see example).
+ * - Use the `ignoredAttributes` prop or the `no-save` attribute on an input to
+ *   exclude fields (for example OTP codes) from being stored.
+ *
+ * Examples:
+ *
+ * 1) Basic usage (uncontrolled inputs or inputs you don't need to sync into state):
+ *
  * ```tsx
- * import { ReactFormSaver } from 'jquery-form-saver/react';
+ * import React, { useRef } from 'react';
+ * import { ReactFormSaver, ReactFormSaverRef } from 'jquery-form-saver/react';
  *
- * function MyForm() {
- *   const formSaverRef = useRef<ReactFormSaverRef>(null);
- *
+ * function ContactForm() {
+ *   const ref = useRef<ReactFormSaverRef | null>(null);
  *   return (
- *     <ReactFormSaver ref={formSaverRef} debug={true}>
- *       <form>
- *         <input type="text" name="username" placeholder="Username" />
- *         <input type="email" name="email" placeholder="Email" />
- *         <textarea name="message" placeholder="Message"></textarea>
- *         <select name="category">
- *           <option value="">Select Category</option>
- *           <option value="general">General</option>
- *           <option value="support">Support</option>
- *         </select>
- *         <input type="checkbox" name="subscribe" /> Subscribe to newsletter
- *         <input type="radio" name="priority" value="low" /> Low
- *         <input type="radio" name="priority" value="high" /> High
- *         <button type="submit">Submit</button>
- *       </form>
+ *     <ReactFormSaver ref={ref} storagePrefix="contact-form">
+ *       <input name="email" type="email" placeholder="Email" />
+ *       <textarea name="message" placeholder="Message" />
  *     </ReactFormSaver>
  *   );
  * }
  * ```
+ *
+ * 2) Controlled inputs — restore into React state after restore:
+ *
+ * ```tsx
+ * import React, { useRef, useEffect, useState } from 'react';
+ * import { ReactFormSaver, ReactFormSaverRef } from 'jquery-form-saver/react';
+ *
+ * function LoginForm() {
+ *   const ref = useRef<ReactFormSaverRef | null>(null);
+ *   const [phone, setPhone] = useState('');
+ *
+ *   useEffect(() => {
+ *     // restore DOM values first
+ *     ref.current?.restoreForm();
+ *     // then sync DOM -> state for controlled inputs
+ *     const el = document.querySelector<HTMLInputElement>("input[name='phone']");
+ *     if (el?.value) setPhone(el.value);
+ *   }, []);
+ *
+ *   return (
+ *     <ReactFormSaver ref={ref} storagePrefix="login">
+ *       <input name="phone" value={phone} onChange={e => setPhone(e.target.value)} />
+ *     </ReactFormSaver>
+ *   );
+ * }
+ * ```
+ *
+ * 3) Ignoring OTP fields (do not persist):
+ *
+ * ```tsx
+ * <ReactFormSaver ignoredAttributes={['no-save']}>
+ *   <input name="im3_phone" />
+ *   <input name="im3_otp" no-save="true" />
+ * </ReactFormSaver>
+ * ```
+ *
+ * Methods exposed on the forwarded ref:
+ * - `saveForm()` — save current form state
+ * - `restoreForm()` — restore saved state into DOM
+ * - `clearForm()` — clear saved entries
+ * - `saveElementValue(elem)` / `restoreElementValue(elem)` / `clearElementValue(elem)`
+ *
  */
 export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>(
   (
