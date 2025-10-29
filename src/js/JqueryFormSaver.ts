@@ -5,11 +5,12 @@ import getCheckedValue from './getCheckedValue';
 import IsJsonString from './isJsonString';
 import makeid from './makeid';
 import { currentPathname } from './url';
+import { isEmpty } from './utils';
 
 /**
  * Local Storage key
  */
-const storageKey: string = currentPathname.replace(/\/$/s, '') + '/formField';
+const storageKey: string = currentPathname.replace(/\/$/, '') + '/formField';
 
 let formFieldBuild: Record<string, any> | Array<any>;
 const formSaved = localStorage.getItem(storageKey.toString());
@@ -255,32 +256,45 @@ class JqueryFormSaver {
     const key = this.get_identifier(el);
     const item = el.value;
     const allowed = !el.hasAttribute('no-save') && el.hasAttribute('formsaver-integrity') && el.hasAttribute('name');
+    const type = el.getAttribute('type');
     if (debug) console.log(`${el.tagName} ${key} ${allowed}`);
-    if (key && item !== '' && allowed) {
-      if (el.getAttribute('type') == 'checkbox') {
-        localStorage.setItem(key, (el.checked == true).toString());
-        if (debug) console.log('save checkbox button ', this.offset(el));
-        return;
-      } else if (el.getAttribute('type') == 'radio') {
-        const ele = document.getElementsByName(el.getAttribute('name'));
-        const getVal = getCheckedValue(ele);
-        const self = this;
-        for (let checkboxIndex = 0; checkboxIndex < ele.length; checkboxIndex++) {
-          if (Object.prototype.hasOwnProperty.call(ele, checkboxIndex)) {
-            const element = ele[checkboxIndex];
-            self.delete(<any>element, debug);
-          }
-        }
-        setTimeout(function () {
-          localStorage.setItem(key, JSON.stringify(getVal));
-          if (debug) console.log('save radio button ', getVal);
-        }, 1000);
-        return;
-      } else {
-        localStorage.setItem(key, item.toString());
-      }
-      //if (debug) console.log("save", key, localStorage.getItem(key));
+
+    // nothing to do if we don't have an identifier or saving isn't allowed
+    if (!key || !allowed) return;
+
+    // handle checkbox always (save checked state)
+    if (type == 'checkbox') {
+      localStorage.setItem(key, (el.checked == true).toString());
+      if (debug) console.log('save checkbox button ', this.offset(el));
+      return;
     }
+
+    // handle radio group: delete group entries first, then save selected
+    if (type == 'radio') {
+      const ele = document.getElementsByName(el.getAttribute('name'));
+      const getVal = getCheckedValue(ele);
+      const self = this;
+      for (let checkboxIndex = 0; checkboxIndex < ele.length; checkboxIndex++) {
+        if (Object.prototype.hasOwnProperty.call(ele, checkboxIndex)) {
+          const element = ele[checkboxIndex];
+          self.delete(<any>element, debug);
+        }
+      }
+      setTimeout(function () {
+        localStorage.setItem(key, JSON.stringify(getVal));
+        if (debug) console.log('save radio button ', getVal);
+      }, 1000);
+      return;
+    }
+
+    // text / textarea / select: if cleared, remove stored value; otherwise save
+    if (isEmpty(item)) {
+      localStorage.removeItem(key);
+      if (debug) console.log('removed empty value', key);
+      return;
+    }
+
+    localStorage.setItem(key, item.toString());
   }
 
   delete(el: IEHtml | Element | HTMLElement, debug = false) {

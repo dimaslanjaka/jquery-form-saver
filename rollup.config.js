@@ -30,7 +30,14 @@ const buildConfig = ({ es5, browser = true, minifiedVersion = true, ...config })
       file: `${path.dirname(file)}/${basename}.${(minified ? ['min', ...extArr] : extArr).join('.')}`
     },
     plugins: [
-      typescript.default({ compilerOptions: tsconfigBuild.compilerOptions }),
+      typescript.default({
+        compilerOptions: {
+          ...tsconfigBuild.compilerOptions,
+          declaration: false,
+          declarationDir: undefined,
+          outDir: undefined
+        }
+      }),
       json(),
       resolve({ browser }),
       commonjs(),
@@ -75,7 +82,14 @@ const fun = async () => {
         name: 'formsaver'
       },
       plugins: [
-        typescript.default({ compilerOptions: { ...tsconfigBuild.compilerOptions, declaration: false } }),
+        typescript.default({
+          compilerOptions: {
+            ...tsconfigBuild.compilerOptions,
+            declaration: false,
+            declarationDir: undefined,
+            outDir: undefined
+          }
+        }),
         resolve(),
         commonjs()
       ]
@@ -94,7 +108,14 @@ const fun = async () => {
         // name: 'formsaver'
       },
       plugins: [
-        typescript.default({ compilerOptions: { ...tsconfigBuild.compilerOptions, declaration: false } }),
+        typescript.default({
+          compilerOptions: {
+            ...tsconfigBuild.compilerOptions,
+            declaration: false,
+            declarationDir: undefined,
+            outDir: undefined
+          }
+        }),
         resolve(),
         commonjs()
       ]
@@ -106,7 +127,6 @@ const fun = async () => {
       output: {
         file: `dist/esm/${outputFileName}.js`,
         format: 'esm',
-        preferConst: true,
         exports: 'named',
         banner
       }
@@ -145,12 +165,18 @@ const fun = async () => {
       output: {
         file: `dist/node/${name}.cjs`,
         format: 'cjs',
-        preferConst: true,
         exports: 'default',
         banner
       },
       plugins: [
-        typescript.default({ compilerOptions: tsconfigBuild.compilerOptions }),
+        typescript.default({
+          compilerOptions: {
+            ...tsconfigBuild.compilerOptions,
+            declaration: false,
+            declarationDir: undefined,
+            outDir: undefined
+          }
+        }),
         autoExternal(),
         resolve(),
         commonjs()
