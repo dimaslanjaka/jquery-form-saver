@@ -32,6 +32,7 @@
     "serve": "php -S localhost:4000",
     "clean": "rimraf dist/*",
     "build": "cross-env-shell NODE_ENV=production rollup -c -m",
+    "prepublishOnly": "npm run build",
     "build:demo": "cd demo/react && npm run build",
     "dev": "cross-env-shell NODE_ENV=production rollup -c -m -w",
     "update:ncu": "npx npm-check-updates -u"

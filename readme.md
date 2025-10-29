@@ -1,5 +1,7 @@
 # Jquery Form Saver JS
 
+[![npm version](https://img.shields.io/npm/v/jquery-form-saver.svg)](https://www.npmjs.com/package/jquery-form-saver)
+
 https://github.com/dimaslanjaka/jquery-form-saver
 
 ## Features
@@ -12,6 +14,20 @@ https://github.com/dimaslanjaka/jquery-form-saver
 
 -   field has name attribute (auto create if not exists)
 -   field has id attribute (auto create if not exists)
+
+## Installation
+
+Install from npm:
+
+```bash
+npm install jquery-form-saver
+```
+
+Or with yarn:
+
+```bash
+yarn add jquery-form-saver
+```
 
 ## Usages
 
