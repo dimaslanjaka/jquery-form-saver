@@ -5,6 +5,7 @@
   "description": "React demo for jquery-form-saver package",
   "type": "module",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
