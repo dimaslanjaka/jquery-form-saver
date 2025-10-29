@@ -28,7 +28,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "prepublishOnly": "npm run build",
+    "prepack": "npm run clean && npm run build",
     "serve": "php -S localhost:4000",
     "clean": "rimraf dist/* demo/react/dist/*",
     "build": "cross-env-shell NODE_ENV=production rollup -c -m && tsc -p tsconfig.json && tsup",
