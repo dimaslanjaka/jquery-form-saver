@@ -1,4 +1,4 @@
-// SmartForm v1.2.0 Copyright (c) 2025 Dimas Lanjaka and contributors
+// SmartForm v1.2.2 Copyright (c) 2025 Dimas Lanjaka and contributors
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
