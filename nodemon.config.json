@@ -1,0 +1,8 @@
+{
+  "$schema": "https://www.schemastore.org/nodemon.json",
+  "verbose": true,
+  "watch": ["src/", "demo/react/src/"],
+  "ignore": ["*.test.js", "**/fixtures/**"],
+  "ext": "js,ts,tsx,json,html,css",
+  "exec": "npm run dev:react"
+}

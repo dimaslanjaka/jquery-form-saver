@@ -77,19 +77,30 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
         const name = element.name;
         if (name) {
           const radioElements = document.getElementsByName(name) as NodeListOf<HTMLInputElement>;
+          let saved = false;
           for (let i = 0; i < radioElements.length; i++) {
             if (radioElements[i].checked) {
               localStorage.setItem(key, JSON.stringify({ index: i, value: radioElements[i].value }));
+              saved = true;
               if (debug) console.log(`Saved radio ${key}:`, { index: i, value: radioElements[i].value });
               break;
             }
           }
+          if (!saved) {
+            // nothing selected in the group - remove stale saved value
+            localStorage.removeItem(key);
+            if (debug) console.log(`Removed radio ${key} (no selection)`);
+          }
         }
       } else {
         const value = (element as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement).value;
-        if (value) {
+        if (value !== '') {
           localStorage.setItem(key, value);
           if (debug) console.log(`Saved ${element.tagName.toLowerCase()} ${key}:`, value);
+        } else {
+          // cleared by user -> remove stored value so restore won't bring back stale data
+          localStorage.removeItem(key);
+          if (debug) console.log(`Removed ${key} (empty value)`);
         }
       }
     } catch (error) {

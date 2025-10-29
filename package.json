@@ -1,6 +1,6 @@
 {
   "name": "jquery-form-saver",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Save user field and reuse for next page",
   "main": "dist/JqueryFormSaver.js",
   "types": "dist/types/js/JqueryFormSaver.d.ts",
@@ -34,7 +34,9 @@
     "build": "cross-env-shell NODE_ENV=production rollup -c -m",
     "prepublishOnly": "npm run build",
     "build:demo": "cd demo/react && npm run build",
-    "dev": "cross-env-shell NODE_ENV=production rollup -c -m -w",
+    "dev": "nodemon --config ./nodemon.config.json",
+    "dev:rollup": "cross-env-shell NODE_ENV=production rollup -c -m -w",
+    "dev:react": "cd demo/react && npm start",
     "update:ncu": "npx npm-check-updates -u"
   },
   "dependencies": {
@@ -106,6 +108,7 @@
     "map-stream": "^0.0.7",
     "minimatch": "^10.0.3",
     "node-fs": "^0.1.7",
+    "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "rollup": "^4.52.2",

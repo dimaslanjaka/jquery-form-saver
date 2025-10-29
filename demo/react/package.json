@@ -5,13 +5,14 @@
   "description": "React demo for jquery-form-saver package",
   "type": "module",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "jquery-form-saver": "1.2.1",
+    "jquery-form-saver": "1.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
