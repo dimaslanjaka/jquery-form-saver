@@ -4,6 +4,7 @@ import mkcert from 'vite-plugin-mkcert';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/jquery-form-saver/demo/react/dist/',
   plugins: [mkcert(), react()],
   server: {
     host: process.env.VITE_HOSTNAME || 'dev.webmanajemen.com',
