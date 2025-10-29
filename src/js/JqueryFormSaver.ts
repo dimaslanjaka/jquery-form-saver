@@ -5,7 +5,7 @@ import getCheckedValue from './getCheckedValue';
 import IsJsonString from './isJsonString';
 import makeid from './makeid';
 import { currentPathname } from './url';
-import { isEmpty } from 'lodash';
+import { isEmpty } from './utils';
 
 /**
  * Local Storage key
