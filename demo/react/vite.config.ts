@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [mkcert(), react()],
   server: {
     host: process.env.VITE_HOSTNAME || 'dev.webmanajemen.com',
-    port: parseInt(String(process.env.VITE_PORT)) || 5173,
+    port: parseInt(String(process.env.VITE_PORT)) || 3888,
     open: false
   },
   build: {
