@@ -5,6 +5,12 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "command": "npm run dev:react",
+      "name": "dev:react",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
       "command": "npm run bundle",
       "name": "build",
       "request": "launch",
