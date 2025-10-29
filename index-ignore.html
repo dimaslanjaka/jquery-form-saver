@@ -2,50 +2,92 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="apple-mobile-web-app-title" content="Jquery Form Saver" />
 
     <title>Ignore Form Input To Save - Smartform</title>
 
-    <link rel="stylesheet" href="https://raw.githack.com/dimaslanjaka/Web-Manajemen/master/css/bootstrap-4.5-wrapper.css" />
-    <link rel="stylesheet" href="https://raw.githack.com/dimaslanjaka/Web-Manajemen/master/css/all.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="https://rawcdn.githack.com/dimaslanjaka/Web-Manajemen/0f634f242ff259087c9fe176e8f28ccaebb5c015/css/all.min.css" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1165447249910969" crossorigin="anonymous"></script>
+    <style>
+      pre {
+        white-space: pre-wrap; /* css-3 */
+        white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        word-wrap: break-word; /* Internet Explorer 5.5+ */
+      }
+    </style>
   </head>
 
   <body translate="no">
-    <div id="bootstrap-wrapper">
-      <div class="container-fluid">
-        <div class="m-2">
-          <h2 class="text-center">Ignore Smartform</h2>
-        </div>
-        <div class="row" id="card-wrapper">
-          <div class="col-md-12 m-2">
-            <label for="">This input <b>shouldn</b> be saved</label>
-            <div class="form-group mb-2">
-              <input type="text" class="form-control" id="save" />
-            </div>
-            <pre><code>&lt;div class=&quot;form-group mb-2&quot;&gt;
+    <div class="container-fluid" id="bootstrap-wrapper">
+      <div class="m-2 text-center">
+        <h2>Ignore Smartform</h2>
+      </div>
+      <div class="row" id="card-wrapper">
+        <div class="col-md-12 m-2">
+            <label>This input <b>shouldn't</b> be saved</label>
+          <div class="form-group mb-2">
+            <input type="text" class="form-control" id="save" />
+          </div>
+          <pre><code>&lt;div class=&quot;form-group mb-2&quot;&gt;
   &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;save&quot; /&gt;
 &lt;/div&gt;</code></pre>
-            <label for="">This input <b>shouldn't</b> be saved</label>
-            <div class="form-group mb-2">
-              <input type="text" class="form-control" id="ignore" no-save="true" />
-            </div>
-            <pre><code>&lt;div class=&quot;form-group mb-2&quot;&gt;
+          <label>This input <b>shouldn't</b> be saved</label>
+          <div class="form-group mb-2">
+            <input type="text" class="form-control" id="ignore" no-save="true" />
+          </div>
+          <pre><code>&lt;div class=&quot;form-group mb-2&quot;&gt;
   &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;ignore&quot; <span class="text-danger">no-save=&quot;true&quot;</span> /&gt;
 &lt;/div&gt;</code></pre>
-          </div>
         </div>
       </div>
     </div>
-    <div class="text-center m-2">
-      <a class="btn btn-sm btn-primary" href="/jquery-form-saver/demo/react/dist" role="button">React demo (dist)</a>
+    <div class="row">
+      <div class="col">
+        <pre class="language-html">
+                        <code>
+    &lt;script src=&quot;https://raw.githack.com/dimaslanjaka/jquery-form-saver/master/dist/release/bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      (function () {
+        // true = debug activated, false = no debug
+        formsaver(true);
+      })();
+    &lt;/script&gt;
+                        </code>
+                    </pre>
+      </div>
+      <div class="text-center col">
+        <i class="fab fa-github"></i>
+        <a href="https://github.com/dimaslanjaka/jquery-form-saver/tree/compiler">
+          https://github.com/dimaslanjaka/jquery-form-saver/tree/compiler
+        </a>
+        <br>
+        <a href="/jquery-form-saver/index.html">without jQuery Example</a>
+        <br>
+        <a href="/jquery-form-saver/index-ignore.html">with jQuery Example</a>
+        <br>
+        <a href="/jquery-form-saver/index-esm.html">ESM Example</a>
+        <br>
+        <a class="btn btn-sm btn-primary mt-2" href="/jquery-form-saver/demo/react/dist" role="button">React demo (dist)</a>
+      </div>
     </div>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/default.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
     <script src="dist/release/bundle.js"></script>
     <script>
-//      console.clear();
       (function () {
         formsaver(true);
-      });
+        if (typeof hljs !== 'undefined' && hljs.highlightAll) hljs.highlightAll();
+      })();
     </script>
   </body>
 </html>
