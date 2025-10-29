@@ -1,4 +1,4 @@
-// SmartForm v1.2.2 Copyright (c) 2025 Dimas Lanjaka and contributors
+// SmartForm v1.2.3 Copyright (c) 2025 Dimas Lanjaka and contributors
 (function () {
     'use strict';
 

@@ -1,5 +1,3 @@
-/// <reference path="../../../src/libs/map-stream.d.ts" />
-/// <reference types="node" />
 import * as stream from 'stream';
 export interface FormatFunction {
     (filepath: string): string;
