@@ -28,10 +28,11 @@
     "doc": "docs"
   },
   "scripts": {
+    "prepublishOnly": "npm run build",
     "serve": "php -S localhost:4000",
     "clean": "rimraf dist/* demo/react/dist/*",
-    "build": "cross-env-shell NODE_ENV=production rollup -c -m && tsup",
-    "prepublishOnly": "npm run build",
+    "build": "cross-env-shell NODE_ENV=production rollup -c -m && tsc -p tsconfig.json && tsup",
+    "build:types": "tsc -p tsconfig.json",
     "build:demo": "cd demo/react && npm run build",
     "dev": "npm run dev:rollup",
     "dev:rollup": "cross-env-shell NODE_ENV=production rollup -c -m -w",
