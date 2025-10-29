@@ -1,7 +1,7 @@
-node_modules
+**/node_modules
 .yarn/cache
 .yarn/*gz
 yarn.lock
 package-lock.json
 /docs
-/tmp
+**/tmp
