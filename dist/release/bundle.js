@@ -1,4 +1,4 @@
-// SmartForm v1.1.2 Copyright (c) 2024 Dimas Lanjaka and contributors
+// SmartForm v1.2.0 Copyright (c) 2025 Dimas Lanjaka and contributors
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
@@ -37,7 +37,30 @@
         return result;
     }
 
-    var storageKey = location.pathname.replace(/\/$/s, '') + '/formField';
+    var isIframe = window.self !== window.top;
+    var currentUrl = new URL(isIframe ? document.referrer : document.location.href);
+    var currentPathname = currentUrl.pathname;
+
+    function isEmpty(value) {
+        if (value == null)
+            return true;
+        if (typeof value === 'string')
+            return value.length === 0;
+        if (Array.isArray(value))
+            return value.length === 0;
+        if (value instanceof Map || value instanceof Set)
+            return value.size === 0;
+        if (typeof value === 'object') {
+            for (var key in value) {
+                if (Object.prototype.hasOwnProperty.call(value, key))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    var storageKey = currentPathname.replace(/\/$/, '') + '/formField';
     var formFieldBuild;
     var formSaved = localStorage.getItem(storageKey.toString());
     if (!formSaved) {
@@ -238,36 +261,41 @@
             var key = this.get_identifier(el);
             var item = el.value;
             var allowed = !el.hasAttribute('no-save') && el.hasAttribute('formsaver-integrity') && el.hasAttribute('name');
+            var type = el.getAttribute('type');
             if (debug)
                 console.log("".concat(el.tagName, " ").concat(key, " ").concat(allowed));
-            if (key && item !== '' && allowed) {
-                if (el.getAttribute('type') == 'checkbox') {
-                    localStorage.setItem(key, (el.checked == true).toString());
-                    if (debug)
-                        console.log('save checkbox button ', this.offset(el));
-                    return;
-                }
-                else if (el.getAttribute('type') == 'radio') {
-                    var ele = document.getElementsByName(el.getAttribute('name'));
-                    var getVal_1 = getCheckedValue(ele);
-                    var self_1 = this;
-                    for (var checkboxIndex = 0; checkboxIndex < ele.length; checkboxIndex++) {
-                        if (Object.prototype.hasOwnProperty.call(ele, checkboxIndex)) {
-                            var element = ele[checkboxIndex];
-                            self_1.delete(element, debug);
-                        }
-                    }
-                    setTimeout(function () {
-                        localStorage.setItem(key, JSON.stringify(getVal_1));
-                        if (debug)
-                            console.log('save radio button ', getVal_1);
-                    }, 1000);
-                    return;
-                }
-                else {
-                    localStorage.setItem(key, item.toString());
-                }
+            if (!key || !allowed)
+                return;
+            if (type == 'checkbox') {
+                localStorage.setItem(key, (el.checked == true).toString());
+                if (debug)
+                    console.log('save checkbox button ', this.offset(el));
+                return;
             }
+            if (type == 'radio') {
+                var ele = document.getElementsByName(el.getAttribute('name'));
+                var getVal_1 = getCheckedValue(ele);
+                var self_1 = this;
+                for (var checkboxIndex = 0; checkboxIndex < ele.length; checkboxIndex++) {
+                    if (Object.prototype.hasOwnProperty.call(ele, checkboxIndex)) {
+                        var element = ele[checkboxIndex];
+                        self_1.delete(element, debug);
+                    }
+                }
+                setTimeout(function () {
+                    localStorage.setItem(key, JSON.stringify(getVal_1));
+                    if (debug)
+                        console.log('save radio button ', getVal_1);
+                }, 1000);
+                return;
+            }
+            if (isEmpty(item)) {
+                localStorage.removeItem(key);
+                if (debug)
+                    console.log('removed empty value', key);
+                return;
+            }
+            localStorage.setItem(key, item.toString());
         };
         JqueryFormSaver.prototype.delete = function (el, debug) {
             if (debug === void 0) { debug = false; }
@@ -330,7 +358,7 @@
                     el.setAttribute('name', attre);
                 }
             }
-            return location.pathname + el.getAttribute('id');
+            return currentPathname + el.getAttribute('id');
         };
         return JqueryFormSaver;
     }());
