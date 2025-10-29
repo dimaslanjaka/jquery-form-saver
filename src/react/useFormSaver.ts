@@ -112,8 +112,9 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
    * Restore form element value from localStorage
    */
   const restoreElementValue = useCallback((element: FormElement) => {
+    // If element is marked ignored (e.g., `no-save`) don't touch it at all.
+    // Previously we cleared ignored inputs which could wipe input fields unexpectedly.
     if (isIgnored(element)) {
-      if ('value' in element) element.value = '';
       return;
     }
 
