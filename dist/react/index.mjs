@@ -66,7 +66,6 @@ var useFormSaver = (options = {}) => {
   }, [getElementKey, isIgnored, debug]);
   const restoreElementValue = useCallback((element) => {
     if (isIgnored(element)) {
-      if ("value" in element) element.value = "";
       return;
     }
     const key = getElementKey(element);
