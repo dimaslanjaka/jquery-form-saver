@@ -1,6 +1,6 @@
 {
   "name": "jquery-form-saver",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Save user field and reuse for next page",
   "main": "dist/JqueryFormSaver.js",
   "types": "dist/types/js/JqueryFormSaver.d.ts",
@@ -12,9 +12,8 @@
       "types": "./dist/types/js/JqueryFormSaver.d.ts"
     },
     "./react": {
-      "import": "./src/react/index.ts",
-      "require": "./src/react/index.ts",
-      "types": "./src/react/index.ts"
+      "import": "./dist/react/index.mjs",
+      "types": "./dist/react/index.d.ts"
     },
     "./package.json": "./package.json"
   },
@@ -31,12 +30,12 @@
   "scripts": {
     "serve": "php -S localhost:4000",
     "clean": "rimraf dist/*",
-    "build": "cross-env-shell NODE_ENV=production rollup -c -m",
+    "build": "cross-env-shell NODE_ENV=production rollup -c -m && tsup",
     "prepublishOnly": "npm run build",
     "build:demo": "cd demo/react && npm run build",
-    "dev": "nodemon --config ./nodemon.config.json",
+    "dev": "npm run dev:rollup",
     "dev:rollup": "cross-env-shell NODE_ENV=production rollup -c -m -w",
-    "dev:react": "cd demo/react && npm start",
+    "dev:react": "npm run build && cd demo/react && npm start",
     "update:ncu": "npx npm-check-updates -u"
   },
   "dependencies": {
@@ -79,6 +78,7 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.4",
+    "@swc/core": "1.13.5",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
     "@types/fancy-log": "^2.0.2",
@@ -108,7 +108,6 @@
     "map-stream": "^0.0.7",
     "minimatch": "^10.0.3",
     "node-fs": "^0.1.7",
-    "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "rollup": "^4.52.2",
@@ -120,6 +119,7 @@
     "through": "^2.3.8",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "vinyl": "^3.0.1",
     "vinyl-source-stream": "^2.0.0",

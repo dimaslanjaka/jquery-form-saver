@@ -7,10 +7,17 @@
  */
 
 // Import type extensions for HTML attributes
-import './react-html-attributes';
+// import './react-html-attributes';
 
-export { useFormSaver } from './useFormSaver';
-export { ReactFormSaver, type ReactFormSaverRef } from './ReactFormSaver';
+// export { useFormSaver } from './useFormSaver';
+// export { ReactFormSaver, type ReactFormSaverRef } from './ReactFormSaver';
 
 // For backward compatibility, also export as default
-export { useFormSaver as default } from './useFormSaver';
+// export { useFormSaver as default } from './useFormSaver';
+
+import './react-html-attributes';
+import { useFormSaver } from './useFormSaver';
+import { ReactFormSaver, type ReactFormSaverRef } from './ReactFormSaver';
+
+export { useFormSaver, ReactFormSaver, type ReactFormSaverRef };
+export default useFormSaver;
