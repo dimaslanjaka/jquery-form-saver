@@ -84,7 +84,7 @@ or automatically trigger save all inputs without any calls.
 
 ## React
 
-> Read react usage at [https://github.com/dimaslanjaka/jquery-form-saver/blob/compiler/src/react/README.md](https://github.com/dimaslanjaka/jquery-form-saver/blob/compiler/src/react/README.md)
+> Read react usage at [https://github.com/dimaslanjaka/jquery-form-saver/blob/master/src/react/README.md](https://github.com/dimaslanjaka/jquery-form-saver/blob/master/src/react/README.md)
 
 ### Codepen Example
 - [Multiple Example](http://dimaslanjaka.github.io/jquery-form-saver/)
