@@ -155,9 +155,14 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
       } catch (err) {
         // ignore save errors
       }
-      // Prevent default to let consumer control submission if they provided a handler
-      if (typeof onSubmit === 'function') {
+      // Prevent default browser submission to avoid full page reload.
+      // If a consumer provided an onSubmit handler, call it after preventing default.
+      try {
         e.preventDefault();
+      } catch (err) {
+        // ignore if preventDefault is unavailable
+      }
+      if (typeof onSubmit === 'function') {
         onSubmit(e);
       }
     };

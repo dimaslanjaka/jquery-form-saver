@@ -219,8 +219,11 @@ var ReactFormSaver = forwardRef(
         saveForm();
       } catch (err) {
       }
-      if (typeof onSubmit === "function") {
+      try {
         e.preventDefault();
+      } catch (err) {
+      }
+      if (typeof onSubmit === "function") {
         onSubmit(e);
       }
     };
