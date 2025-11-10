@@ -30,7 +30,7 @@ declare const useFormSaver: (options?: FormSaverOptions) => {
     restoreForm: () => void;
     clearForm: () => void;
     saveElementValue: (element: FormElement) => void;
-    restoreElementValue: (element: FormElement) => void;
+    restoreElementValue: (element: FormElement) => any;
     clearElementValue: (element: FormElement) => void;
 };
 
@@ -43,14 +43,14 @@ interface ReactFormSaverProps {
     className?: string;
     onSubmit?: (event: React__default.FormEvent<HTMLFormElement>) => void;
     onSave?: (element: HTMLElement) => void;
-    onRestore?: (element: HTMLElement) => void;
+    onRestore?: (element: HTMLElement, value?: any) => void;
 }
 interface ReactFormSaverRef {
     saveForm: () => void;
     restoreForm: () => void;
     clearForm: () => void;
     saveElementValue: (element: HTMLElement) => void;
-    restoreElementValue: (element: HTMLElement) => void;
+    restoreElementValue: (element: HTMLElement) => any;
     clearElementValue: (element: HTMLElement) => void;
 }
 /**

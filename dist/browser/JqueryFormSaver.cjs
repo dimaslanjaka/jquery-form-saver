@@ -1,4 +1,4 @@
-// SmartForm v1.2.3 Copyright (c) 2025 Dimas Lanjaka and contributors
+// SmartForm v1.2.4 Copyright (c) 2025 Dimas Lanjaka and contributors
 'use strict';
 
 function getCheckedValue(el) {

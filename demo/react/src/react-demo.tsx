@@ -31,7 +31,7 @@ const ComponentExample: React.FC = () => {
           debug={true}
           className="row g-3"
           onSave={(element) => console.log('Saved:', element)}
-          onRestore={(element) => console.log('Restored:', element)}
+          onRestore={(element: HTMLElement, value?: any) => console.log('Restored:', element, 'value:', value)}
         >
           <div className="col-md-6">
             <label htmlFor="username" className="form-label">Username</label>
@@ -348,6 +348,9 @@ const DynamicExample: React.FC = () => {
 const ReactFormSaverDemo: React.FC = () => {
   return (
     <div className="container py-5">
+      <div className="alert alert-secondary" role="alert">
+        <strong>Tip:</strong> Open your browser's developer console to see <code>onSave</code> and <code>onRestore</code> logs when interacting with the demo.
+      </div>
       <div className="row justify-content-center">
         <div className="col-lg-10">
           <div className="text-center mb-5">

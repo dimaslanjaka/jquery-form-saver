@@ -1,4 +1,4 @@
-// SmartForm v1.2.3 Copyright (c) 2025 Dimas Lanjaka and contributors
+// SmartForm v1.2.4 Copyright (c) 2025 Dimas Lanjaka and contributors
 function getCheckedValue(el) {
     var result = {};
     for (var i = 0, length_1 = el.length; i < length_1; i++) {

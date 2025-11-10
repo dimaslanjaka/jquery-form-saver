@@ -77,7 +77,9 @@ var useFormSaver = (options = {}) => {
           const checked = JSON.parse(saved);
           element.checked = checked;
           if (debug) console.log(`Restored checkbox ${key}:`, checked);
+          return checked;
         }
+        return null;
       } else if (type === "radio") {
         const saved = localStorage.getItem(key);
         if (saved !== null) {
@@ -88,18 +90,24 @@ var useFormSaver = (options = {}) => {
             if (radioElements[radioData.index]) {
               radioElements[radioData.index].checked = true;
               if (debug) console.log(`Restored radio ${key}:`, radioData);
+              return radioData;
             }
           }
+          return null;
         }
+        return null;
       } else {
         const saved = localStorage.getItem(key);
         if (saved !== null) {
           element.value = saved;
           if (debug) console.log(`Restored ${element.tagName.toLowerCase()} ${key}:`, saved);
+          return saved;
         }
+        return null;
       }
     } catch (error) {
       console.error("Error restoring form value:", error);
+      return null;
     }
   }, [getElementKey, isIgnored, debug]);
   const clearElementValue = useCallback((element) => {
@@ -207,8 +215,8 @@ var ReactFormSaver = forwardRef(
           onSave?.(element);
         },
         restoreElementValue: (element) => {
-          restoreElementValue(element);
-          onRestore?.(element);
+          const value = restoreElementValue(element);
+          onRestore?.(element, value);
         },
         clearElementValue
       }),

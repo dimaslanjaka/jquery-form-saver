@@ -128,7 +128,9 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
           const checked = JSON.parse(saved);
           (element as HTMLInputElement).checked = checked;
           if (debug) console.log(`Restored checkbox ${key}:`, checked);
+          return checked;
         }
+        return null;
       } else if (type === 'radio') {
         const saved = localStorage.getItem(key);
         if (saved !== null) {
@@ -139,18 +141,24 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
             if (radioElements[radioData.index]) {
               radioElements[radioData.index].checked = true;
               if (debug) console.log(`Restored radio ${key}:`, radioData);
+              return radioData;
             }
           }
+          return null;
         }
+        return null;
       } else {
         const saved = localStorage.getItem(key);
         if (saved !== null) {
           (element as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement).value = saved;
           if (debug) console.log(`Restored ${element.tagName.toLowerCase()} ${key}:`, saved);
+          return saved;
         }
+        return null;
       }
     } catch (error) {
       console.error('Error restoring form value:', error);
+      return null;
     }
   }, [getElementKey, isIgnored, debug]);
 

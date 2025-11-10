@@ -11,7 +11,7 @@ interface ReactFormSaverProps {
   className?: string;
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
   onSave?: (element: HTMLElement) => void;
-  onRestore?: (element: HTMLElement) => void;
+  onRestore?: (element: HTMLElement, value?: any) => void;
 }
 
 export interface ReactFormSaverRef {
@@ -19,7 +19,7 @@ export interface ReactFormSaverRef {
   restoreForm: () => void;
   clearForm: () => void;
   saveElementValue: (element: HTMLElement) => void;
-  restoreElementValue: (element: HTMLElement) => void;
+  restoreElementValue: (element: HTMLElement) => any;
   clearElementValue: (element: HTMLElement) => void;
 }
 
@@ -140,8 +140,8 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
           onSave?.(element);
         },
         restoreElementValue: (element: HTMLElement) => {
-          restoreElementValue(element as any);
-          onRestore?.(element);
+          const value = restoreElementValue(element as any);
+          onRestore?.(element, value as any);
         },
         clearElementValue
       }),
