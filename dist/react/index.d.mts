@@ -19,6 +19,7 @@ interface FormSaverOptions {
     storagePrefix?: string;
     ignoredAttributes?: string[];
     autoSave?: boolean;
+    onRestore?: (element: FormElement, value?: any) => void;
 }
 /**
  * React hook version of JqueryFormSaver

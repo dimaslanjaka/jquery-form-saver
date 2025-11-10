@@ -5,7 +5,8 @@ var useFormSaver = (options = {}) => {
     debug = false,
     storagePrefix = window.location.pathname.replace(/\/$/, "") + "/formField",
     ignoredAttributes = ["no-save"],
-    autoSave = true
+    autoSave = true,
+    onRestore
   } = options;
   const formRef = useRef(null);
   const observerRef = useRef(null);
@@ -77,6 +78,10 @@ var useFormSaver = (options = {}) => {
           const checked = JSON.parse(saved);
           element.checked = checked;
           if (debug) console.log(`Restored checkbox ${key}:`, checked);
+          try {
+            onRestore?.(element, checked);
+          } catch (err) {
+          }
           return checked;
         }
         return null;
@@ -90,6 +95,10 @@ var useFormSaver = (options = {}) => {
             if (radioElements[radioData.index]) {
               radioElements[radioData.index].checked = true;
               if (debug) console.log(`Restored radio ${key}:`, radioData);
+              try {
+                onRestore?.(element, radioData);
+              } catch (err) {
+              }
               return radioData;
             }
           }
@@ -101,6 +110,10 @@ var useFormSaver = (options = {}) => {
         if (saved !== null) {
           element.value = saved;
           if (debug) console.log(`Restored ${element.tagName.toLowerCase()} ${key}:`, saved);
+          try {
+            onRestore?.(element, saved);
+          } catch (err) {
+          }
           return saved;
         }
         return null;
@@ -202,7 +215,8 @@ var ReactFormSaver = forwardRef(
       debug,
       storagePrefix,
       ignoredAttributes,
-      autoSave
+      autoSave,
+      onRestore
     });
     useImperativeHandle(
       ref,
@@ -215,8 +229,7 @@ var ReactFormSaver = forwardRef(
           onSave?.(element);
         },
         restoreElementValue: (element) => {
-          const value = restoreElementValue(element);
-          onRestore?.(element, value);
+          return restoreElementValue(element);
         },
         clearElementValue
       }),

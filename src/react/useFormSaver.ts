@@ -14,6 +14,7 @@ interface FormSaverOptions {
   storagePrefix?: string;
   ignoredAttributes?: string[];
   autoSave?: boolean;
+  onRestore?: (element: FormElement, value?: any) => void;
 }
 
 /**
@@ -25,8 +26,9 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
     debug = false,
     storagePrefix = window.location.pathname.replace(/\/$/, '') + '/formField',
     ignoredAttributes = ['no-save'],
-    autoSave = true
-  } = options;
+    autoSave = true,
+    onRestore
+  } = options as FormSaverOptions;
 
   const formRef = useRef<HTMLFormElement>(null);
   const observerRef = useRef<MutationObserver | null>(null);
@@ -128,6 +130,11 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
           const checked = JSON.parse(saved);
           (element as HTMLInputElement).checked = checked;
           if (debug) console.log(`Restored checkbox ${key}:`, checked);
+          try {
+            onRestore?.(element, checked);
+          } catch (err) {
+            // ignore onRestore errors
+          }
           return checked;
         }
         return null;
@@ -141,6 +148,11 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
             if (radioElements[radioData.index]) {
               radioElements[radioData.index].checked = true;
               if (debug) console.log(`Restored radio ${key}:`, radioData);
+              try {
+                onRestore?.(element, radioData);
+              } catch (err) {
+                // ignore onRestore errors
+              }
               return radioData;
             }
           }
@@ -152,6 +164,11 @@ export const useFormSaver = (options: FormSaverOptions = {}) => {
         if (saved !== null) {
           (element as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement).value = saved;
           if (debug) console.log(`Restored ${element.tagName.toLowerCase()} ${key}:`, saved);
+          try {
+            onRestore?.(element, saved);
+          } catch (err) {
+            // ignore onRestore errors
+          }
           return saved;
         }
         return null;

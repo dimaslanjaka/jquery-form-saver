@@ -125,7 +125,8 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
         debug,
         storagePrefix,
         ignoredAttributes,
-        autoSave
+        autoSave,
+        onRestore
       });
 
     // Expose methods via ref
@@ -140,8 +141,9 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
           onSave?.(element);
         },
         restoreElementValue: (element: HTMLElement) => {
-          const value = restoreElementValue(element as any);
-          onRestore?.(element, value as any);
+          // The hook already calls onRestore when restoring automatically.
+          // We still return the restored value for callers.
+          return restoreElementValue(element as any);
         },
         clearElementValue
       }),
