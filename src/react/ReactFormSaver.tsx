@@ -10,7 +10,7 @@ interface ReactFormSaverProps {
   autoSave?: boolean;
   className?: string;
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
-  onSave?: (element: HTMLElement) => void;
+  onSave?: (element: HTMLElement, value?: any) => void;
   onRestore?: (element: HTMLElement, value?: any) => void;
 }
 
@@ -126,7 +126,8 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
         storagePrefix,
         ignoredAttributes,
         autoSave,
-        onRestore
+        onRestore,
+        onSave
       });
 
     // Expose methods via ref
@@ -137,8 +138,8 @@ export const ReactFormSaver = forwardRef<ReactFormSaverRef, ReactFormSaverProps>
         restoreForm,
         clearForm,
         saveElementValue: (element: HTMLElement) => {
+          // hook will call onSave with the saved value, so just delegate
           saveElementValue(element as any);
-          onSave?.(element);
         },
         restoreElementValue: (element: HTMLElement) => {
           // The hook already calls onRestore when restoring automatically.
