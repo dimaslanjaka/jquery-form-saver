@@ -20,6 +20,7 @@ interface FormSaverOptions {
     ignoredAttributes?: string[];
     autoSave?: boolean;
     onRestore?: (element: FormElement, value?: any) => void;
+    onSave?: (element: FormElement, value?: any) => void;
 }
 /**
  * React hook version of JqueryFormSaver
@@ -43,7 +44,7 @@ interface ReactFormSaverProps {
     autoSave?: boolean;
     className?: string;
     onSubmit?: (event: React__default.FormEvent<HTMLFormElement>) => void;
-    onSave?: (element: HTMLElement) => void;
+    onSave?: (element: HTMLElement, value?: any) => void;
     onRestore?: (element: HTMLElement, value?: any) => void;
 }
 interface ReactFormSaverRef {

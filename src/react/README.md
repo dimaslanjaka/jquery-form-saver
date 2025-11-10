@@ -80,8 +80,8 @@ function MyForm() {
     <ReactFormSaver
       ref={formSaverRef}
       debug={true}
-      onSave={(element) => console.log('Saved:', element)}
-      onRestore={(element) => console.log('Restored:', element)}
+      onSave={(element, value) => console.log('Saved:', element, 'value:', value)}
+      onRestore={(element, value) => console.log('Restored:', element, 'value:', value)}
     >
       <input type="text" name="username" placeholder="Username" />
       <input type="email" name="email" placeholder="Email" />
@@ -137,8 +137,8 @@ interface ReactFormSaverProps {
   ignoredAttributes?: string[];
   autoSave?: boolean;
   className?: string;
-  onSave?: (element: HTMLElement) => void;     // Callback when element is saved
-  onRestore?: (element: HTMLElement) => void;  // Callback when element is restored
+  onSave?: (element: HTMLElement, value?: any) => void;     // Callback when element is saved; receives the saved value when available
+  onRestore?: (element: HTMLElement, value?: any) => void; // Callback when element is restored; receives the restored value when available
 }
 ```
 

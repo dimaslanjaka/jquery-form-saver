@@ -6,128 +6,160 @@ var useFormSaver = (options = {}) => {
     storagePrefix = window.location.pathname.replace(/\/$/, "") + "/formField",
     ignoredAttributes = ["no-save"],
     autoSave = true,
-    onRestore
+    onRestore,
+    onSave
   } = options;
   const formRef = useRef(null);
   const observerRef = useRef(null);
   const generateId = useCallback(() => {
     return Math.random().toString(36).substr(2, 9);
   }, []);
-  const getElementKey = useCallback((element) => {
-    const id = element.id || element.name || element.getAttribute("data-form-id");
-    if (!id) {
-      const newId = generateId();
-      element.setAttribute("data-form-id", newId);
-      return `${storagePrefix}${newId}`;
-    }
-    return `${storagePrefix}${id}`;
-  }, [generateId, storagePrefix]);
-  const isIgnored = useCallback((element) => {
-    return ignoredAttributes.some((attr) => element.hasAttribute(attr));
-  }, [ignoredAttributes]);
-  const saveElementValue = useCallback((element) => {
-    if (isIgnored(element)) return;
-    const key = getElementKey(element);
-    const type = element.getAttribute("type");
-    try {
-      if (type === "checkbox") {
-        localStorage.setItem(key, JSON.stringify(element.checked));
-        if (debug) console.log(`Saved checkbox ${key}:`, element.checked);
-      } else if (type === "radio") {
-        const name = element.name;
-        if (name) {
-          const radioElements = document.getElementsByName(name);
-          let saved = false;
-          for (let i = 0; i < radioElements.length; i++) {
-            if (radioElements[i].checked) {
-              localStorage.setItem(key, JSON.stringify({ index: i, value: radioElements[i].value }));
-              saved = true;
-              if (debug) console.log(`Saved radio ${key}:`, { index: i, value: radioElements[i].value });
-              break;
-            }
-          }
-          if (!saved) {
-            localStorage.removeItem(key);
-            if (debug) console.log(`Removed radio ${key} (no selection)`);
-          }
-        }
-      } else {
-        const value = element.value;
-        if (value !== "") {
-          localStorage.setItem(key, value);
-          if (debug) console.log(`Saved ${element.tagName.toLowerCase()} ${key}:`, value);
-        } else {
-          localStorage.removeItem(key);
-          if (debug) console.log(`Removed ${key} (empty value)`);
-        }
+  const getElementKey = useCallback(
+    (element) => {
+      const id = element.id || element.name || element.getAttribute("data-form-id");
+      if (!id) {
+        const newId = generateId();
+        element.setAttribute("data-form-id", newId);
+        return `${storagePrefix}${newId}`;
       }
-    } catch (error) {
-      console.error("Error saving form value:", error);
-    }
-  }, [getElementKey, isIgnored, debug]);
-  const restoreElementValue = useCallback((element) => {
-    if (isIgnored(element)) {
-      return;
-    }
-    const key = getElementKey(element);
-    const type = element.getAttribute("type");
-    try {
-      if (type === "checkbox") {
-        const saved = localStorage.getItem(key);
-        if (saved !== null) {
-          const checked = JSON.parse(saved);
-          element.checked = checked;
-          if (debug) console.log(`Restored checkbox ${key}:`, checked);
+      return `${storagePrefix}${id}`;
+    },
+    [generateId, storagePrefix]
+  );
+  const isIgnored = useCallback(
+    (element) => {
+      return ignoredAttributes.some((attr) => element.hasAttribute(attr));
+    },
+    [ignoredAttributes]
+  );
+  const saveElementValue = useCallback(
+    (element) => {
+      if (isIgnored(element)) return;
+      const key = getElementKey(element);
+      const type = element.getAttribute("type");
+      try {
+        if (type === "checkbox") {
+          localStorage.setItem(key, JSON.stringify(element.checked));
+          if (debug) console.log(`Saved checkbox ${key}:`, element.checked);
           try {
-            onRestore?.(element, checked);
+            onSave?.(element, element.checked);
           } catch (err) {
           }
-          return checked;
-        }
-        return null;
-      } else if (type === "radio") {
-        const saved = localStorage.getItem(key);
-        if (saved !== null) {
-          const radioData = JSON.parse(saved);
+        } else if (type === "radio") {
           const name = element.name;
-          if (name && radioData && typeof radioData.index === "number") {
+          if (name) {
             const radioElements = document.getElementsByName(name);
-            if (radioElements[radioData.index]) {
-              radioElements[radioData.index].checked = true;
-              if (debug) console.log(`Restored radio ${key}:`, radioData);
+            let saved = false;
+            for (let i = 0; i < radioElements.length; i++) {
+              if (radioElements[i].checked) {
+                localStorage.setItem(key, JSON.stringify({ index: i, value: radioElements[i].value }));
+                saved = true;
+                if (debug) console.log(`Saved radio ${key}:`, { index: i, value: radioElements[i].value });
+                break;
+              }
+            }
+            if (!saved) {
+              localStorage.removeItem(key);
+              if (debug) console.log(`Removed radio ${key} (no selection)`);
               try {
-                onRestore?.(element, radioData);
+                onSave?.(element, null);
               } catch (err) {
               }
-              return radioData;
             }
+          }
+        } else {
+          const value = element.value;
+          if (value !== "") {
+            localStorage.setItem(key, value);
+            if (debug) console.log(`Saved ${element.tagName.toLowerCase()} ${key}:`, value);
+            try {
+              onSave?.(element, value);
+            } catch (err) {
+            }
+          } else {
+            localStorage.removeItem(key);
+            if (debug) console.log(`Removed ${key} (empty value)`);
+            try {
+              onSave?.(element, null);
+            } catch (err) {
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error saving form value:", error);
+      }
+    },
+    [getElementKey, isIgnored, debug]
+  );
+  const restoreElementValue = useCallback(
+    (element) => {
+      if (isIgnored(element)) {
+        return;
+      }
+      const key = getElementKey(element);
+      const type = element.getAttribute("type");
+      try {
+        if (type === "checkbox") {
+          const saved = localStorage.getItem(key);
+          if (saved !== null) {
+            const checked = JSON.parse(saved);
+            element.checked = checked;
+            if (debug) console.log(`Restored checkbox ${key}:`, checked);
+            try {
+              onRestore?.(element, checked);
+            } catch (err) {
+            }
+            return checked;
+          }
+          return null;
+        } else if (type === "radio") {
+          const saved = localStorage.getItem(key);
+          if (saved !== null) {
+            const radioData = JSON.parse(saved);
+            const name = element.name;
+            if (name && radioData && typeof radioData.index === "number") {
+              const radioElements = document.getElementsByName(name);
+              if (radioElements[radioData.index]) {
+                radioElements[radioData.index].checked = true;
+                if (debug) console.log(`Restored radio ${key}:`, radioData);
+                try {
+                  onRestore?.(element, radioData);
+                } catch (err) {
+                }
+                return radioData;
+              }
+            }
+            return null;
+          }
+          return null;
+        } else {
+          const saved = localStorage.getItem(key);
+          if (saved !== null) {
+            element.value = saved;
+            if (debug) console.log(`Restored ${element.tagName.toLowerCase()} ${key}:`, saved);
+            try {
+              onRestore?.(element, saved);
+            } catch (err) {
+            }
+            return saved;
           }
           return null;
         }
-        return null;
-      } else {
-        const saved = localStorage.getItem(key);
-        if (saved !== null) {
-          element.value = saved;
-          if (debug) console.log(`Restored ${element.tagName.toLowerCase()} ${key}:`, saved);
-          try {
-            onRestore?.(element, saved);
-          } catch (err) {
-          }
-          return saved;
-        }
+      } catch (error) {
+        console.error("Error restoring form value:", error);
         return null;
       }
-    } catch (error) {
-      console.error("Error restoring form value:", error);
-      return null;
-    }
-  }, [getElementKey, isIgnored, debug]);
-  const clearElementValue = useCallback((element) => {
-    const key = getElementKey(element);
-    localStorage.removeItem(key);
-    if (debug) console.log(`Cleared ${key}`);
-  }, [getElementKey, debug]);
+    },
+    [getElementKey, isIgnored, debug]
+  );
+  const clearElementValue = useCallback(
+    (element) => {
+      const key = getElementKey(element);
+      localStorage.removeItem(key);
+      if (debug) console.log(`Cleared ${key}`);
+    },
+    [getElementKey, debug]
+  );
   const getFormElements = useCallback(() => {
     if (!formRef.current) return [];
     const elements = formRef.current.querySelectorAll("input, textarea, select");
@@ -145,12 +177,15 @@ var useFormSaver = (options = {}) => {
     const elements = getFormElements();
     elements.forEach(clearElementValue);
   }, [getFormElements, clearElementValue]);
-  const handleElementChange = useCallback((event) => {
-    const element = event.target;
-    if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA" || element.tagName === "SELECT")) {
-      saveElementValue(element);
-    }
-  }, [saveElementValue]);
+  const handleElementChange = useCallback(
+    (event) => {
+      const element = event.target;
+      if (element && (element.tagName === "INPUT" || element.tagName === "TEXTAREA" || element.tagName === "SELECT")) {
+        saveElementValue(element);
+      }
+    },
+    [saveElementValue]
+  );
   useEffect(() => {
     if (!formRef.current || !autoSave) return;
     const form = formRef.current;
@@ -216,7 +251,8 @@ var ReactFormSaver = forwardRef(
       storagePrefix,
       ignoredAttributes,
       autoSave,
-      onRestore
+      onRestore,
+      onSave
     });
     useImperativeHandle(
       ref,
@@ -226,7 +262,6 @@ var ReactFormSaver = forwardRef(
         clearForm,
         saveElementValue: (element) => {
           saveElementValue(element);
-          onSave?.(element);
         },
         restoreElementValue: (element) => {
           return restoreElementValue(element);
