@@ -30,14 +30,15 @@
   "scripts": {
     "prepack": "npm run clean && npm run build",
     "serve": "php -S localhost:4000",
-    "serve:demo": "cd demo/react && npm start",
-    "clean": "rimraf dist/* demo/react/dist/*",
-    "build": "cross-env-shell NODE_ENV=production rollup -c -m && tsc -p tsconfig.json && tsup",
+    "serve:demo": "npm --prefix demo/react start",
+    "clean": "rimraf dist demo/react/dist",
+    "build": "npm run clean && npm run build:lib && npm run build:types && npm run build:demo",
+    "build:lib": "cross-env-shell NODE_ENV=production rollup -c -m && tsup",
     "build:types": "tsc -p tsconfig.json",
-    "build:demo": "cd demo/react && npm run build",
+    "build:demo": "npm --prefix demo/react run build",
     "dev": "npm run dev:rollup",
-    "dev:rollup": "cross-env-shell NODE_ENV=production rollup -c -m -w",
-    "dev:react": "npm run build && cd demo/react && npm start",
+    "dev:rollup": "cross-env-shell NODE_ENV=development rollup -c -m -w",
+    "dev:react": "npm run build && npm --prefix demo/react start",
     "update:ncu": "npx npm-check-updates -u"
   },
   "dependencies": {
